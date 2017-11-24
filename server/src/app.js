@@ -10,7 +10,13 @@ app.use(cors())
 
 app.get('/status', (req, res) => {
   res.send({
-    message: 'Hello world Martynas'
+    message: 'Hello world -Martynas'
+  })
+})
+
+app.post('/register', (req, res) => {
+  res.send({
+    message: `user registered? (email: ${req.body.email}) -Martynas`
   })
 })
 
