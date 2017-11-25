@@ -16,7 +16,6 @@
     />
     <br/>
     <button
-
       v-on:click="register"
     >Register</button><!--@click="register"-->
   </div>

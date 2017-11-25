@@ -13,7 +13,7 @@ devConfigPromise.then(devConfig => {
   const devServerOptions = devConfig.devServer
   const compiler = webpack(webpackConfig)
   server = new DevServer(compiler, devServerOptions)
-  const port = devServerOptions.port
+  const port = devServerOptions.portOfWebserver
   const host = devServerOptions.host
   return server.listen(port, host)
 })

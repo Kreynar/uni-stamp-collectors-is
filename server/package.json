@@ -15,9 +15,11 @@
     "cors": "*",
     "express": "*",
     "jsonwebtoken": "*",
+    "knex": "^0.14.2",
     "morgan": "*",
     "passport": "*",
-    "passport-jwt": "*"
+    "passport-jwt": "*",
+    "pg": "^7.4.0"
   },
   "devDependencies": {
     "eslint-config-standard": "^10.2.1",
