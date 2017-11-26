@@ -5,6 +5,7 @@
 /* Variables object. */
 const vv = {}
 
+vv.baseURL = `http://localhost:8081/`
 vv.path = {}
 vv.path.register = '/register'
 vv.path.stamps = '/stamps'

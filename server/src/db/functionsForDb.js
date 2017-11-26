@@ -7,15 +7,36 @@ const config = require('../config/config.js')
 const knex = require('knex')(config.infoForDbConnection)
 const db = {}
 
-/*
- * I'm using this pool.query wrapper, because later on I might add some logging or smth into body of db.query(),
- * in addition to pool.query being there.
- * Smth like it's suggested in node-postgres.com >>> Guides >>> Project Structure.
- */
-db.query = (text, params) => knex.query(text, params)
+// /*
+//  * I'm using this pool.query wrapper, because later on I might add some logging or smth into body of db.query(),
+//  * in addition to pool.query being there.
+//  * Smth like it's suggested in node-postgres.com >>> Guides >>> Project Structure.
+//  */
+// db.query = (text, params) => knex.query(text, params)
 
-db.postUsers = async (userInfo) => {
-  const textOfQuery =
+db.postUsers = async (credentials) => {
+  const textOfQuery = '\
+  INSERT INTO public.user_(\
+  name_, password_, first_name_, last_name_, email_address_)\
+  VALUES\
+  (?, ?, ?, ?, ?)\
+  '
+  try {
+    let resultOfQuery = await knex.raw(textOfQuery, [
+      credentials.username,
+      credentials.password,
+      credentials.firstName,
+      credentials.lastName,
+      credentials.email
+    ]).returning('*')
+    return resultOfQuery
+  }
+  catch (error) {
+
+  }
+  finally {
+
+  }
 }
 
 db.getCountriesIdsAndNames = async () => {
