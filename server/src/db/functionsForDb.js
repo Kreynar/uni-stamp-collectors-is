@@ -3,6 +3,10 @@
  * Created by Martynas on 2017-11-25.
  */
 
+// const tracer = require('tracer').colorConsole()
+// const tracer = require('tracer').colorConsole({level: 'warn'}
+const vv = require('../variables.js')
+const tracer = require('tracer').console(vv.tracerOutputCustomization)
 const config = require('../config/config.js')
 const knex = require('knex')(config.infoForDbConnection)
 const db = {}
@@ -20,19 +24,32 @@ db.postUsers = async (credentials) => {
   name_, password_, first_name_, last_name_, email_address_)\
   VALUES\
   (?, ?, ?, ?, ?)\
+  RETURNING *\
   '
   try {
+    // const testTextOfQuery = '\
+    // SELECT id_, name_ \
+    // FROM public.album_ \
+    // WHERE (NOT is_deleted_  OR  is_deleted_ IS NULL)\
+    // AND (user_id_=?  OR  user_id_ IS NULL);'
+    // const testUserId = 1
+    // let testResultOfQuery = await knex.raw(testTextOfQuery, [testUserId])
+    // console.log('@@@27', testResultOfQuery)
+    tracer.log(credentials)
     let resultOfQuery = await knex.raw(textOfQuery, [
       credentials.username,
       credentials.password,
       credentials.firstName,
       credentials.lastName,
       credentials.email
-    ]).returning('*')
+    ])
+    // .returning('*')
+    tracer.log(resultOfQuery)
     return resultOfQuery
   }
   catch (error) {
-
+    tracer.log(error)
+    throw (error)
   }
   finally {
 
