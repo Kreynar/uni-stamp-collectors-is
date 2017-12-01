@@ -19,7 +19,7 @@ module.exports = {
     catch (error) {
       tracer.log(error)
       res.status(400).send({
-        errorString: 'This email acc is already in use OR smth else went wrong lolol'
+        message: 'Email or username already in use.'
       })
     }
     finally {

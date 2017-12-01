@@ -5,6 +5,14 @@
 /* Variables object. */
 const vv = {}
 
+vv.mainColorOfTheme = 'orange'
+
+vv.navigationDrawer = {}
+vv.navigationDrawer.myStamps = 'myStamps'
+vv.navigationDrawer.newStamp = 'newStamp'
+vv.navigationDrawer.allStamps = 'allStamps'
+vv.navigationDrawer.allCollectors = 'allCollectors'
+
 vv.baseURL = `http://localhost:8081/`
 vv.path = {}
 vv.path.register = '/register'

@@ -1,49 +1,61 @@
 <template>
-  <div>
-    <h1>Register</h1>
-    <input
-      type="text"
-      name="username"
-      v-model="username"
-      placeholder="username"
-    />
-    <br/>
-    <input
-      type="email"
-      name="email"
-      v-model="email"
-      placeholder="email"
-    />
-    <br/>
-    <input
-      type="password"
-      name="password"
-      v-model="password"
-      placeholder="password"
-    />
-    <br/>
-    <input
-      type="text"
-      name="firstName"
-      v-model="firstName"
-      placeholder="first name"
-    />
-    <br/>
-    <input
-      type="text"
-      name="lastName"
-      v-model="lastName"
-      placeholder="last name"
-    />
-    <br/>
-    <button
-      v-on:click="register"
-    >Register</button><!--@click="register"-->
-  </div>
+  <v-layout column>
+    <v-flex xs6 offset-xs3>
+      <panel title="Register">
+        <form
+          name="register-form">
+          <!--autocomplete="off"-->
+          <v-text-field
+            label="Username"
+            v-model="username"
+            :counter="3"
+            required
+          ></v-text-field>
+          <br>
+          <v-text-field
+            label="Email"
+            type="email"
+            v-model="email"
+            required
+          ></v-text-field>
+          <br>
+          <v-text-field
+            label="Password"
+            type="password"
+            v-model="password"
+            autocomplete="new-password"
+            :counter="6"
+            required
+          ></v-text-field>
+          <br>
+          <v-text-field
+            label="First name"
+            v-model="firstName"
+          ></v-text-field>
+          <br>
+          <v-text-field
+            label="First name"
+            v-model="lastName"
+          ></v-text-field>
+        </form>
+        <br>
+        <div class="danger-alert">{{ errorMessage }}</div>
+        <br>
+        <v-btn
+          dark
+          :class=vv.mainColorOfTheme
+          @click="register">
+          Register
+        </v-btn>
+        <br/>
+      </panel>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
   import AuthenticationService from '../services/AuthenticationService.js'
+  import vv from '../variables.js'
 
   export default {
     data () {
@@ -52,19 +64,29 @@
         email: '',
         password: '',
         firstName: '',
-        lastName: ''
+        lastName: '',
+        errorMessage: null,
+        vv: vv
       }
     },
     methods: {
       async register () {
-        const response = await AuthenticationService.register({
-          username: this.username,
-          email: this.email,
-          password: this.password,
-          firstName: this.firstName,
-          lastName: this.lastName
-        })
-        console.log(response.data)
+        try {
+          this.errorMessage = null
+          const response = await AuthenticationService.register({
+            username: this.username,
+            email: this.email,
+            password: this.password,
+            firstName: this.firstName,
+            lastName: this.lastName
+          })
+          console.log(response.data)
+        }
+        catch (error) {
+          this.errorMessage = error.response.data.message
+        }
+        finally {
+        }
       }
     }
   }
@@ -72,5 +94,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+  .error {
+    color: red
+  }
 </style>

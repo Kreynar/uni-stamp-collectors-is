@@ -10,40 +10,40 @@ module.exports = {
       username: Joi.string().alphanum().min(3).max(20).required(),
       email: Joi.string().email().max(100).required(),
       password: Joi.string().alphanum().min(6).max(32).required(),
-      firstName: Joi.string().alphanum().max(100),
-      lastName: Joi.string().alphanum().max(100)
+      firstName: Joi.string().allow('').max(100),
+      lastName: Joi.string().allow('').max(100)
     }
     const result = Joi.validate(req.body, schema)
     if (result.error) {
       switch (result.error.details[0].context.key) {
         case 'username':
           res.status(400).send({
-            error: 'Username must be between 3 and 20 characters length.'
+            message: 'Username must be between 3 and 20 characters length.'
           })
           break
         case 'email':
           res.status(400).send({
-            error: 'You must provide a valid email.'
+            message: 'You must provide a valid email.'
           })
           break
         case 'password':
           res.status(400).send({
-            error: 'Password must be between 6 and 32 characters length.'
+            message: 'Password must be between 6 and 32 characters length and contain only letters and/or numbers.'
           })
           break
         case 'firstName':
           res.status(400).send({
-            error: 'Name can not be longer than 100 characters length.'
+            message: 'Name can not be longer than 100 characters length.'
           })
           break
         case 'lastName':
           res.status(400).send({
-            error: 'Last name can not be longer than 100 characters length.'
+            message: 'Last name can not be longer than 100 characters length.'
           })
           break
         default:
           res.status(400).send({
-            error: 'Invalid registration information.'
+            message: 'Invalid registration information.'
           })
       }
     }
