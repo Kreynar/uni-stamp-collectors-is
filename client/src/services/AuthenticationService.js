@@ -2,11 +2,11 @@
  * Created by Martynas on 2017-11-24.
  */
 
-import Api from './Api.js'
-import vv from '../variables.js'
+import axiosInstance from './AxiosInstance.js'
+import ss from '../strings.js'
 
 export default {
   register (credentials) {
-    return Api().post(vv.path.register, credentials)
+    return axiosInstance().post(ss.path.register, credentials)
   }
 }

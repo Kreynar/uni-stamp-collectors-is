@@ -10,6 +10,29 @@ vv.mainColorOfTheme = 'orange'
 vv.stamps = {
   titleAddNewStamp: 'Add New Stamp',
   titleEditStamp: 'Edit Stamp',
+  // pictureOfFront: {
+  //   name: 'pictureOfFront',
+  //   label: 'Front picture'
+  // },
+  // pictureOfBack: {
+  //   name: 'pictureOfBack',
+  //   label: 'Back picture'
+  // },
+  // album: {
+  //   name: 'album',
+  //   label: 'Album'
+  // },
+  // numberScott: {
+  //   name: 'numberScott',
+  //   label: 'Scott number'
+  // },
+  // numberMichael: {
+  //   name: 'numberMichael',
+  //   label: 'Michael number'
+  // },
+  // /*
+  //  * Later gotta fix following fields v same as ^.
+  //  */
   pictureOfFront: 'Front picture',
   pictureOfBack: 'Back picture',
   album: 'Album',
@@ -17,11 +40,11 @@ vv.stamps = {
   numberMichael: 'Michael number',
   numberStanleyGibbons: 'Stanley Gibbons number',
   numberYvertEtTellier: 'Yvert et Tellier number',
+  year: 'Year',
+  country: 'Country',
+  nominalValue: 'Nominal value',
   topics: 'Topics',
   faceDescription: 'Face description',
-  nominalValue: 'Nominal value',
-  country: 'Country',
-  year: 'Year',
   comments: 'Comments',
   isCancelled: 'Cancelled',
   grade: 'Grade',

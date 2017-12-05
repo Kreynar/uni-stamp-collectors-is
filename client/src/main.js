@@ -1,11 +1,12 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-// import App from './AppOLD.vue'
+// import App from './App_OLD.vue'
 import router from './router/index.js'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
-import Main from './Main.vue'
+import App from './App.vue'
+import store from './stores/mainStore.js'
 
 Vue.config.productionTip = false
 
@@ -21,6 +22,7 @@ Vue.use(Vuetify)
 new Vue({
   el: '#app',
   router,
-  template: '<Main/>',
-  components: { Main }
+  store,
+  template: '<App/>',
+  components: { App }
 })
