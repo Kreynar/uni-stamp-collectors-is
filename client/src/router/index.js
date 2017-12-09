@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '../components/HelloWorld_OLD.vue'
 import Register from '../components/Register.vue'
-// import vv from '../strings.js'
+// import vv from '../variables.js'
 
 Vue.use(Router)
 

@@ -56,6 +56,32 @@ db.postUsers = async (credentials) => {
   }
 }
 
+db.postStamps = async (stampFieldsAndValues) => {
+  try {
+    tracer.log(stampFieldsAndValues)
+    let resultOfQuery = await knex('public.stamp_')
+      .insert({
+        scott_: stampFieldsAndValues.numberScott,
+        michel_: stampFieldsAndValues.numberMichel,
+        stanley_gibbons_: stampFieldsAndValues.numberStanleyGibbons,
+        yvert_et_tellier_: stampFieldsAndValues.numberYvertEtTellier,
+        year_: stampFieldsAndValues.year,
+        album_id_: vv.db.stamps.testAlbumId
+      })
+      .returning('*')
+    // .returning('*')
+    tracer.log(resultOfQuery)
+    return resultOfQuery
+  }
+  catch (error) {
+    tracer.log(error)
+    throw (error)
+  }
+  finally {
+
+  }
+}
+
 db.getCountriesIdsAndNames = async () => {
   const textOfQuery = '\
     SELECT id_, name_ \

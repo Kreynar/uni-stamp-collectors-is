@@ -9,6 +9,8 @@
         </v-card-title>
         <v-container grid-list-sm class="pa-4">
           <v-layout row wrap>
+            <v-subheader>Pictures</v-subheader>
+            <v-subheader>Catalog numbers</v-subheader>
             <v-flex xs12 align-center justify-space-between>
               <v-layout align-center>
                 <v-text-field
@@ -18,33 +20,36 @@
                 ></v-text-field>
               </v-layout>
             </v-flex>
-            <v-flex xs6>
+            <v-flex xs12 align-center justify-space-between>
               <v-text-field
                 prepend-icon="phone"
-                :label="$store.state.stampDialogStore.numberMichael.label"
-                v-model="$store.state.stampDialogStore.numberMichael.value"
+                :label="$store.state.stampDialogStore.numberMichel.label"
+                v-model="$store.state.stampDialogStore.numberMichel.value"
               ></v-text-field>
             </v-flex>
-            <v-flex xs6>
+            <v-flex xs12 align-center justify-space-between>
               <v-text-field
                 prepend-icon="phone"
                 :label="$store.state.stampDialogStore.numberStanleyGibbons.label"
                 v-model="$store.state.stampDialogStore.numberStanleyGibbons.value"
               ></v-text-field>
             </v-flex>
-            <v-flex xs6>
+            <v-flex xs12 align-center justify-space-between>
               <v-text-field
                 prepend-icon="phone"
                 :label="$store.state.stampDialogStore.numberYvertEtTellier.label"
                 v-model="$store.state.stampDialogStore.numberYvertEtTellier.value"
               ></v-text-field>
             </v-flex>
-            <v-flex xs6>
+            <v-subheader>Basic info</v-subheader>
+            <v-flex xs12 align-center justify-space-between>
               <v-text-field
                 prepend-icon="phone"
                 :label="$store.state.stampDialogStore.year.label"
                 v-model="$store.state.stampDialogStore.year.value"
-                :rules="$store.state.stampDialogStore.year.validationFunctions"
+                :counter="$store.state.stampDialogStore.year.validation.counter"
+                :mask="$store.state.stampDialogStore.year.validation.mask"
+                :rules="$store.state.stampDialogStore.year.validation.functions"
               ></v-text-field>
             </v-flex>
             <v-flex xs12>
@@ -67,6 +72,8 @@
                 label="Notes"
               ></v-text-field>
             </v-flex>
+            <v-subheader>Category & structure</v-subheader>
+            <v-subheader>Other</v-subheader>
           </v-layout>
         </v-container>
         <v-card-actions>
@@ -83,9 +90,13 @@
 </template>
 
 <script>
-// eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars
   import strings from '../strings.js'
-  import axiosInstance from '../services/AxiosInstance.js'
+//  import axiosInstance from '../services/AxiosInstance.js'
+  import axios from 'axios'
+//  import VTextField from 'vuetify/es5/components/VTextField/VTextField'
+//  import AuthenticationService from '../services/AuthenticationService'
+//  import { mapGetters } from 'vuex'
 
   export default {
     data () {
@@ -101,31 +112,40 @@
 //
 //    },
     computed: {
-      getIsStampDialogVisible () {
-        return this.$store.getters.getIsStampDialogVisible
-      }
+//      ,
+//      ...mapGetters({
+//        getFormFieldsAndValues: 'getFormFieldsAndValues'
+//      })
     },
     methods: {
       setIsStampDialogVisible (booleanValue) {
         this.$store.commit('setIsStampDialogVisible', booleanValue)
       },
       clearForm () {
+        /*
+         * Here can either be used this v statement OR this.$store.stampDialogStore.commit('resetState')
+         */
         this.$refs.stampForm.reset()
       },
       async submitForm () {
         if (this.$refs.stampForm.validate()) {
-          this.setIsStampDialogVisible(false)
-          // Native form submission is not yet supported
+          const formFieldsAndValues = this.$store.getters.getFormFieldsAndValues
           try {
-            await axiosInstance.post(strings.path.stamps, {
-//            name: this.name,
-//            email: this.email,
-//            select: this.select,
-//            checkbox: this.checkbox
-            })
+            console.log('@@@ axios instance', axios.create({
+              baseURL: strings.baseURL
+            }))
+//            const serverResponse = await axiosInstance.post(strings.path.stamps, formFieldsAndValues)
+//            const serverResponse = await axios.create({baseURL: strings.baseURL}).post(strings.path.stamps, formFieldsAndValues)
+            const serverResponse = await axios.create({
+              baseURL: strings.baseURL
+            }).post(strings.path.stamps, formFieldsAndValues)
+            this.setIsStampDialogVisible(false)
             this.clearForm()
+            console.log('@@@ successfully uploaded stamp form to server: ', serverResponse)
           }
           catch (error) {
+            const errorMessage = error.response.data.errorMessage
+            console.log('@@@ error in uploading stamp form to server:  ', errorMessage)
           }
         }
       }

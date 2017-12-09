@@ -37,7 +37,7 @@ vv.stamps = {
   pictureOfBack: 'Back picture',
   album: 'Album',
   numberScott: 'Scott number',
-  numberMichael: 'Michael number',
+  numberMichel: 'Michael number',
   numberStanleyGibbons: 'Stanley Gibbons number',
   numberYvertEtTellier: 'Yvert et Tellier number',
   year: 'Year',

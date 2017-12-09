@@ -116,6 +116,9 @@
       changeNewStampDialogVisibility () {
         console.log('@@@ changeNewStampDialogVisibility() kvietimas')
         const invertedIsStampDialogVisible = !(this.$store.getters.getIsStampDialogVisible)
+        if (invertedIsStampDialogVisible) {
+          // We get all possible countries list from server and put this array into store >>> ... >>> arrayOfVariants
+        }
         this.$store.commit('setIsStampDialogVisible', invertedIsStampDialogVisible)
       }
     },

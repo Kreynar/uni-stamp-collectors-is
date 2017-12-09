@@ -47,13 +47,7 @@ export default new Vuex.Store({
     stampDialogStore
   },
   state: () => ({
-    isStampDialogVisible: false,
-    testValue: 'testValue in mainStore.js'
-    // registrations: [],
-    // users: [
-    //   {id: 1, name: 'Max', registered: false},
-    //   {id: 2, name: 'Anna', registered: false}
-    // ]
+    isStampDialogVisible: false
   }),
   // state: {
   //   isStampDialogVisible: false,

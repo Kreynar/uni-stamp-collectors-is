@@ -70,9 +70,9 @@ export default {
     isShownInStampsList: true,
     label: ss.numberScott
   },
-  numberMichael: {
+  numberMichel: {
     isShownInStampsList: true,
-    label: ss.numberMichael
+    label: ss.numberMichel
   },
   numberStanleyGibbons: {
     isShownInStampsList: true,

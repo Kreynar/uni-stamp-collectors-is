@@ -7,7 +7,7 @@ import vf from '../validationFunctions.js'
 const ss = strings.stamps
 
 export default {
-  state: {
+  state: () => ({
     // pictureOfFront: {
     //   isShownInStampsList: true,
     //   label: ss.pictureOfFront
@@ -26,39 +26,44 @@ export default {
     numberScott: {
       isShownInStampsList: true,
       label: ss.numberScott,
-      value: 'test Number Scott'
+      value: null
     },
-    numberMichael: {
+    numberMichel: {
       isShownInStampsList: true,
-      label: ss.numberMichael,
-      value: 'test Number Michael'
+      label: ss.numberMichel,
+      value: null
     },
     numberStanleyGibbons: {
       isShownInStampsList: true,
       label: ss.numberStanleyGibbons,
-      value: 'test Number Stanleyy'
+      value: null
     },
     numberYvertEtTellier: {
       isShownInStampsList: true,
       label: ss.numberYvertEtTellier,
-      value: ''
+      value: null
     },
     year: {
       isShownInStampsList: true,
       label: ss.year,
+      validation: {
+        functions: [
+          vf.validateRequired,
+          vf.validateStampPublishYear
+        ],
+        mask: '####',
+        counter: 4
+      },
+      value: null
+    },
+    country: {
+      isShownInStampsList: true,
+      label: ss.country,
+      arrayOfVariants: [],
       validationFunctions: [
-        vf.validateRequired,
-        vf.validateStampPublishYear
-      ],
-      value: ''
+        vf.validateRequired
+      ]
     }
-    // country: {
-    //   isShownInStampsList: true,
-    //   label: ss.country,
-    //   validationFunctions: [
-    //     vf.validateRequired
-    //   ]
-    // },
     // nominalValue: {
     //   isShownInStampsList: true,
     //   label: ss.nominalValue,
@@ -66,6 +71,18 @@ export default {
     //     vf.validateRequired
     //   ]
     // }
+  }),
+  getters: {
+    getFormFieldsAndValues (state) {
+      let formFieldsAndValues = {}
+      for (const propertyName in state) {
+        if (state.hasOwnProperty(propertyName)) {
+          formFieldsAndValues[propertyName] = state[propertyName].value
+        }
+      }
+      console.log('@@@ formFieldsAndValues ', formFieldsAndValues)
+      return formFieldsAndValues
+    }
   },
   mutations: {
     resetState (state) {
@@ -73,6 +90,5 @@ export default {
       Object.keys(initialState).forEach(key => { state[key] = initialState[key] })
     }
   }
-  // actions: { ... },
-  // getters: { ... }
+  // actions: { ... }
 }

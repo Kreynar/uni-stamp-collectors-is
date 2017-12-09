@@ -5,7 +5,8 @@
 const validationFunctions = {}
 
 validationFunctions.validateRequired = (value) => {
-  return !!(value.trim()) || 'Required.'
+  // return !!(value.trim()) || 'Required.'
+  return !!value || 'Required.'
 }
 
 validationFunctions.validateStampPublishYear = (value) => {

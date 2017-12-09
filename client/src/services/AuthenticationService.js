@@ -7,6 +7,6 @@ import ss from '../strings.js'
 
 export default {
   register (credentials) {
-    return axiosInstance().post(ss.path.register, credentials)
+    return axiosInstance().register(ss.path.register, credentials)
   }
 }
