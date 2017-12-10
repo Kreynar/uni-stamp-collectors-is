@@ -20,6 +20,8 @@ vv.path.id = '/:id'
 vv.path.name = '/:name'
 vv.path.status = '/status'
 vv.path.countries = '/countries'
+vv.path.grades = '/grades'
+vv.path.topics = '/topics'
 
 vv.db = {}
 

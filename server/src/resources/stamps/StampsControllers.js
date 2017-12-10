@@ -10,20 +10,39 @@ async function post (req, res) {
   try {
     const insertedStamp = await db.postStamps(req.body)
     tracer.log(insertedStamp)
-    // tracer.log(response)
-    // tracer.log(response.rows)
-    // tracer.log('Inserted row into user_:', response)
     res.send(insertedStamp)
   }
   catch (error) {
     tracer.log(error)
     res.status(400).send({
-      message: 'Some error in insterting stamp.'
+      errorMessage: 'Some error in insterting stamp.'
     })
   }
   finally {
   }
 }
+
+/*
+ * When user opens a form for adding new stamp or editing existing stamp, this function
+ * provides all needed data for generating a form in front-end app. For example, this
+ * function gives client the list of all possible countries, etc.
+ */
+// async function getNewOrEdit (req, res) {
+//   try {
+//     const arrayOfCountries = await db.getCountries(req.body)
+//     // const insertedStamp = await db.postStamps(req.body)
+//     // tracer.log(insertedStamp)
+//     // res.send(insertedStamp)
+//   }
+//   catch (error) {
+//     // tracer.log(error)
+//     // res.status(400).send({
+//     //   message: 'Some error in insterting stamp.'
+//     // })
+//   }
+//   finally {
+//   }
+// }
 
 module.exports = {
   post

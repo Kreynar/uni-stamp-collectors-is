@@ -8,6 +8,9 @@ const ss = strings.stamps
 
 export default {
   state: () => ({
+    arrayOfCountriesIdsAndNames: [],
+    arrayOfGradesIdsAndNames: [],
+    arrayOfTopicsIdsAndNames: [],
     // pictureOfFront: {
     //   isShownInStampsList: true,
     //   label: ss.pictureOfFront
@@ -59,7 +62,6 @@ export default {
     country: {
       isShownInStampsList: true,
       label: ss.country,
-      arrayOfVariants: [],
       validationFunctions: [
         vf.validateRequired
       ]
@@ -88,7 +90,20 @@ export default {
     resetState (state) {
       const initialState = state()
       Object.keys(initialState).forEach(key => { state[key] = initialState[key] })
+    },
+    setArrayOfCountriesIdsAndNames (state, arrayOfCountriesIdsAndNames) {
+      state.arrayOfCountriesIdsAndNames = arrayOfCountriesIdsAndNames
+    },
+    setArrayOfGradesIdsAndNames (state, arrayOfGradesIdsAndNames) {
+      state.arrayOfGradesIdsAndNames = arrayOfGradesIdsAndNames
+    },
+    setArrayOfTopicsIdsAndNames (state, arrayOfTopicsIdsAndNames) {
+      state.arrayOfTopicsIdsAndNames = arrayOfTopicsIdsAndNames
     }
+  },
+  actions: {
+    // setArrayOfCountriesNamesAndIds (state, arrayOfCountriesNamesAndIds) {
+    //   state.mutations.setArrayOfCountriesNamesAndIds(arrayOfCountriesNamesAndIds)
+    // }
   }
-  // actions: { ... }
 }

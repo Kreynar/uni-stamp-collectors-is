@@ -86,5 +86,8 @@ vv.path.new = '/new'
 vv.path.edit = '/edit'
 vv.path.id = '/:id'
 vv.path.name = '/:name'
+vv.path.countries = '/countries'
+vv.path.grades = '/grades'
+vv.path.topics = '/topics'
 
 module.exports = vv

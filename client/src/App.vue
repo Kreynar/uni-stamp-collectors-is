@@ -72,6 +72,58 @@
 <script>
   import vv from './strings.js'
   import StampDialogForCreateAndEditAndView from './components/StampDialogForCreateAndEditAndView.vue'
+  import axios from 'axios'
+
+  async function getArrayOfCountriesIdsAndNamesFromServer () {
+    try {
+      const serverResponse = await axios.create({
+        baseURL: vv.baseURL
+      }).get(vv.path.countries)
+      const arrayOfCountriesIdsAndNames = serverResponse.data
+      console.log('@@@ arrayOfCountriesNamesAndIds', arrayOfCountriesIdsAndNames)
+      return arrayOfCountriesIdsAndNames
+    }
+    catch (error) {
+      const errorMessage = error.response.data.errorMessage
+      console.log('@@@ error in getArrayOfCountriesIdsAndNamesFromServer:  ', errorMessage)
+    }
+    finally {
+    }
+  }
+
+  async function getArrayOfGradesIdsAndNamesFromServer () {
+    try {
+      const serverResponse = await axios.create({
+        baseURL: vv.baseURL
+      }).get(vv.path.grades)
+      const arrayOfGradesNamesAndIds = serverResponse.data
+      console.log('@@@ arrayOfGradesNamesAndIds', arrayOfGradesNamesAndIds)
+      return arrayOfGradesNamesAndIds
+    }
+    catch (error) {
+      const errorMessage = error.response.data.errorMessage
+      console.log('@@@ error in getArrayOfGradesIdsAndNamesFromServer:  ', errorMessage)
+    }
+    finally {
+    }
+  }
+
+  async function getArrayOfTopicsIdsAndNamesFromServer () {
+    try {
+      const serverResponse = await axios.create({
+        baseURL: vv.baseURL
+      }).get(vv.path.topics)
+      const arrayOfTopicsIdsAndNames = serverResponse.data
+      console.log('@@@ arrayOfTopicsIdsAndNames', arrayOfTopicsIdsAndNames)
+      return arrayOfTopicsIdsAndNames
+    }
+    catch (error) {
+      const errorMessage = error.response.data.errorMessage
+      console.log('@@@ error in getArrayOfTopicsIdsAndNamesFromServer:  ', errorMessage)
+    }
+    finally {
+    }
+  }
 
   export default {
     data: () => ({
@@ -85,26 +137,6 @@
         { header: 'Other collectors' },
         { name: vv.navigationDrawer.allCollectors, icon: 'list', text: 'All collectors' },
         { name: vv.navigationDrawer.allStamps, icon: 'view_module', text: 'All stamps' }
-//        {
-//          icon: 'keyboard_arrow_up',
-//          'icon-alt': 'keyboard_arrow_down',
-//          text: 'Labels',
-//          model: true,
-//          children: [
-//            { icon: 'add', text: 'Create label' }
-//          ]
-//        },
-//        {
-//          icon: 'keyboard_arrow_up',
-//          'icon-alt': 'keyboard_arrow_down',
-//          text: 'More',
-//          model: false,
-//          children: [
-//            { text: 'Import' },
-//            { text: 'Export' }
-//          ]
-//        },
-//        { icon: 'settings', text: 'Settings' }
       ]
     }),
     methods: {
@@ -113,13 +145,19 @@
           this.changeNewStampDialogVisibility()
         }
       },
-      changeNewStampDialogVisibility () {
+      async changeNewStampDialogVisibility () {
         console.log('@@@ changeNewStampDialogVisibility() kvietimas')
-        const invertedIsStampDialogVisible = !(this.$store.getters.getIsStampDialogVisible)
-        if (invertedIsStampDialogVisible) {
+        const isStampDialogVisible = !(this.$store.getters.getIsStampDialogVisible)
+        this.$store.commit('setIsStampDialogVisible', isStampDialogVisible)
+        if (isStampDialogVisible) {
           // We get all possible countries list from server and put this array into store >>> ... >>> arrayOfVariants
+          const arrayOfCountriesIdsAndNames = await getArrayOfCountriesIdsAndNamesFromServer()
+          this.$store.commit('setArrayOfCountriesIdsAndNames', arrayOfCountriesIdsAndNames)
+          const arrayOfGradesIdsAndNames = await getArrayOfGradesIdsAndNamesFromServer()
+          this.$store.commit('setArrayOfGradesIdsAndNames', arrayOfGradesIdsAndNames)
+          const arrayOfTopicsIdsAndNames = await getArrayOfTopicsIdsAndNamesFromServer()
+          this.$store.commit('setArrayOfTopicsIdsAndNames', arrayOfTopicsIdsAndNames)
         }
-        this.$store.commit('setIsStampDialogVisible', invertedIsStampDialogVisible)
       }
     },
     components: {

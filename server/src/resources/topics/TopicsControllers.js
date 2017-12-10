@@ -1,5 +1,5 @@
 /**
- * Created by Martynas on 2017-12-09.
+ * Created by Martynas on 2017-12-10.
  */
 
 const vv = require('../../variables.js')
@@ -8,14 +8,14 @@ const db = require('../../db/functionsForDb.js')
 
 async function get (req, res) {
   try {
-    const arrayOfCountries = await db.getArrayOfCountriesIdsAndNames(req.body)
-    tracer.log(arrayOfCountries)
-    res.send(arrayOfCountries)
+    const arrayOfTopicsIdsAndNames = await db.getArrayOfTopicsIdsAndNames()
+    tracer.log(arrayOfTopicsIdsAndNames)
+    res.send(arrayOfTopicsIdsAndNames)
   }
   catch (error) {
     tracer.log(error)
     res.status(400).send({
-      errorMessage: 'Some error in getting countries list.'
+      errorMessage: 'Some error in getting topics list.'
     })
   }
   finally {

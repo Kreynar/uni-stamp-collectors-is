@@ -18,7 +18,7 @@ async function register (req, res) {
   catch (error) {
     tracer.log(error)
     res.status(400).send({
-      message: 'Email or username already in use.'
+      errorMessage: 'Email or username already in use.'
     })
   }
   finally {

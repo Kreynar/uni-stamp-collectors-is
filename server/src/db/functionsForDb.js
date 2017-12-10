@@ -82,13 +82,13 @@ db.postStamps = async (stampFieldsAndValues) => {
   }
 }
 
-db.getCountriesIdsAndNames = async () => {
+db.getArrayOfCountriesIdsAndNames = async () => {
   const textOfQuery = '\
     SELECT id_, name_ \
     FROM public.country_ \
     WHERE (NOT is_deleted_  OR  is_deleted_ IS NULL);'
   try {
-    let resultOfQuery = await db.query(textOfQuery)
+    let resultOfQuery = await knex.raw(textOfQuery)
     return resultOfQuery.rows
   }
   catch (error) {
@@ -99,13 +99,13 @@ db.getCountriesIdsAndNames = async () => {
   }
 }
 
-db.getGradesIdsAndNames = async () => {
+db.getArrayOfGradesIdsAndNames = async () => {
   const textOfQuery = '\
     SELECT id_, name_ \
     FROM public.grade_ \
     WHERE (NOT is_deleted_  OR  is_deleted_ IS NULL);'
   try {
-    let resultOfQuery = await db.query(textOfQuery)
+    let resultOfQuery = await knex.raw(textOfQuery)
     return resultOfQuery.rows
   }
   catch (error) {
@@ -134,14 +134,24 @@ db.getAlbumsIdsAndNames = async (userId) => {
   }
 }
 
-db.getTopicsIdsAndNames = async (userId) => {
+db.getArrayOfTopicsIdsAndNames = async (userId) => {
+  // const textOfQuery = '\
+  //   SELECT id_, name_\
+  //   FROM public.topic_\
+  //   WHERE (NOT is_deleted_  OR  is_deleted_ IS NULL)\
+  //   AND (user_id_=$1  OR  user_id_ IS NULL);'
+  // const textOfQuery = '\
+  //   SELECT id_, name_\
+  //   FROM public.topic_\
+  //   WHERE (NOT is_deleted_  OR  is_deleted_ IS NULL);'
   const textOfQuery = '\
     SELECT id_, name_\
     FROM public.topic_\
     WHERE (NOT is_deleted_  OR  is_deleted_ IS NULL)\
-    AND (user_id_=$1  OR  user_id_ IS NULL);'
+    AND (user_id_ IS NULL);'
   try {
-    let resultOfQuery = await db.query(textOfQuery, [userId])
+    // let resultOfQuery = await db.query(textOfQuery, [userId])
+    let resultOfQuery = await knex.raw(textOfQuery)
     return resultOfQuery.rows
   }
   catch (error) {

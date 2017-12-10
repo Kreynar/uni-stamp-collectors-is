@@ -5,7 +5,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import stampDialogStore from './stampDialogStore.js'
+import stampDialogStore from './stampStore.js'
 
 // import actions from './actions.js'
 // import mutations from './mutations.js'

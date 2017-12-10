@@ -5,6 +5,9 @@ const UsersControllers = require('./resources/users/UsersControllers.js')
 const UsersPolicies = require('./resources/users/UsersPolicies.js')
 const StampsPolicies = require('./resources/stamps/StampsPolicies.js')
 const StampsControllers = require('./resources/stamps/StampsControllers.js')
+const CountriesControllers = require('./resources/countries/CountriesControllers.js')
+const GradesControllers = require('./resources/grades/GradesControllers.js')
+const TopicsControllers = require('./resources/topics/TopicsControllers.js')
 const ss = require('./variables.js')
 
 module.exports = (app) => {
@@ -24,7 +27,11 @@ module.exports = (app) => {
   //   })
   // })
   app.get(ss.path.countries,
-    StampsControllers.register)
+    CountriesControllers.get)
+  app.get(ss.path.grades,
+    GradesControllers.get)
+  app.get(ss.path.topics,
+    TopicsControllers.get)
   app.post(ss.path.register,
     UsersPolicies.register,
     UsersControllers.register)
