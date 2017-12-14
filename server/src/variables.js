@@ -23,11 +23,8 @@ vv.path.countries = '/countries'
 vv.path.grades = '/grades'
 vv.path.topics = '/topics'
 
-vv.db = {}
-
-vv.db.stamps = {
-  testAlbumId: '1'
-}
+// vv.testAlbumId = 1
+vv.testTemporaryUserId = 1
 
 vv.errors = {
   postStamps: 'Error in insterting new stamp'

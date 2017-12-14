@@ -9,6 +9,44 @@ validationFunctions.validateRequired = (value) => {
   return !!value || 'Required.'
 }
 
+validationFunctions.validateNullOrPositiveInteger = (value) => {
+  let isValueValid = false
+  let errorMessage
+  let trueOrErrorMessage
+  if (value === null) {
+    isValueValid = true
+  }
+  else {
+    trueOrErrorMessage = validationFunctions.validatePositiveInteger(value)
+    if (typeof trueOrErrorMessage === 'boolean') {
+      isValueValid = true
+    }
+    else {
+      errorMessage = trueOrErrorMessage
+    }
+  }
+  return isValueValid || errorMessage
+}
+
+validationFunctions.validatePositiveInteger = (value) => {
+  let isValueValid = false
+  const errorMessage = `Must be a an integer number`
+  let parsedInt
+  try {
+    // eslint-disable-next-line no-useless-escape
+    if (/^(\-|\+)?([0-9]+|Infinity)$/.test(value)) {
+      parsedInt = Number(value)
+      if (parsedInt >= 0) {
+        isValueValid = true
+      }
+    }
+    return isValueValid || errorMessage
+  }
+  catch (error) {
+    return errorMessage
+  }
+}
+
 validationFunctions.validateStampPublishYear = (value) => {
   let isValueValid = false
   const errorMessage = `Must be a year between 1840 and ${new Date().getFullYear()}`

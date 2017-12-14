@@ -8,6 +8,19 @@ const vv = {}
 vv.mainColorOfTheme = 'orange'
 
 vv.stamps = {
+  arrayOfCategoriesNames: [
+    'Definitive',
+    'Airmail',
+    'Commemorative',
+    'Postage Due'
+  ],
+  arrayOfStructureTypesNames: [
+    'Sheetlet',
+    'Souvenir sheet',
+    'Miniature sheet',
+    'Corner block',
+    'Coil Strip'
+  ],
   titleAddNewStamp: 'Add New Stamp',
   titleEditStamp: 'Edit Stamp',
   // pictureOfFront: {
@@ -49,7 +62,7 @@ vv.stamps = {
   isCancelled: 'Cancelled',
   grade: 'Grade',
   structureType: 'Type of structure',
-  structureQuantity: 'Quantity of stamps in structure',
+  structureStampCount: 'Quantity of stamps in structure',
   structureNumber: 'ID of structure',
   category: 'Category',
   quantity: 'Quantity of same specimen',

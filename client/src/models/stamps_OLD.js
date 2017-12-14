@@ -128,9 +128,9 @@ export default {
     isShownInStampsList: false,
     label: ss.structureType
   },
-  structureQuantity: {
+  structureStampCount: {
     isShownInStampsList: false,
-    label: ss.structureQuantity
+    label: ss.structureStampCount
   },
   structureNumber: {
     isShownInStampsList: false,

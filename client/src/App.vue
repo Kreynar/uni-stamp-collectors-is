@@ -114,7 +114,7 @@
         baseURL: vv.baseURL
       }).get(vv.path.topics)
       const arrayOfTopicsIdsAndNames = serverResponse.data
-      console.log('@@@ arrayOfTopicsIdsAndNames', arrayOfTopicsIdsAndNames)
+      console.log('@@@ arrayOfTopicsIdsAndNames', serverResponse)
       return arrayOfTopicsIdsAndNames
     }
     catch (error) {

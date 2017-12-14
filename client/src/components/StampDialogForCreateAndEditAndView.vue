@@ -10,12 +10,83 @@
         <v-container grid-list-sm class="pa-4">
           <v-layout row wrap>
             <v-subheader>Pictures</v-subheader>
+            <v-subheader>Basic info (required)</v-subheader>
+            <v-flex xs12 align-center justify-space-between>
+              <v-text-field
+                prepend-icon="phone"
+                :label="$store.state.stampStore.year.label"
+                v-model="$store.state.stampStore.year.value"
+                :counter="$store.state.stampStore.year.validation.counter"
+                :mask="$store.state.stampStore.year.validation.mask"
+                :rules="$store.state.stampStore.year.validation.functions"
+              ></v-text-field>
+            </v-flex>
+            <v-flex xs12 align-center justify-space-between>
+              <v-select
+                prepend-icon="phone"
+                :items="$store.state.stampStore.arrayOfCountriesIdsAndNames"
+                item-value="id_"
+                item-text="name_"
+                v-model="$store.state.stampStore.country.value"
+                :label="$store.state.stampStore.country.label"
+                :rules="$store.state.stampStore.country.validation.functions"
+                autocomplete
+              ></v-select>
+            </v-flex>
+            <v-flex xs12 align-center justify-space-between>
+              <v-text-field
+                prepend-icon="phone"
+                :label="$store.state.stampStore.nominalValue.label"
+                v-model="$store.state.stampStore.nominalValue.value"
+                :rules="$store.state.stampStore.nominalValue.validation.functions"
+              ></v-text-field>
+            </v-flex>
+            <v-flex xs12 align-center justify-space-between>
+              <v-select
+                prepend-icon="phone"
+                :items="$store.state.stampStore.arrayOfGradesIdsAndNames"
+                item-value="id_"
+                item-text="name_"
+                v-model="$store.state.stampStore.grade.value"
+                :label="$store.state.stampStore.grade.label"
+                :rules="$store.state.stampStore.grade.validation.functions"
+                autocomplete
+              ></v-select>
+            </v-flex>
+            <v-flex xs12 align-center justify-space-between>
+              <v-checkbox
+                prepend-icon="phone"
+                v-model="$store.state.stampStore.isCancelled.value"
+                :label="$store.state.stampStore.isCancelled.label"
+              ></v-checkbox>
+            </v-flex>
+            <v-flex xs12 align-center justify-space-between>
+              <v-select
+                prepend-icon="phone"
+                :items="$store.getters.getArrayOfTopicsNames"
+                v-model="$store.state.stampStore.topics.value"
+                :label="$store.state.stampStore.topics.label"
+                chips
+                tags
+                clearable
+              >
+                <template slot="selection" slot-scope="data">
+                  <v-chip
+                    close
+                    @input="$store.commit('removeItemFromTopicsValues', data.item)"
+                    :selected="data.selected"
+                  >
+                    <strong>{{ data.item }}</strong>
+                  </v-chip>
+                </template>
+              </v-select>
+            </v-flex>
             <v-subheader>Catalog numbers</v-subheader>
             <v-flex xs12 align-center justify-space-between>
               <v-layout align-center>
                 <v-text-field
-                  :label="$store.state.stampDialogStore.numberScott.label"
-                  v-model="$store.state.stampDialogStore.numberScott.value"
+                  :label="$store.state.stampStore.numberScott.label"
+                  v-model="$store.state.stampStore.numberScott.value"
                   prepend-icon="phone"
                 ></v-text-field>
               </v-layout>
@@ -23,56 +94,61 @@
             <v-flex xs12 align-center justify-space-between>
               <v-text-field
                 prepend-icon="phone"
-                :label="$store.state.stampDialogStore.numberMichel.label"
-                v-model="$store.state.stampDialogStore.numberMichel.value"
+                :label="$store.state.stampStore.numberMichel.label"
+                v-model="$store.state.stampStore.numberMichel.value"
               ></v-text-field>
             </v-flex>
             <v-flex xs12 align-center justify-space-between>
               <v-text-field
                 prepend-icon="phone"
-                :label="$store.state.stampDialogStore.numberStanleyGibbons.label"
-                v-model="$store.state.stampDialogStore.numberStanleyGibbons.value"
+                :label="$store.state.stampStore.numberStanleyGibbons.label"
+                v-model="$store.state.stampStore.numberStanleyGibbons.value"
               ></v-text-field>
             </v-flex>
             <v-flex xs12 align-center justify-space-between>
               <v-text-field
                 prepend-icon="phone"
-                :label="$store.state.stampDialogStore.numberYvertEtTellier.label"
-                v-model="$store.state.stampDialogStore.numberYvertEtTellier.value"
-              ></v-text-field>
-            </v-flex>
-            <v-subheader>Basic info</v-subheader>
-            <v-flex xs12 align-center justify-space-between>
-              <v-text-field
-                prepend-icon="phone"
-                :label="$store.state.stampDialogStore.year.label"
-                v-model="$store.state.stampDialogStore.year.value"
-                :counter="$store.state.stampDialogStore.year.validation.counter"
-                :mask="$store.state.stampDialogStore.year.validation.mask"
-                :rules="$store.state.stampDialogStore.year.validation.functions"
-              ></v-text-field>
-            </v-flex>
-            <v-flex xs12>
-              <v-text-field
-                prepend-icon="phone"
-                label="Email"
-              ></v-text-field>
-            </v-flex>
-            <v-flex xs12>
-              <v-text-field
-                type="tel"
-                prepend-icon="phone"
-                label="(000) 000 - 0000"
-                mask="phone"
-              ></v-text-field>
-            </v-flex>
-            <v-flex xs12>
-              <v-text-field
-                prepend-icon="phone"
-                label="Notes"
+                :label="$store.state.stampStore.numberYvertEtTellier.label"
+                v-model="$store.state.stampStore.numberYvertEtTellier.value"
               ></v-text-field>
             </v-flex>
             <v-subheader>Category & structure</v-subheader>
+            <v-flex xs12 align-center justify-space-between>
+              <v-select
+                prepend-icon="phone"
+                :items="$store.state.stampStore.arrayOfCategoriesNames"
+                v-model="$store.state.stampStore.category.value"
+                :label="$store.state.stampStore.category.label"
+                :rules="$store.state.stampStore.category.validation.functions"
+                combobox
+              ></v-select>
+            </v-flex>
+            <v-flex xs12 align-center justify-space-between>
+              <v-select
+                prepend-icon="phone"
+                :items="$store.state.stampStore.arrayOfStructureTypesNames"
+                v-model="$store.state.stampStore.structureType.value"
+                :label="$store.state.stampStore.structureType.label"
+                :rules="$store.state.stampStore.structureType.validation.functions"
+                combobox
+              ></v-select>
+            </v-flex>
+            <v-flex xs12 align-center justify-space-between>
+              <v-text-field
+                prepend-icon="phone"
+                :label="$store.state.stampStore.structureNumber.label"
+                v-model="$store.state.stampStore.structureNumber.value"
+                :rules="$store.state.stampStore.structureNumber.validation.functions"
+              ></v-text-field>
+            </v-flex>
+            <v-flex xs12 align-center justify-space-between>
+              <v-text-field
+                prepend-icon="phone"
+                :label="$store.state.stampStore.structureStampCount.label"
+                v-model="$store.state.stampStore.structureStampCount.value"
+                :rules="$store.state.stampStore.structureStampCount.validation.functions"
+              ></v-text-field>
+            </v-flex>
             <v-subheader>Other</v-subheader>
           </v-layout>
         </v-container>

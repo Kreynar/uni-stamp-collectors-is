@@ -11,7 +11,16 @@ const stampSchema = {
   numberMichel: Joi.string().allow('', null),
   numberStanleyGibbons: Joi.string().allow('', null),
   numberYvertEtTellier: Joi.string().allow('', null),
-  year: Joi.number().integer().min(1840).max(new Date().getFullYear())
+  year: Joi.number().integer().min(1840).max(new Date().getFullYear()),
+  country: Joi.number().integer(),
+  nominalValue: Joi.string(),
+  grade: Joi.number().integer(),
+  isCancelled: Joi.boolean(),
+  topics: Joi.array().items(Joi.string()),
+  category: Joi.string().allow('', null),
+  structureType: Joi.string().allow('', null),
+  structureNumber: Joi.string().allow('', null),
+  structureStampCount: Joi.number().integer().allow(null)
   //
   // username: Joi.string().alphanum().min(3).max(20).required(),
   // email: Joi.string().email().max(100).required(),
