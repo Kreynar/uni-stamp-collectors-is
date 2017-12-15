@@ -15,7 +15,7 @@ const stampSchema = {
   country: Joi.number().integer(),
   nominalValue: Joi.string(),
   grade: Joi.number().integer(),
-  isCancelled: Joi.boolean(),
+  isCancelled: Joi.boolean().allow(null),
   topics: Joi.array().items(Joi.string()),
   category: Joi.string().allow('', null),
   structureType: Joi.string().allow('', null),

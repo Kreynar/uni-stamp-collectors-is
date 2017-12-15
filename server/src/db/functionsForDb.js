@@ -56,32 +56,32 @@ db.postUsers = async (credentials) => {
   }
 }
 
-db.postStamps = async (stampFieldsAndValues) => {
-  try {
-    tracer.log(stampFieldsAndValues)
-    let resultOfQuery
-    resultOfQuery = await knex('public.stamp_')
-      .insert({
-        scott_: stampFieldsAndValues.numberScott,
-        michel_: stampFieldsAndValues.numberMichel,
-        stanley_gibbons_: stampFieldsAndValues.numberStanleyGibbons,
-        yvert_et_tellier_: stampFieldsAndValues.numberYvertEtTellier,
-        year_: stampFieldsAndValues.year,
-        country_id_: stampFieldsAndValues.country,
-        nominal_value_: stampFieldsAndValues.nominalValue,
-        grade_id_: stampFieldsAndValues.grade,
-        is_cancelled_: stampFieldsAndValues.isCancelled,
-        temporary_user_id_: vv.testTemporaryUserId,
-        category_: stampFieldsAndValues.category,
-        structure_type_: stampFieldsAndValues.structureType,
-        structure_number_: stampFieldsAndValues.structureNumber,
-        structure_stamp_count_: stampFieldsAndValues.structureStampCount
-        // album_id_: vv.testAlbumId
-      })
-      .returning('*')
-    const insertedStampId = resultOfQuery.id_
-    tracer.log(resultOfQuery)
-    const textOfQueryForInsertingTopics = `
+async function insertStamp (stampFieldsAndValues) {
+  const resultOfQuery = await knex('public.stamp_')
+    .insert({
+      scott_: stampFieldsAndValues.numberScott,
+      michel_: stampFieldsAndValues.numberMichel,
+      stanley_gibbons_: stampFieldsAndValues.numberStanleyGibbons,
+      yvert_et_tellier_: stampFieldsAndValues.numberYvertEtTellier,
+      year_: stampFieldsAndValues.year,
+      country_id_: stampFieldsAndValues.country,
+      nominal_value_: stampFieldsAndValues.nominalValue,
+      grade_id_: stampFieldsAndValues.grade,
+      is_cancelled_: stampFieldsAndValues.isCancelled,
+      temporary_user_id_: vv.testTemporaryUserId,
+      category_: stampFieldsAndValues.category,
+      structure_type_: stampFieldsAndValues.structureType,
+      structure_number_: stampFieldsAndValues.structureNumber,
+      structure_stamp_count_: stampFieldsAndValues.structureStampCount
+      // album_id_: vv.testAlbumId
+    })
+    .returning('*')
+  tracer.log(resultOfQuery)
+  return resultOfQuery[0].id_
+}
+
+async function insertTopic (arrayOfTopicNames) {
+  const textOfQueryForInsertingTopics = `
 INSERT INTO topic_ (user_id_, name_)
 SELECT user_id_.user_id_, topic_name_.topic_name_
 FROM
@@ -97,40 +97,55 @@ WHERE NOT EXISTS
   )
 )
 ;
-    `
-    resultOfQuery = await knex.raw(textOfQueryForInsertingTopics, {
-      userId: vv.testTemporaryUserId,
-      arrayOfTopicNames: stampFieldsAndValues.topics
-    })
-    tracer.log(resultOfQuery)
-    const textOfQueryForDeletingFromStampTopic = `
-DELETE
-FROM stamp_topic_
-USING (VALUES (:stampId)) stamp_id_(stamp_id_)
-WHERE stamp_topic_.stamp_id_ = stamp_id_.stamp_id_
-RETURNING stamp_topic_.stamp_id_
-;
-    `
-    resultOfQuery = await knex.raw(textOfQueryForDeletingFromStampTopic, {
-      stampId: insertedStampId
-    })
-    tracer.log(resultOfQuery)
-    const textOfQueryForInsertingIntoStampTopic = `
+  `
+  const resultOfQuery = await knex.raw(textOfQueryForInsertingTopics, {
+    userId: vv.testTemporaryUserId,
+    arrayOfTopicNames: arrayOfTopicNames
+  })
+  tracer.log(resultOfQuery)
+  return resultOfQuery
+}
+
+// async function deleteFromStampTopic (stampId) {
+//   const textOfQueryForDeletingFromStampTopic = `
+// DELETE
+// FROM stamp_topic_
+// USING (VALUES (:stampId ::BIGINT)) stamp_id_(stamp_id_)
+// WHERE stamp_topic_.stamp_id_ = stamp_id_.stamp_id_
+// RETURNING stamp_topic_.stamp_id_
+// ;
+//     `
+//   const resultOfQuery = await knex.raw(textOfQueryForDeletingFromStampTopic, {
+//     stampId: stampId
+//   })
+//   tracer.log(resultOfQuery)
+// }
+
+async function insertIntoStampTopic (insertedStampId, arrayOfTopicNames) {
+  const textOfQueryForInsertingIntoStampTopic = `
 INSERT INTO stamp_topic_(stamp_id_, topic_id_)
 SELECT stamp_id_.stamp_id_, topic_.id_
 FROM
-  (VALUES (:stampId)) stamp_id_(stamp_id_)
+  (VALUES (:stampId ::BIGINT)) stamp_id_(stamp_id_)
   , UNNEST(:arrayOfTopicNames ::TEXT[]) AS topic_name_(topic_name_)
   , topic_
 WHERE topic_name_.topic_name_ = topic_.name_
 ;
-    `
-    resultOfQuery = await knex.raw(textOfQueryForInsertingIntoStampTopic, {
-      stampId: insertedStampId,
-      arrayOfTopicNames: stampFieldsAndValues.topics
-    })
-    tracer.log(resultOfQuery)
-    return resultOfQuery
+  `
+  const resultOfQuery = await knex.raw(textOfQueryForInsertingIntoStampTopic, {
+    stampId: insertedStampId,
+    arrayOfTopicNames: arrayOfTopicNames
+  })
+  tracer.log(resultOfQuery)
+}
+
+db.postStamps = async (stampFieldsAndValues) => {
+  try {
+    tracer.log(stampFieldsAndValues)
+    const insertedStampId = await insertStamp(stampFieldsAndValues)
+    await insertTopic(stampFieldsAndValues.topics)
+    await insertIntoStampTopic(insertedStampId, stampFieldsAndValues.topics)
+    return insertedStampId
   }
   catch (error) {
     tracer.log(error)

@@ -8,9 +8,9 @@ const db = require('../../db/functionsForDb.js')
 
 async function post (req, res) {
   try {
-    const insertedStamp = await db.postStamps(req.body)
-    tracer.log(insertedStamp)
-    res.send(insertedStamp)
+    const insertedStampId = await db.postStamps(req.body)
+    tracer.log(insertedStampId)
+    res.send(insertedStampId)
   }
   catch (error) {
     tracer.log(error)
