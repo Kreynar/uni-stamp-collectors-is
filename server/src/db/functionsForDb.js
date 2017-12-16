@@ -73,7 +73,8 @@ async function insertStamp (stampFieldsAndValues) {
       category_: stampFieldsAndValues.category,
       structure_type_: stampFieldsAndValues.structureType,
       structure_number_: stampFieldsAndValues.structureNumber,
-      structure_stamp_count_: stampFieldsAndValues.structureStampCount
+      structure_stamp_count_: stampFieldsAndValues.structureStampCount,
+      custom_attributes_: stampFieldsAndValues.arrayOfCustomAttributes
       // album_id_: vv.testAlbumId
     })
     .returning('*')

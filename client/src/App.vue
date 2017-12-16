@@ -70,7 +70,7 @@
       v-model="this.$store.state.isSnackbarDisplayed"
       :color="this.$store.state.snackbarColor"
     >
-      {{ this.$store.state.snackbarMessage }}
+      {{ $store.state.snackbarMessage }}
       <v-btn flat color="pink" @click.native="$store.state.isSnackbarDisplayed = false">Close</v-btn>
     </v-snackbar>
     <!--<stamp-dialog-for-create-and-edit-and-view></stamp-dialog-for-create-and-edit-and-view>-->

@@ -13,6 +13,7 @@ export default {
     arrayOfTopicsIdsAndNames: [],
     arrayOfCategoriesNames: ss.arrayOfCategoriesNames,
     arrayOfStructureTypesNames: ss.arrayOfStructureTypesNames,
+    arrayOfCustomAttributes: [],
     // pictureOfFront: {
     //   isShownInStampsList: true,
     //   label: ss.pictureOfFront
@@ -151,9 +152,12 @@ export default {
       let formFieldsAndValues = {}
       for (const propertyName in state) {
         if (state.hasOwnProperty(propertyName)) {
-          formFieldsAndValues[propertyName] = state[propertyName].value
+          if (state[propertyName].hasOwnProperty('value')) {
+            formFieldsAndValues[propertyName] = state[propertyName].value
+          }
         }
       }
+      formFieldsAndValues['arrayOfCustomAttributes'] = state.arrayOfCustomAttributes
       console.log('@@@ formFieldsAndValues ', formFieldsAndValues)
       return formFieldsAndValues
     },
@@ -181,6 +185,16 @@ export default {
     },
     removeItemFromTopicsValues (state, nameOfTopic) {
       state.topics.value.splice(state.topics.value.indexOf(nameOfTopic), 1)
+    },
+    addCustomAttribute (state) {
+      state.arrayOfCustomAttributes.push({
+        id: state.arrayOfCustomAttributes.length,
+        label: null,
+        value: null
+      })
+    },
+    removeCustomAttribute (state, indexOfCustomAttribute) {
+      state.arrayOfCustomAttributes.splice(indexOfCustomAttribute, 1)
     }
   },
   actions: {

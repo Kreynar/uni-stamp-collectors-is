@@ -15,7 +15,8 @@
             <v-container grid-list-sm class="pa-4">
               <v-layout row wrap>
                 <!--<v-card-media :src="$store.state.stampStore.temporaryPictureUrl.value" height="200px"></v-card-media>-->
-                <v-subheader>Basic info (required)</v-subheader>
+                <v-divider></v-divider>
+                <v-flex xs12 align-center justify-space-between><v-subheader xs12>Basic info (required)</v-subheader></v-flex>
                 <v-flex xs12 align-center justify-space-between>
                   <v-text-field
                     prepend-icon="phone"
@@ -113,7 +114,8 @@
                     </template>
                   </v-select>
                 </v-flex>
-                <v-subheader>Catalog numbers</v-subheader>
+                <v-divider></v-divider>
+                <v-flex xs12 align-center justify-space-between><v-subheader xs12>Catalog numbers</v-subheader></v-flex>
                 <v-flex xs12 align-center justify-space-between>
                   <v-layout align-center>
                     <v-text-field
@@ -144,7 +146,8 @@
                     v-model="$store.state.stampStore.numberYvertEtTellier.value"
                   ></v-text-field>
                 </v-flex>
-                <v-subheader>Category & structure</v-subheader>
+                <v-divider></v-divider>
+                <v-flex xs12 align-center justify-space-between><v-subheader xs12>Category & structure</v-subheader></v-flex>
                 <v-flex xs12 align-center justify-space-between>
                   <v-select
                     prepend-icon="phone"
@@ -181,7 +184,44 @@
                     :rules="$store.state.stampStore.structureStampCount.validation.functions"
                   ></v-text-field>
                 </v-flex>
-                <v-subheader>Other</v-subheader>
+                <v-divider></v-divider>
+                <v-flex xs12 align-center justify-space-between><v-subheader xs12>Other</v-subheader></v-flex>
+                <v-divider></v-divider>
+                <v-flex xs12 align-center justify-space-between><v-subheader xs12>Custom attributes</v-subheader></v-flex>
+                <!--<v-subheader xs12>Other</v-subheader>-->
+                <!--<v-subheader xs12>Custom attributes</v-subheader>-->
+                <template v-for="(customAttribute, index) in $store.state.stampStore.arrayOfCustomAttributes">
+                  <v-flex xs12 sm4 :key="customAttribute.id">
+                    <v-text-field
+                      prepend-icon="phone"
+                      label="Title" v-model="customAttribute.label"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm7 :key="customAttribute.id">
+                    <v-text-field
+                      label="Value" v-model="customAttribute.value"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm1 :key="customAttribute.id">
+                    <v-btn flat icon color="black" @click="$store.commit('removeCustomAttribute', index)">
+                      <v-icon>clear</v-icon>
+                    </v-btn>
+                  </v-flex>
+                </template>
+                <v-btn
+                  round
+                  :color="$store.state.mainColorOfTheme"
+                  dark
+                  block
+                  @click="$store.commit('addCustomAttribute')">
+                  Add new attribute
+                  <v-icon dark right>add</v-icon>
+                </v-btn>
+                <!--<v-flex xs12 sm3 v-for="(customAttribute, i) in $store.state.stampStore.arrayOfCustomAttributes" :key="customAttribute.id">-->
+                  <!--<v-text-field label="Title" v-model="customAttribute.label"></v-text-field>-->
+                <!--</v-flex>-->
+                <!--<v-flex xs12 sm9 v-for="(customAttribute, i) in $store.state.stampStore.arrayOfCustomAttributes" :key="customAttribute.id">-->
+                  <!--<v-text-field label="Value" v-model="customAttribute.value"></v-text-field>-->
+                <!--</v-flex>-->
+                <!--<v-btn round color="primary" dark @click="$store.commit('addCustomAttribute')">Add new attribute</v-btn>-->
               </v-layout>
             </v-container>
           </v-form>

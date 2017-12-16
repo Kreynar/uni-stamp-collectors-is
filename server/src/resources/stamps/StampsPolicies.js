@@ -21,7 +21,8 @@ const stampSchema = {
   category: Joi.string().allow('', null),
   structureType: Joi.string().allow('', null),
   structureNumber: Joi.string().allow('', null),
-  structureStampCount: Joi.number().integer().allow(null)
+  structureStampCount: Joi.number().integer().allow(null),
+  arrayOfCustomAttributes: Joi.array().items(Joi.object())
   //
   // username: Joi.string().alphanum().min(3).max(20).required(),
   // email: Joi.string().email().max(100).required(),
@@ -44,7 +45,7 @@ function getPostErrorMessage (errorInValidationResult) {
 
 module.exports = {
   post (req, res, next) {
-    tracer.log()
+    tracer.log(req.body)
     const validationResult = Joi.validate(req.body, stampSchema)
     tracer.log(validationResult)
     if (validationResult.error) {
