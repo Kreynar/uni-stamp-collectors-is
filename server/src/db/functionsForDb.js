@@ -59,6 +59,7 @@ db.postUsers = async (credentials) => {
 async function insertStamp (stampFieldsAndValues) {
   const resultOfQuery = await knex('public.stamp_')
     .insert({
+      temporary_picture_url_: stampFieldsAndValues.temporaryPictureUrl,
       scott_: stampFieldsAndValues.numberScott,
       michel_: stampFieldsAndValues.numberMichel,
       stanley_gibbons_: stampFieldsAndValues.numberStanleyGibbons,

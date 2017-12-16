@@ -10,7 +10,7 @@
         fab
         right
         bottom
-        color="orange"
+        :color="this.$store.state.mainColorOfTheme"
         dark
         fixed
         @click.stop="isStampDialogVisible = !isStampDialogVisible"
@@ -65,6 +65,14 @@
       </v-container>
     </v-content>
     <stampDialogForCreateAndEditAndView></stampDialogForCreateAndEditAndView>
+    <v-snackbar
+      :timeout="6000"
+      v-model="this.$store.state.isSnackbarDisplayed"
+      :color="this.$store.state.snackbarColor"
+    >
+      {{ this.$store.state.snackbarMessage }}
+      <v-btn flat color="pink" @click.native="$store.state.isSnackbarDisplayed = false">Close</v-btn>
+    </v-snackbar>
     <!--<stamp-dialog-for-create-and-edit-and-view></stamp-dialog-for-create-and-edit-and-view>-->
   </v-app>
 </template>

@@ -46,6 +46,7 @@ vv.stamps = {
   // /*
   //  * Later gotta fix following fields v same as ^.
   //  */
+  temporaryPictureUrl: 'Stamp picture URL',
   pictureOfFront: 'Front picture',
   pictureOfBack: 'Back picture',
   album: 'Album',

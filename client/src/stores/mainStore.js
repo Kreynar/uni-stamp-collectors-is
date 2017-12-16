@@ -4,6 +4,7 @@
 
 import Vue from 'vue'
 import Vuex from 'vuex'
+import strings from '../strings.js'
 
 import stampStore from './stampStore.js'
 
@@ -47,7 +48,11 @@ export default new Vuex.Store({
     stampStore
   },
   state: () => ({
-    isStampDialogVisible: false
+    mainColorOfTheme: strings.mainColorOfTheme,
+    isStampDialogVisible: false,
+    snackbarMessage: 'lalala',
+    isSnackbarDisplayed: false,
+    snackbarColor: 'success'
   }),
   // state: {
   //   isStampDialogVisible: false,

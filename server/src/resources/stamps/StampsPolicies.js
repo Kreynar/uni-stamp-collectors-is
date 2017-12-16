@@ -7,6 +7,7 @@ const tracer = require('tracer').console(ss.tracerOutputCustomization)
 const Joi = require('joi')
 
 const stampSchema = {
+  temporaryPictureUrl: Joi.string(),
   numberScott: Joi.string().allow('', null),
   numberMichel: Joi.string().allow('', null),
   numberStanleyGibbons: Joi.string().allow('', null),

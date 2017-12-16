@@ -28,6 +28,16 @@ export default {
     //     vf.validateRequired()
     //   ]
     // },
+    temporaryPictureUrl: {
+      isShownInStampsList: true,
+      label: ss.temporaryPictureUrl,
+      validation: {
+        functions: [
+          vf.validateRequired
+        ]
+      },
+      value: null
+    },
     numberScott: {
       isShownInStampsList: true,
       label: ss.numberScott,
@@ -100,7 +110,11 @@ export default {
     topics: {
       isShownInStampsList: true,
       label: ss.topics,
-      validation: {},
+      validation: {
+        functions: [
+          vf.validateRequired
+        ]
+      },
       value: null
     },
     category: {
