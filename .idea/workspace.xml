@@ -7,7 +7,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/components/StampDialogForCreateAndEditAndView.vue" afterPath="$PROJECT_DIR$/client/src/components/StampDialogForCreateAndEditAndView.vue" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/stores/stampStore.js" afterPath="$PROJECT_DIR$/client/src/stores/stampStore.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/src/db/functionsForDb.js" afterPath="$PROJECT_DIR$/server/src/db/functionsForDb.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/src/resources/stamps/StampsPolicies.js" afterPath="$PROJECT_DIR$/server/src/resources/stamps/StampsPolicies.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -34,11 +33,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="functionsForDb.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="functionsForDb.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/src/db/functionsForDb.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="484">
-              <caret line="78" column="6" lean-forward="true" selection-start-line="78" selection-start-column="6" selection-end-line="78" selection-end-column="6" />
+            <state relative-caret-position="369">
+              <caret line="76" column="6" lean-forward="false" selection-start-line="76" selection-start-column="6" selection-end-line="76" selection-end-column="86" />
               <folding>
                 <element signature="e#34#79#0" expanded="false" />
               </folding>
@@ -71,18 +70,18 @@
       <file leaf-file-name="StampDialogForCreateAndEditAndView.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/src/components/StampDialogForCreateAndEditAndView.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="583">
-              <caret line="217" column="0" lean-forward="true" selection-start-line="217" selection-start-column="0" selection-end-line="217" selection-end-column="0" />
+            <state relative-caret-position="559">
+              <caret line="227" column="18" lean-forward="false" selection-start-line="227" selection-start-column="10" selection-end-line="227" selection-end-column="18" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="stampStore.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="stampStore.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/client/src/stores/stampStore.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="595">
-              <caret line="172" column="14" lean-forward="false" selection-start-line="172" selection-start-column="4" selection-end-line="172" selection-end-column="14" />
+            <state relative-caret-position="161">
+              <caret line="10" column="22" lean-forward="false" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -98,6 +97,18 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="App.vue" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/src/App.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="159">
+              <caret line="74" column="23" lean-forward="false" selection-start-line="74" selection-start-column="23" selection-end-line="74" selection-end-column="23" />
+              <folding>
+                <element signature="n#style#0;n#v-container#0;n#v-card-text#0;n#v-card#0;n#v-flex#1;n#v-layout#0;n#v-container#0;n#v-content#0;n#v-app#0;n#template#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -109,15 +120,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>isNewStampDialogVisible</find>
-      <find>testValue</find>
-      <find>changeNewStampDialogVisibility</find>
-      <find>doAction</find>
-      <find>getFormFieldsAndValues</find>
-      <find>gett</find>
-      <find>getIsStampDialogVisible</find>
-      <find>store</find>
-      <find>ss</find>
       <find>text</find>
       <find>canc</find>
       <find>gette</find>
@@ -128,7 +130,6 @@
       <find>forE</find>
       <find>setArrayOfCountriesIdsAndNames</find>
       <find>albu</find>
-      <find>submitForm</find>
       <find>areAllFieldsValidlyFilled</find>
       <find>topics</find>
       <find>title</find>
@@ -138,6 +139,16 @@
       <find>string</find>
       <find>list</find>
       <find>form</find>
+      <find>submitForm</find>
+      <find>remo</find>
+      <find>commi</find>
+      <find>chip</find>
+      <find>leng</find>
+      <find>clearForm</find>
+      <find>dialogVCardText</find>
+      <find>clearf</find>
+      <find>scrollToBottomOfDialog</find>
+      <find>v-card-t</find>
       <find>snack</find>
     </findStrings>
   </component>
@@ -193,11 +204,11 @@
         <option value="$PROJECT_DIR$/client/src/validationFunctions.js" />
         <option value="$PROJECT_DIR$/server/src/routes.js" />
         <option value="$PROJECT_DIR$/client/src/stores/mainStore.js" />
-        <option value="$PROJECT_DIR$/client/src/stores/stampStore.js" />
-        <option value="$PROJECT_DIR$/client/src/components/StampDialogForCreateAndEditAndView.vue" />
-        <option value="$PROJECT_DIR$/client/src/App.vue" />
         <option value="$PROJECT_DIR$/server/src/resources/stamps/StampsPolicies.js" />
         <option value="$PROJECT_DIR$/server/src/db/functionsForDb.js" />
+        <option value="$PROJECT_DIR$/client/src/components/StampDialogForCreateAndEditAndView.vue" />
+        <option value="$PROJECT_DIR$/client/src/App.vue" />
+        <option value="$PROJECT_DIR$/client/src/stores/stampStore.js" />
       </list>
     </option>
   </component>
@@ -753,12 +764,12 @@
       <workItem from="1512916360680" duration="14984000" />
       <workItem from="1512992902487" duration="6912000" />
       <workItem from="1513252949714" duration="9849000" />
-      <workItem from="1513358444615" duration="27693000" />
+      <workItem from="1513358444615" duration="41617000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="225446000" />
+    <option name="totallyTimeSpent" value="239370000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -770,7 +781,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32968238" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2595838" sideWeight="0.49815303" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19386637" sideWeight="0.49815303" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -1068,37 +1079,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/components/StampDialogForCreateAndEditAndView.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="583">
-          <caret line="217" column="0" lean-forward="true" selection-start-line="217" selection-start-column="0" selection-end-line="217" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/src/stores/mainStore.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
           <caret line="50" column="47" lean-forward="false" selection-start-line="50" selection-start-column="47" selection-end-line="50" selection-end-column="47" />
           <folding>
-            <element signature="e#47#68#0" expanded="true" />
+            <element signature="e#47#68#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/App.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="456">
-          <caret line="72" column="9" lean-forward="false" selection-start-line="72" selection-start-column="9" selection-end-line="72" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/stores/stampStore.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="172" column="14" lean-forward="false" selection-start-line="172" selection-start-column="4" selection-end-line="172" selection-end-column="14" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1122,11 +1109,37 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/server/src/db/functionsForDb.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="484">
-          <caret line="78" column="6" lean-forward="true" selection-start-line="78" selection-start-column="6" selection-end-line="78" selection-end-column="6" />
+        <state relative-caret-position="369">
+          <caret line="76" column="6" lean-forward="false" selection-start-line="76" selection-start-column="6" selection-end-line="76" selection-end-column="86" />
           <folding>
             <element signature="e#34#79#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/components/StampDialogForCreateAndEditAndView.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="559">
+          <caret line="227" column="18" lean-forward="false" selection-start-line="227" selection-start-column="10" selection-end-line="227" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/App.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="159">
+          <caret line="74" column="23" lean-forward="false" selection-start-line="74" selection-start-column="23" selection-end-line="74" selection-end-column="23" />
+          <folding>
+            <element signature="n#style#0;n#v-container#0;n#v-card-text#0;n#v-card#0;n#v-flex#1;n#v-layout#0;n#v-container#0;n#v-content#0;n#v-app#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/stores/stampStore.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="10" column="22" lean-forward="false" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
+          <folding />
         </state>
       </provider>
     </entry>

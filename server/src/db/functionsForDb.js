@@ -74,7 +74,7 @@ async function insertStamp (stampFieldsAndValues) {
       structure_type_: stampFieldsAndValues.structureType,
       structure_number_: stampFieldsAndValues.structureNumber,
       structure_stamp_count_: stampFieldsAndValues.structureStampCount,
-      custom_attributes_: stampFieldsAndValues.arrayOfCustomAttributes
+      custom_attributes_: JSON.stringify(stampFieldsAndValues.arrayOfCustomAttributes)
       // album_id_: vv.testAlbumId
     })
     .returning('*')

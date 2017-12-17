@@ -8,6 +8,7 @@ const ss = strings.stamps
 
 export default {
   state: () => ({
+    arrayOfStamps: [],
     arrayOfCountriesIdsAndNames: [],
     arrayOfGradesIdsAndNames: [],
     arrayOfTopicsIdsAndNames: [],
@@ -170,10 +171,15 @@ export default {
     }
   },
   mutations: {
-    resetState (state) {
-      const initialState = state()
-      Object.keys(initialState).forEach(key => { state[key] = initialState[key] })
-    },
+    /*
+     * I tried using this resetState function, as it seems more suitable than this.$refs.stampForm.reset(),
+     * BUT when using it, I get this error ([Vue warn]: Error in render: "TypeError: Cannot read property 'length' of null")
+     * and I don't know how to fix it. Maybe error occurs, because there's error in resetting topics (witch Vuetify chips).
+     */
+    // resetState (state) {
+    //   const initialState = state()
+    //   Object.keys(initialState).forEach(key => { state[key] = initialState[key] })
+    // },
     setArrayOfCountriesIdsAndNames (state, arrayOfCountriesIdsAndNames) {
       state.arrayOfCountriesIdsAndNames = arrayOfCountriesIdsAndNames
     },
@@ -195,6 +201,9 @@ export default {
     },
     removeCustomAttribute (state, indexOfCustomAttribute) {
       state.arrayOfCustomAttributes.splice(indexOfCustomAttribute, 1)
+    },
+    removeAllCustomAttributes (state) {
+      state.arrayOfCustomAttributes = []
     }
   },
   actions: {

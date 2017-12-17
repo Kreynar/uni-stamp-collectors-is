@@ -9,7 +9,7 @@
         </v-card-title>
 
 
-        <v-card-text>
+        <v-card-text id="dialogVCardText">
           <v-card-media :src="$store.state.stampStore.temporaryPictureUrl.value" height="300px" contain></v-card-media>
           <v-form v-model="areAllFieldsValidlyFilled" ref="stampForm">
             <v-container grid-list-sm class="pa-4">
@@ -211,7 +211,7 @@
                   :color="$store.state.mainColorOfTheme"
                   dark
                   block
-                  @click="$store.commit('addCustomAttribute')">
+                  @click="addCustomAttribute">
                   Add new attribute
                   <v-icon dark right>add</v-icon>
                 </v-btn>
@@ -285,6 +285,20 @@
          * Here can either be used this v statement OR this.$store.stampDialogStore.commit('resetState')
          */
         this.$refs.stampForm.reset()
+        this.$store.commit('removeAllCustomAttributes')
+        // Scroll to top of dialog:
+        let container = document.getElementById('dialogVCardText')
+        container.scrollTop = 0
+//        this.$store.commit('resetState')
+      },
+      addCustomAttribute () {
+        this.$store.commit('addCustomAttribute')
+      },
+      scrollToBottomOfDialog () {
+        // Scroll to bottom of dialog:
+        let container = document.getElementById('dialogVCardText')
+//        container.scrollTop = container.scrollHeight - 400
+        container.scrollTop = 0
       },
       async submitForm () {
         if (this.$refs.stampForm.validate()) {
@@ -328,6 +342,9 @@
     },
     updated () {
       console.log('@@@ StampDialog....vue >>> updated () ')
+    },
+    watch: {
+
     }
   }
 </script>

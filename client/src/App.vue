@@ -53,22 +53,84 @@
       </div>
     </v-toolbar>
     <v-content>
-      <v-container fluid fill-height>
-        <v-layout justify-center align-center>
-          <v-tooltip right>
-            <v-btn icon large :href="source" target="_blank" slot="activator">
-              <v-icon large>code</v-icon>
-            </v-btn>
-            <span>Source</span>
-          </v-tooltip>
+      <!--<v-container fluid fill-height>-->
+        <!--<v-layout justify-center align-center>-->
+          <!--<v-tooltip right>-->
+            <!--<v-btn icon large :href="source" target="_blank" slot="activator">-->
+              <!--<v-icon large>code</v-icon>-->
+            <!--</v-btn>-->
+            <!--<span>Source</span>-->
+          <!--</v-tooltip>-->
+        <!--</v-layout>-->
+      <!--</v-container>-->
+      <v-container fluid grid-list-md class="grey lighten-4">
+        <v-layout row wrap>
+          <v-flex
+            xs6
+          >
+            <v-card>
+              <v-card-media
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2qdKu8IQgeaXWbPcrrsYEN7znwI3Jhx-0gtt8T3KMjiTSR2WmEg"
+                height="300px"
+                contain
+              ></v-card-media>
+              <v-card-title>
+                <div>
+                  <span class="grey--text">Number 10</span><br>
+                  <span>Whitehaven Beach</span><br>
+                  <span>Whitsunday Island, Whitsunday Islands</span>
+                </div>
+              </v-card-title>
+              <v-card-text>
+                Lorem ipsum dolor sit amet, semper quis, sapien id natoque elit. Nostra urna at, magna at neque sed sed ante imperdiet, dolor mauris cursus velit, velit non, sem nec. Volutpat sem ridiculus placerat leo, augue in, duis erat proin condimentum in a eget, sed fermentum sed vestibulum varius ac, vestibulum volutpat orci ut elit eget tortor. Ultrices nascetur nulla gravida ante arcu. Pharetra rhoncus morbi ipsum, nunc tempor debitis, ipsum pellentesque, vitae id quam ut mauris dui tempor, aptent non. Quisque turpis. Phasellus quis lectus luctus orci eget rhoncus. Amet donec vestibulum mattis commodo, nulla aliquet, nibh praesent, elementum nulla. Sit lacus pharetra tempus magna neque pellentesque, nulla vel erat. Justo ex quisque nulla accusamus venenatis, sed quis. Nibh phasellus gravida metus in, fusce aenean ut erat commodo eros. Ut turpis, dui integer, nonummy pede placeat nec in sit leo. Faucibus porttitor illo taciti odio, amet viverra scelerisque quis quis et tortor, curabitur morbi a. Enim tempor at, rutrum elit condimentum, amet rutrum vitae tempor torquent nunc. Praesent vestibulum integer
+              </v-card-text>
+              <v-card-actions>
+                <v-btn flat color="orange">Share</v-btn>
+                <v-btn flat color="orange">Explore</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-flex>
+          <v-flex
+            xs6
+          >
+            <v-card height="900px">
+              <v-card-media
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2qdKu8IQgeaXWbPcrrsYEN7znwI3Jhx-0gtt8T3KMjiTSR2WmEg"
+                height="300px"
+                contain
+              ></v-card-media>
+              <v-card-title>
+                <div>
+                  <span class="grey--text">Number 10</span><br>
+                  <span>Whitehaven Beach</span><br>
+                  <span>Whitsunday Island, Whitsunday Islands</span>
+                </div>
+              </v-card-title>
+              <v-card-text>
+                <v-container
+                  style="max-height: 400px"
+                  class="scroll-y"
+                  id="scroll-target"
+                >
+                  Lorem ipsum dolor sit amet, semper quis, sapien id natoque elit. Nostra urna at, magna at neque sed sed ante imperdiet, dolor mauris cursus velit, velit non, sem nec. Volutpat sem ridiculus placerat leo, augue in, duis erat proin condimentum in a eget, sed fermentum sed vestibulum varius ac, vestibulum volutpat orci ut elit eget tortor. Ultrices nascetur nulla gravida ante arcu. Pharetra rhoncus morbi ipsum, nunc tempor debitis, ipsum pellentesque, vitae id quam ut mauris dui tempor, aptent non. Quisque turpis. Phasellus quis lectus luctus orci eget rhoncus. Amet donec vestibulum mattis commodo, nulla aliquet, nibh praesent, elementum nulla. Sit lacus pharetra tempus magna neque pellentesque, nulla vel erat. Justo ex quisque nulla accusamus venenatis, sed quis. Nibh phasellus gravida metus in, fusce aenean ut erat commodo eros. Ut turpis, dui integer, nonummy pede placeat nec in sit leo. Faucibus porttitor illo taciti odio, amet viverra scelerisque quis quis et tortor, curabitur morbi a. Enim tempor at, rutrum elit condimentum, amet rutrum vitae tempor torquent nunc. Praesent vestibulum integer
+                  Lorem ipsum dolor sit amet, semper quis, sapien id natoque elit. Nostra urna at, magna at neque sed sed ante imperdiet, dolor mauris cursus velit, velit non, sem nec. Volutpat sem ridiculus placerat leo, augue in, duis erat proin condimentum in a eget, sed fermentum sed vestibulum varius ac, vestibulum volutpat orci ut elit eget tortor. Ultrices nascetur nulla gravida ante arcu. Pharetra rhoncus morbi ipsum, nunc tempor debitis, ipsum pellentesque, vitae id quam ut mauris dui tempor, aptent non. Quisque turpis. Phasellus quis lectus luctus orci eget rhoncus. Amet donec vestibulum mattis commodo, nulla aliquet, nibh praesent, elementum nulla. Sit lacus pharetra tempus magna neque pellentesque, nulla vel erat. Justo ex quisque nulla accusamus venenatis, sed quis. Nibh phasellus gravida metus in, fusce aenean ut erat commodo eros. Ut turpis, dui integer, nonummy pede placeat nec in sit leo. Faucibus porttitor illo taciti odio, amet viverra scelerisque quis quis et tortor, curabitur morbi a. Enim tempor at, rutrum elit condimentum, amet rutrum vitae tempor torquent nunc. Praesent vestibulum integer
+                  Lorem ipsum dolor sit amet, semper quis, sapien id natoque elit. Nostra urna at, magna at neque sed sed ante imperdiet, dolor mauris cursus velit, velit non, sem nec. Volutpat sem ridiculus placerat leo, augue in, duis erat proin condimentum in a eget, sed fermentum sed vestibulum varius ac, vestibulum volutpat orci ut elit eget tortor. Ultrices nascetur nulla gravida ante arcu. Pharetra rhoncus morbi ipsum, nunc tempor debitis, ipsum pellentesque, vitae id quam ut mauris dui tempor, aptent non. Quisque turpis. Phasellus quis lectus luctus orci eget rhoncus. Amet donec vestibulum mattis commodo, nulla aliquet, nibh praesent, elementum nulla. Sit lacus pharetra tempus magna neque pellentesque, nulla vel erat. Justo ex quisque nulla accusamus venenatis, sed quis. Nibh phasellus gravida metus in, fusce aenean ut erat commodo eros. Ut turpis, dui integer, nonummy pede placeat nec in sit leo. Faucibus porttitor illo taciti odio, amet viverra scelerisque quis quis et tortor, curabitur morbi a. Enim tempor at, rutrum elit condimentum, amet rutrum vitae tempor torquent nunc. Praesent vestibulum integer
+                </v-container>
+              </v-card-text>
+              <v-card-actions>
+                <v-btn flat color="orange">Share</v-btn>
+                <v-btn flat color="orange">Explore</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-flex>
         </v-layout>
       </v-container>
     </v-content>
     <stampDialogForCreateAndEditAndView></stampDialogForCreateAndEditAndView>
     <v-snackbar
       :timeout="6000"
-      v-model="this.$store.state.isSnackbarDisplayed"
-      :color="this.$store.state.snackbarColor"
+      v-model="$store.state.isSnackbarDisplayed"
+      :color="$store.state.snackbarColor"
     >
       {{ $store.state.snackbarMessage }}
       <v-btn flat color="pink" @click.native="$store.state.isSnackbarDisplayed = false">Close</v-btn>
