@@ -17,11 +17,17 @@ const stampSchema = {
   nominalValue: Joi.string(),
   grade: Joi.number().integer(),
   isCancelled: Joi.boolean().allow(null),
-  topics: Joi.array().items(Joi.string()),
+  arrayOfTopics: Joi.array().items(Joi.string()),
   category: Joi.string().allow('', null),
   structureType: Joi.string().allow('', null),
   structureNumber: Joi.string().allow('', null),
   structureStampCount: Joi.number().integer().allow(null),
+  isExhibited: Joi.boolean().allow(null),
+  specimenCount: Joi.number().integer().allow(null),
+  isOnSale: Joi.boolean().allow(null),
+  marketValue: Joi.number().positive().allow(null),
+  faceDescription: Joi.string().max(300).allow('', null),
+  comment: Joi.string().max(1000).allow('', null),
   arrayOfCustomAttributes: Joi.array().items(Joi.object())
   //
   // username: Joi.string().alphanum().min(3).max(20).required(),

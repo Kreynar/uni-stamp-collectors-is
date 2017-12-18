@@ -83,19 +83,25 @@
                     <!--<span>{{ stamp.nominalValue }}</span><br>-->
                     <span>{{ stamp.grade }}</span><br>
                     <span>{{ stamp.isCancelled | getIsCancelledDisplay }}</span><br>
-                    <!--<span>{{ stamp.topics }}</span>-->
-                    <span v-for="topic in stamp.topics">
+                    <!--<span>{{ stamp.arrayOfTopics }}</span>-->
+                    <span v-for="topic in stamp.arrayOfTopics">
                         <v-chip>{{ topic }}</v-chip>
                     </span>
                   </div>
                 </v-card-title>
               </v-layout>
-              <!--<v-card-text>-->
-                <!--Lorem ipsum dolor sit amet, semper quis, sapien id natoque elit. Nostra urna at, magna at neque sed sed ante imperdiet, dolor mauris cursus velit, velit non, sem nec. Volutpat sem ridiculus placerat leo, augue in, duis erat proin condimentum in a eget, sed fermentum sed vestibulum varius ac, vestibulum volutpat orci ut elit eget tortor. Ultrices nascetur nulla gravida ante arcu. Pharetra rhoncus morbi ipsum, nunc tempor debitis, ipsum pellentesque, vitae id quam ut mauris dui tempor, aptent non. Quisque turpis. Phasellus quis lectus luctus orci eget rhoncus. Amet donec vestibulum mattis commodo, nulla aliquet, nibh praesent, elementum nulla. Sit lacus pharetra tempus magna neque pellentesque, nulla vel erat. Justo ex quisque nulla accusamus venenatis, sed quis. Nibh phasellus gravida metus in, fusce aenean ut erat commodo eros. Ut turpis, dui integer, nonummy pede placeat nec in sit leo. Faucibus porttitor illo taciti odio, amet viverra scelerisque quis quis et tortor, curabitur morbi a. Enim tempor at, rutrum elit condimentum, amet rutrum vitae tempor torquent nunc. Praesent vestibulum integer-->
-              <!--</v-card-text>-->
               <v-card-actions>
-                <v-btn flat color="orange">Delete</v-btn>
-                <v-btn flat color="orange">Edit</v-btn>
+                <v-flex xs1>
+                  <v-btn flat icon color="black">
+                    <v-icon>clear</v-icon>
+                  </v-btn>
+                </v-flex>
+                <v-flex xs5></v-flex>
+                <v-flex xs1>
+                  <v-btn flat icon color="black" @click="">
+                    <v-icon>create</v-icon>
+                  </v-btn>
+                </v-flex>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -118,12 +124,22 @@
     computed: {
     },
     filters: {
-      getIsCancelledDisplay: function (isCancelled) {
-        if (isCancelled) {
-          return 'Cancelled'
-        }
-        else {
-          return 'Not cancelled'
+//      getIsCancelledDisplay: function (isCancelled) {
+//        if (isCancelled) {
+//          return 'Cancelled'
+//        }
+//        else {
+//          return 'Not cancelled'
+//        }
+//      }
+    },
+    methods: {
+      async showStampDialogForEdit () {
+        console.log('@@@ showStampDialogForEdit() kvietimas')
+        const isStampDialogVisible = !(this.$store.getters.getIsStampDialogVisible)
+        this.$store.commit('setIsStampDialogVisible', isStampDialogVisible)
+        if (isStampDialogVisible) {
+
         }
       }
     },

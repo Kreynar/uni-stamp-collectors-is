@@ -56,6 +56,7 @@
                     :label="$store.state.stampStore.nominalValue.label"
                     v-model="$store.state.stampStore.nominalValue.value"
                     :rules="$store.state.stampStore.nominalValue.validation.functions"
+                    :counter="$store.state.stampStore.nominalValue.validation.counter"
                     required
                   ></v-text-field>
                 </v-flex>
@@ -84,15 +85,15 @@
                   <v-select
                     prepend-icon="phone"
                     :items="$store.getters.getArrayOfTopicsNames"
-                    v-model="$store.state.stampStore.topics.value"
-                    :label="$store.state.stampStore.topics.label"
+                    v-model="$store.state.stampStore.arrayOfTopics.value"
+                    :label="$store.state.stampStore.arrayOfTopics.label"
                     :rules="[
                       function validateRequired (value) {
                         let trueOrValidationErrorMessage = true
-                        if ($store.state.stampStore.topics.value === null) {
+                        if ($store.state.stampStore.arrayOfTopics.value === null) {
                           trueOrValidationErrorMessage = 'Required.'
                         }
-                        else if ($store.state.stampStore.topics.value.length === 0) {
+                        else if ($store.state.stampStore.arrayOfTopics.value.length === 0) {
                           trueOrValidationErrorMessage = 'Required.'
                         }
                         return trueOrValidationErrorMessage
@@ -106,7 +107,7 @@
                     <template slot="selection" slot-scope="data">
                       <v-chip
                         close
-                        @input="$store.commit('removeItemFromTopicsValues', data.item)"
+                        @input="$store.commit('removeItemFromArrayOfTopics', data.item)"
                         :selected="data.selected"
                       >
                         <strong>{{ data.item }}</strong>
@@ -121,6 +122,7 @@
                     <v-text-field
                       :label="$store.state.stampStore.numberScott.label"
                       v-model="$store.state.stampStore.numberScott.value"
+                      :counter="$store.state.stampStore.numberScott.validation.counter"
                       prepend-icon="phone"
                     ></v-text-field>
                   </v-layout>
@@ -130,6 +132,7 @@
                     prepend-icon="phone"
                     :label="$store.state.stampStore.numberMichel.label"
                     v-model="$store.state.stampStore.numberMichel.value"
+                    :counter="$store.state.stampStore.numberMichel.validation.counter"
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12 align-center justify-space-between>
@@ -137,6 +140,7 @@
                     prepend-icon="phone"
                     :label="$store.state.stampStore.numberStanleyGibbons.label"
                     v-model="$store.state.stampStore.numberStanleyGibbons.value"
+                    :counter="$store.state.stampStore.numberStanleyGibbons.validation.counter"
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12 align-center justify-space-between>
@@ -144,6 +148,7 @@
                     prepend-icon="phone"
                     :label="$store.state.stampStore.numberYvertEtTellier.label"
                     v-model="$store.state.stampStore.numberYvertEtTellier.value"
+                    :counter="$store.state.stampStore.numberYvertEtTellier.validation.counter"
                   ></v-text-field>
                 </v-flex>
                 <v-divider></v-divider>
@@ -155,6 +160,7 @@
                     v-model="$store.state.stampStore.category.value"
                     :label="$store.state.stampStore.category.label"
                     :rules="$store.state.stampStore.category.validation.functions"
+                    :counter="$store.state.stampStore.category.validation.counter"
                     combobox
                   ></v-select>
                 </v-flex>
@@ -165,6 +171,7 @@
                     v-model="$store.state.stampStore.structureType.value"
                     :label="$store.state.stampStore.structureType.label"
                     :rules="$store.state.stampStore.structureType.validation.functions"
+                    :counter="$store.state.stampStore.structureType.validation.counter"
                     combobox
                   ></v-select>
                 </v-flex>
@@ -174,6 +181,7 @@
                     :label="$store.state.stampStore.structureNumber.label"
                     v-model="$store.state.stampStore.structureNumber.value"
                     :rules="$store.state.stampStore.structureNumber.validation.functions"
+                    :counter="$store.state.stampStore.structureNumber.validation.counter"
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12 align-center justify-space-between>
@@ -186,6 +194,94 @@
                 </v-flex>
                 <v-divider></v-divider>
                 <v-flex xs12 align-center justify-space-between><v-subheader xs12>Other</v-subheader></v-flex>
+                <!--<v-flex xs12 align-center justify-space-between>-->
+                  <!--<v-switch-->
+                    <!--prepend-icon="phone"-->
+                    <!--:label="$store.state.stampStore.isExhibited.label"-->
+                    <!--v-model="$store.state.stampStore.isExhibited.value"-->
+                    <!--:rules="$store.state.stampStore.isExhibited.validation.functions"-->
+                  <!--&gt;</v-switch>-->
+                  <!--&lt;!&ndash;<v-text-field&ndash;&gt;-->
+                    <!--&lt;!&ndash;prepend-icon="phone"&ndash;&gt;-->
+                    <!--&lt;!&ndash;:label="$store.state.stampStore.isExhibited.label"&ndash;&gt;-->
+                    <!--&lt;!&ndash;v-model="$store.state.stampStore.isExhibited.value"&ndash;&gt;-->
+                    <!--&lt;!&ndash;:rules="$store.state.stampStore.isExhibited.validation.functions"&ndash;&gt;-->
+                  <!--&lt;!&ndash;&gt;</v-text-field>&ndash;&gt;-->
+                <!--</v-flex>-->
+                <v-flex xs12 align-center justify-space-between>
+                  <v-checkbox
+                    prepend-icon="phone"
+                    :label="$store.state.stampStore.isExhibited.label"
+                    v-model="$store.state.stampStore.isExhibited.value"
+                    :rules="$store.state.stampStore.isExhibited.validation.functions"
+                  ></v-checkbox>
+                </v-flex>
+                <v-flex xs12 align-center justify-space-between>
+                  <v-text-field
+                    prepend-icon="phone"
+                    :label="$store.state.stampStore.specimenCount.label"
+                    v-model="$store.state.stampStore.specimenCount.value"
+                    :rules="$store.state.stampStore.specimenCount.validation.functions"
+                  ></v-text-field>
+                </v-flex>
+                <!--<v-layout justify-space-around class="mb-2">-->
+                  <!--<v-flex xs12 align-center justify-space-between>-->
+                  <!--<span class="group pa-2">-->
+                    <!--<v-icon>home</v-icon>-->
+                    <!--<v-switch-->
+                      <!--:label="$store.state.stampStore.isOnSale.label"-->
+                      <!--v-model="$store.state.stampStore.isOnSale.value"-->
+                      <!--:rules="$store.state.stampStore.isOnSale.validation.functions"-->
+                    <!--&gt;</v-switch>-->
+                  <!--</span>-->
+                  <!--</v-flex>-->
+                <!--</v-layout>-->
+                <v-flex xs12 align-center justify-space-between>
+                  <v-checkbox
+                    prepend-icon="phone"
+                    :label="$store.state.stampStore.isOnSale.label"
+                    v-model="$store.state.stampStore.isOnSale.value"
+                    :rules="$store.state.stampStore.isOnSale.validation.functions"
+                  ></v-checkbox>
+                </v-flex>
+                <!--<v-flex xs12 justify-space-around class="mb-2">-->
+                  <!--<span class="group pa-2">-->
+                    <!--<v-icon>home</v-icon>-->
+                    <!--<v-switch-->
+                      <!--:label="$store.state.stampStore.isOnSale.label"-->
+                      <!--v-model="$store.state.stampStore.isOnSale.value"-->
+                      <!--:rules="$store.state.stampStore.isOnSale.validation.functions"-->
+                    <!--&gt;</v-switch>-->
+                  <!--</span>-->
+                <!--</v-flex>-->
+
+                <v-flex xs12 align-center justify-space-between>
+                  <v-text-field
+                    prepend-icon="phone"
+                    :label="$store.state.stampStore.marketValue.label"
+                    v-model="$store.state.stampStore.marketValue.value"
+                    :rules="$store.state.stampStore.marketValue.validation.functions"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs12 align-center justify-space-between>
+                  <v-text-field
+                    prepend-icon="phone"
+                    :label="$store.state.stampStore.faceDescription.label"
+                    v-model="$store.state.stampStore.faceDescription.value"
+                    :rules="$store.state.stampStore.faceDescription.validation.functions"
+                    :counter="$store.state.stampStore.faceDescription.validation.counter"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs12 align-center justify-space-between>
+                  <v-text-field
+                    prepend-icon="phone"
+                    :label="$store.state.stampStore.comment.label"
+                    v-model="$store.state.stampStore.comment.value"
+                    :rules="$store.state.stampStore.comment.validation.functions"
+                    :counter="$store.state.stampStore.comment.validation.counter"
+                    multi-line
+                  ></v-text-field>
+                </v-flex>
                 <v-divider></v-divider>
                 <v-flex xs12 align-center justify-space-between><v-subheader xs12>Custom attributes</v-subheader></v-flex>
                 <!--<v-subheader xs12>Other</v-subheader>-->
@@ -285,6 +381,8 @@
          * Here can either be used this v statement OR this.$store.stampDialogStore.commit('resetState')
          */
         this.$refs.stampForm.reset()
+        this.$store.state.stampStore.isExhibited.value = true
+        this.$store.state.stampStore.isOnSale.value = false
         this.$store.commit('removeAllCustomAttributes')
         // Scroll to top of dialog:
         let container = document.getElementById('dialogVCardText')

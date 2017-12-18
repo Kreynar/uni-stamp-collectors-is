@@ -74,6 +74,12 @@ async function insertStamp (stampFieldsAndValues) {
       structure_type_: stampFieldsAndValues.structureType,
       structure_number_: stampFieldsAndValues.structureNumber,
       structure_stamp_count_: stampFieldsAndValues.structureStampCount,
+      is_exhibited_: stampFieldsAndValues.isExhibited,
+      specimen_count_: stampFieldsAndValues.specimenCount,
+      is_on_sale_: stampFieldsAndValues.isOnSale,
+      market_value_in_usd_: stampFieldsAndValues.marketValue,
+      face_description_: stampFieldsAndValues.faceDescription,
+      comment_: stampFieldsAndValues.comment,
       custom_attributes_: JSON.stringify(stampFieldsAndValues.arrayOfCustomAttributes)
       // album_id_: vv.testAlbumId
     })
@@ -145,8 +151,8 @@ db.postStamps = async (stampFieldsAndValues) => {
   try {
     tracer.log(stampFieldsAndValues)
     const insertedStampId = await insertStamp(stampFieldsAndValues)
-    await insertTopic(stampFieldsAndValues.topics)
-    await insertIntoStampTopic(insertedStampId, stampFieldsAndValues.topics)
+    await insertTopic(stampFieldsAndValues.arrayOfTopics)
+    await insertIntoStampTopic(insertedStampId, stampFieldsAndValues.arrayOfTopics)
     return insertedStampId
   }
   catch (error) {
@@ -240,9 +246,9 @@ db.getArrayOfTopicsIdsAndNames = async (userId) => {
 
 db.getStamps = async () => {
   const textOfQuery = '\
-  SELECT stamp_.id_ AS id, stamp_.temporary_picture_url_ AS "temporaryPictureUrl"\
-  , stamp_.year_ AS year, country_.name_ AS country, stamp_.nominal_value_ AS "nominalValue"\
-  , grade_.name_ AS grade, stamp_.is_cancelled_ AS "isCancelled", ARRAY_AGG(topic_.name_) AS topics\
+  SELECT stamp_.id_ AS "id", stamp_.temporary_picture_url_ AS "temporaryPictureUrl"\
+  , stamp_.year_ AS "year", country_.name_ AS country, stamp_.nominal_value_ AS "nominalValue"\
+  , grade_.name_ AS grade, stamp_.is_cancelled_ AS "isCancelled", ARRAY_AGG(topic_.name_) AS "arrayOfTopics"\
   FROM stamp_\
   LEFT JOIN country_ ON (stamp_.country_id_ = country_.id_)\
   LEFT JOIN grade_ ON (stamp_.grade_id_ = grade_.id_)\
@@ -258,16 +264,23 @@ db.getStamps = async () => {
 
 db.getStampsStampId = async (stampId) => {
   const textOfQuery = '\
-  SELECT stamp_.id_ AS id, stamp_.temporary_picture_url_ AS "temporaryPictureUrl"\
-  , stamp_.year_ AS year, country_.name_ AS country, stamp_.nominal_value_ AS "nominalValue"\
-  , grade_.name_ AS grade, stamp_.is_cancelled_ AS "isCancelled", ARRAY_AGG(topic_.name_) AS topics\
+  SELECT stamp_.id_ AS "id", stamp_.temporary_picture_url_ AS "temporaryPictureUrl"\
+    , stamp_.scott_ AS "numberScott", stamp_.michel_ AS "numberMichel"\
+    , stamp_.stanley_gibbons_ AS "numberStanleyGibbons", stamp_.yvert_et_tellier_ AS "numberYvertEtTellier"\
+    , stamp_.year_ AS "year", stamp_.country_id_ AS country, stamp_.nominal_value_ AS "nominalValue"\
+    , stamp_.grade_id_ AS "grade", stamp_.is_cancelled_ AS "isCancelled"\
+    , stamp_.temporary_user_id_ AS "temporaryUserId", stamp_.category_ AS "category"\
+    , stamp_.structure_type_ AS "structureType", stamp_.structure_number_ AS "structureNumber"\
+    , stamp_.structure_stamp_count_ AS "structureStampCount", stamp_.is_exhibited_ AS "isExhibited"\
+    , stamp_.specimen_count_ AS "specimenCount", stamp_.is_on_sale_ AS "isOnSale"\
+    , stamp_.market_value_in_usd_ AS "marketValue", stamp_.face_description_ AS "faceDescription"\
+    , stamp_.comment_ AS "comment", stamp_.custom_attributes_ AS "arrayOfCustomAttributes"\
+    , ARRAY_AGG(topic_.name_) AS "arrayOfTopics"\
   FROM stamp_\
-  LEFT JOIN country_ ON (stamp_.country_id_ = country_.id_)\
-  LEFT JOIN grade_ ON (stamp_.grade_id_ = grade_.id_)\
   LEFT JOIN stamp_topic_ ON (stamp_.id_ = stamp_topic_.stamp_id_)\
   LEFT JOIN topic_ ON (stamp_topic_.topic_id_ = topic_.id_)\
   WHERE (stamp_.id_ = :stampId ::BIGINT)\
-  GROUP BY stamp_.id_, country_.name_, grade_.name_\
+  GROUP BY stamp_.id_\
   ORDER BY stamp_.id_ ASC\
   ;\
   '
@@ -279,9 +292,9 @@ db.getStampsStampId = async (stampId) => {
 
 db.getUsersUsernameStamps = async (username) => {
   const textOfQuery = '\
-  SELECT stamp_.id_ AS id, stamp_.temporary_picture_url_ AS "temporaryPictureUrl", \
-  stamp_.year_ AS year, country_.name_ AS country, stamp_.nominal_value_ AS "nominalValue", \
-  grade_.name_ AS grade, stamp_.is_cancelled_ AS "isCancelled", ARRAY_AGG(topic_.name_) AS topics\
+  SELECT stamp_.id_ AS "id", stamp_.temporary_picture_url_ AS "temporaryPictureUrl", \
+  stamp_.year_ AS "year", country_.name_ AS country, stamp_.nominal_value_ AS "nominalValue", \
+  grade_.name_ AS grade, stamp_.is_cancelled_ AS "isCancelled", ARRAY_AGG(topic_.name_) AS "arrayOfTopics"\
   FROM stamp_\
   LEFT JOIN country_ ON (stamp_.country_id_ = country_.id_)\
   LEFT JOIN grade_ ON (stamp_.grade_id_ = grade_.id_)\

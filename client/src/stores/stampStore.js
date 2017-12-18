@@ -43,21 +43,33 @@ export default {
     numberScott: {
       isShownInStampsList: true,
       label: ss.numberScott,
+      validation: {
+        counter: 50
+      },
       value: null
     },
     numberMichel: {
       isShownInStampsList: true,
       label: ss.numberMichel,
+      validation: {
+        counter: 50
+      },
       value: null
     },
     numberStanleyGibbons: {
       isShownInStampsList: true,
       label: ss.numberStanleyGibbons,
+      validation: {
+        counter: 50
+      },
       value: null
     },
     numberYvertEtTellier: {
       isShownInStampsList: true,
       label: ss.numberYvertEtTellier,
+      validation: {
+        counter: 50
+      },
       value: null
     },
     year: {
@@ -89,7 +101,8 @@ export default {
       validation: {
         functions: [
           vf.validateRequired
-        ]
+        ],
+        counter: 50
       },
       value: null
     },
@@ -109,9 +122,9 @@ export default {
       validation: {},
       value: false
     },
-    topics: {
+    arrayOfTopics: {
       isShownInStampsList: true,
-      label: ss.topics,
+      label: ss.arrayOfTopics,
       validation: {
         functions: [
           vf.validateRequired
@@ -122,19 +135,25 @@ export default {
     category: {
       isShownInStampsList: false,
       label: ss.category,
-      validation: {},
+      validation: {
+        counter: 50
+      },
       value: null
     },
     structureType: {
       isShownInStampsList: false,
       label: ss.structureType,
-      validation: {},
+      validation: {
+        counter: 50
+      },
       value: null
     },
     structureNumber: {
       isShownInStampsList: false,
       label: ss.structureNumber,
-      validation: {},
+      validation: {
+        counter: 50
+      },
       value: null
     },
     structureStampCount: {
@@ -167,7 +186,33 @@ export default {
       isShownInStampsList: false,
       label: ss.isOnSale,
       validation: {},
-      value: true
+      value: false
+    },
+    marketValue: {
+      isShownInStampsList: false,
+      label: ss.marketValue,
+      validation: {
+        functions: [
+          vf.validateCurrency
+        ]
+      },
+      value: null
+    },
+    faceDescription: {
+      isShownInStampsList: false,
+      label: ss.faceDescription,
+      validation: {
+        counter: 300
+      },
+      value: null
+    },
+    comment: {
+      isShownInStampsList: false,
+      label: ss.comment,
+      validation: {
+        counter: 1000
+      },
+      value: null
     }
   }),
   getters: {
@@ -214,8 +259,8 @@ export default {
     setArrayOfTopicsIdsAndNames (state, arrayOfTopicsIdsAndNames) {
       state.arrayOfTopicsIdsAndNames = arrayOfTopicsIdsAndNames
     },
-    removeItemFromTopicsValues (state, nameOfTopic) {
-      state.topics.value.splice(state.topics.value.indexOf(nameOfTopic), 1)
+    removeItemFromArrayOfTopics (state, nameOfTopic) {
+      state.arrayOfTopics.value.splice(state.arrayOfTopics.value.indexOf(nameOfTopic), 1)
     },
     addCustomAttribute (state) {
       state.arrayOfCustomAttributes.push({

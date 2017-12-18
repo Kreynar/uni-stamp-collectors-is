@@ -140,10 +140,10 @@
     methods: {
       doAction (nameOfButton) {
         if (nameOfButton === vv.navigationDrawer.newStamp) {
-          this.changeNewStampDialogVisibility()
+          this.showStampDialogForCreate()
         }
       },
-      async changeNewStampDialogVisibility () {
+      async showStampDialogForCreate () {
         console.log('@@@ changeNewStampDialogVisibility() kvietimas')
         const isStampDialogVisible = !(this.$store.getters.getIsStampDialogVisible)
         this.$store.commit('setIsStampDialogVisible', isStampDialogVisible)
