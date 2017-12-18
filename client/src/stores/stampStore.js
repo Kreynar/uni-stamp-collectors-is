@@ -146,6 +146,28 @@ export default {
         ]
       },
       value: null
+    },
+    isExhibited: {
+      isShownInStampsList: false,
+      label: ss.isExhibited,
+      validation: {},
+      value: true
+    },
+    specimenCount: {
+      isShownInStampsList: false,
+      label: ss.specimenCount,
+      validation: {
+        functions: [
+          vf.validateNullOrPositiveInteger
+        ]
+      },
+      value: null
+    },
+    isOnSale: {
+      isShownInStampsList: false,
+      label: ss.isOnSale,
+      validation: {},
+      value: true
     }
   }),
   getters: {
@@ -171,6 +193,9 @@ export default {
     }
   },
   mutations: {
+    setArrayOfStamps (state, arrayOfStamps) {
+      state.arrayOfStamps = arrayOfStamps
+    },
     /*
      * I tried using this resetState function, as it seems more suitable than this.$refs.stampForm.reset(),
      * BUT when using it, I get this error ([Vue warn]: Error in render: "TypeError: Cannot read property 'length' of null")

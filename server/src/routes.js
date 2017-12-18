@@ -32,6 +32,12 @@ module.exports = (app) => {
     GradesControllers.get)
   app.get(ss.path.topics,
     TopicsControllers.get)
+  app.get(ss.path.stamps,
+    StampsControllers.getStamps)
+  app.get(ss.path.stamps + ss.path.stampId,
+    StampsControllers.getStampsStampId)
+  app.get(ss.path.users + ss.path.username + ss.path.stamps,
+    StampsControllers.getUsersUsernameStamps)
   app.post(ss.path.register,
     UsersPolicies.register,
     UsersControllers.register)

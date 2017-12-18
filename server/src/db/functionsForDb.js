@@ -238,4 +238,65 @@ db.getArrayOfTopicsIdsAndNames = async (userId) => {
   }
 }
 
+db.getStamps = async () => {
+  const textOfQuery = '\
+  SELECT stamp_.id_ AS id, stamp_.temporary_picture_url_ AS "temporaryPictureUrl"\
+  , stamp_.year_ AS year, country_.name_ AS country, stamp_.nominal_value_ AS "nominalValue"\
+  , grade_.name_ AS grade, stamp_.is_cancelled_ AS "isCancelled", ARRAY_AGG(topic_.name_) AS topics\
+  FROM stamp_\
+  LEFT JOIN country_ ON (stamp_.country_id_ = country_.id_)\
+  LEFT JOIN grade_ ON (stamp_.grade_id_ = grade_.id_)\
+  LEFT JOIN stamp_topic_ ON (stamp_.id_ = stamp_topic_.stamp_id_)\
+  LEFT JOIN topic_ ON (stamp_topic_.topic_id_ = topic_.id_)\
+  GROUP BY stamp_.id_, country_.name_, grade_.name_\
+  ORDER BY stamp_.id_ ASC\
+  ;\
+  '
+  let resultOfQuery = await knex.raw(textOfQuery)
+  return resultOfQuery.rows
+}
+
+db.getStampsStampId = async (stampId) => {
+  const textOfQuery = '\
+  SELECT stamp_.id_ AS id, stamp_.temporary_picture_url_ AS "temporaryPictureUrl"\
+  , stamp_.year_ AS year, country_.name_ AS country, stamp_.nominal_value_ AS "nominalValue"\
+  , grade_.name_ AS grade, stamp_.is_cancelled_ AS "isCancelled", ARRAY_AGG(topic_.name_) AS topics\
+  FROM stamp_\
+  LEFT JOIN country_ ON (stamp_.country_id_ = country_.id_)\
+  LEFT JOIN grade_ ON (stamp_.grade_id_ = grade_.id_)\
+  LEFT JOIN stamp_topic_ ON (stamp_.id_ = stamp_topic_.stamp_id_)\
+  LEFT JOIN topic_ ON (stamp_topic_.topic_id_ = topic_.id_)\
+  WHERE (stamp_.id_ = :stampId ::BIGINT)\
+  GROUP BY stamp_.id_, country_.name_, grade_.name_\
+  ORDER BY stamp_.id_ ASC\
+  ;\
+  '
+  let resultOfQuery = await knex.raw(textOfQuery, {
+    stampId: stampId
+  })
+  return resultOfQuery.rows
+}
+
+db.getUsersUsernameStamps = async (username) => {
+  const textOfQuery = '\
+  SELECT stamp_.id_ AS id, stamp_.temporary_picture_url_ AS "temporaryPictureUrl", \
+  stamp_.year_ AS year, country_.name_ AS country, stamp_.nominal_value_ AS "nominalValue", \
+  grade_.name_ AS grade, stamp_.is_cancelled_ AS "isCancelled", ARRAY_AGG(topic_.name_) AS topics\
+  FROM stamp_\
+  LEFT JOIN country_ ON (stamp_.country_id_ = country_.id_)\
+  LEFT JOIN grade_ ON (stamp_.grade_id_ = grade_.id_)\
+  LEFT JOIN stamp_topic_ ON (stamp_.id_ = stamp_topic_.stamp_id_)\
+  LEFT JOIN topic_ ON (stamp_topic_.topic_id_ = topic_.id_)\
+  INNER JOIN user_ ON (stamp_.temporary_user_id_ = user_.id_)\
+  WHERE (user_.name_ = :username ::TEXT)\
+  GROUP BY stamp_.id_, country_.name_, grade_.name_\
+  ORDER BY stamp_.id_ ASC\
+  ;\
+  '
+  let resultOfQuery = await knex.raw(textOfQuery, {
+    username: username
+  })
+  return resultOfQuery.rows
+}
+
 module.exports = db

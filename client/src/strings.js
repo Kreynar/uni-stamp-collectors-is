@@ -66,7 +66,7 @@ vv.stamps = {
   structureStampCount: 'Quantity of stamps in structure',
   structureNumber: 'ID of structure',
   category: 'Category',
-  quantity: 'Quantity of same specimen',
+  specimenCount: 'Quantity of same specimen',
   isExhibited: 'Exhibited',
   isOnSale: 'On sale',
   marketValue: 'Market value',
@@ -98,8 +98,9 @@ vv.path.users = '/users'
 vv.path.albums = '/albums'
 vv.path.new = '/new'
 vv.path.edit = '/edit'
-vv.path.id = '/:id'
-vv.path.name = '/:name'
+vv.path.albumId = '/:albumId'
+vv.path.stampId = '/:stampId'
+vv.path.username = '/:username'
 vv.path.countries = '/countries'
 vv.path.grades = '/grades'
 vv.path.topics = '/topics'
