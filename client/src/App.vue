@@ -70,58 +70,7 @@
   import vv from './strings.js'
   import StampDialogForCreateAndEditAndView from './components/StampDialogForCreateAndEditAndView.vue'
   import StampList from './components/StampList.vue'
-  import axios from 'axios'
-
-  async function getArrayOfCountriesIdsAndNamesFromServer () {
-    try {
-      const serverResponse = await axios.create({
-        baseURL: vv.baseURL
-      }).get(vv.path.countries)
-      const arrayOfCountriesIdsAndNames = serverResponse.data
-      console.log('@@@ arrayOfCountriesNamesAndIds', arrayOfCountriesIdsAndNames)
-      return arrayOfCountriesIdsAndNames
-    }
-    catch (error) {
-      const errorMessage = error.response.data.errorMessage
-      console.log('@@@ error in getArrayOfCountriesIdsAndNamesFromServer:  ', errorMessage)
-    }
-    finally {
-    }
-  }
-
-  async function getArrayOfGradesIdsAndNamesFromServer () {
-    try {
-      const serverResponse = await axios.create({
-        baseURL: vv.baseURL
-      }).get(vv.path.grades)
-      const arrayOfGradesNamesAndIds = serverResponse.data
-      console.log('@@@ arrayOfGradesNamesAndIds', arrayOfGradesNamesAndIds)
-      return arrayOfGradesNamesAndIds
-    }
-    catch (error) {
-      const errorMessage = error.response.data.errorMessage
-      console.log('@@@ error in getArrayOfGradesIdsAndNamesFromServer:  ', errorMessage)
-    }
-    finally {
-    }
-  }
-
-  async function getArrayOfTopicsIdsAndNamesFromServer () {
-    try {
-      const serverResponse = await axios.create({
-        baseURL: vv.baseURL
-      }).get(vv.path.topics)
-      const arrayOfTopicsIdsAndNames = serverResponse.data
-      console.log('@@@ arrayOfTopicsIdsAndNames', serverResponse)
-      return arrayOfTopicsIdsAndNames
-    }
-    catch (error) {
-      const errorMessage = error.response.data.errorMessage
-      console.log('@@@ error in getArrayOfTopicsIdsAndNamesFromServer:  ', errorMessage)
-    }
-    finally {
-    }
-  }
+//  import axios from 'axios'
 
   export default {
     data: () => ({
@@ -145,17 +94,17 @@
       },
       async showStampDialogForCreate () {
         console.log('@@@ changeNewStampDialogVisibility() kvietimas')
-        const isStampDialogVisible = !(this.$store.getters.getIsStampDialogVisible)
-        this.$store.commit('setIsStampDialogVisible', isStampDialogVisible)
-        if (isStampDialogVisible) {
-          // We get all possible countries list from server and put this array into store >>> ... >>> arrayOfVariants
-          const arrayOfCountriesIdsAndNames = await getArrayOfCountriesIdsAndNamesFromServer()
-          this.$store.commit('setArrayOfCountriesIdsAndNames', arrayOfCountriesIdsAndNames)
-          const arrayOfGradesIdsAndNames = await getArrayOfGradesIdsAndNamesFromServer()
-          this.$store.commit('setArrayOfGradesIdsAndNames', arrayOfGradesIdsAndNames)
-          const arrayOfTopicsIdsAndNames = await getArrayOfTopicsIdsAndNamesFromServer()
-          this.$store.commit('setArrayOfTopicsIdsAndNames', arrayOfTopicsIdsAndNames)
-        }
+//        const isStampDialogVisible = !(this.$store.getters.getIsStampDialogVisible)
+//        this.$store.commit('setIsStampDialogVisible', isStampDialogVisible)
+//        if (isStampDialogVisible) {
+//          this.$store.commit('setStampDialogMode', vv.stampDialog.mode.create)
+//          // We get all possible countries list from server and put this array into store >>> ... >>> arrayOfVariants
+//          this.$store.dispatch('loadCountriesGradesTopicsFromServer')
+//        }
+        this.$store.commit('setStampId', null)
+        this.$store.commit('setIsStampDialogVisible', true)
+        this.$store.commit('setStampDialogMode', vv.stampDialog.mode.create)
+        this.$store.dispatch('loadCountriesGradesTopicsFromServer')
       }
     },
     components: {

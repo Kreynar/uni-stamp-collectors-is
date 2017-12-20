@@ -1,11 +1,12 @@
 <template>
-  <v-dialog v-model="$store.state.isStampDialogVisible" width="800px" persistent scrollable>
+  <!--<v-dialog v-model="$store.state.isStampDialogVisible" width="800px" persistent scrollable>-->
+  <v-dialog v-model="getIsStampDialogVisible" width="800px" persistent scrollable>
 
       <v-card>
         <v-card-title
           class="py-4 title" :class="this.$store.state.mainColorOfTheme"
         >
-          {{ title }}
+          {{ $store.getters.getStampDialogMode | getTitle }}
         </v-card-title>
 
 
@@ -256,12 +257,29 @@
                 <!--</v-flex>-->
 
                 <v-flex xs12 align-center justify-space-between>
+                  <!--<v-text-field-->
+                    <!--prepend-icon="phone"-->
+                    <!--suffix="$"-->
+                    <!--:label="$store.state.stampStore.marketValue.label"-->
+                    <!--v-model="$store.state.stampStore.marketValue.value"-->
+                    <!--:rules="$store.state.stampStore.marketValue.validation.functions"-->
+                    <!--@change="correctInputValue($store.state.stampStore.marketValue)"-->
+                  <!--&gt;</v-text-field>-->
                   <v-text-field
                     prepend-icon="phone"
+                    suffix="$"
                     :label="$store.state.stampStore.marketValue.label"
                     v-model="$store.state.stampStore.marketValue.value"
                     :rules="$store.state.stampStore.marketValue.validation.functions"
                   ></v-text-field>
+                  <!--<v-text-field-->
+                    <!--prepend-icon="phone"-->
+                    <!--suffix="$"-->
+                    <!--:value="message"-->
+                    <!--@input="updateMessage"-->
+                    <!--:label="$store.state.stampStore.marketValue.label"-->
+                    <!--:rules="$store.state.stampStore.marketValue.validation.functions"-->
+                  <!--&gt;</v-text-field>-->
                 </v-flex>
                 <v-flex xs12 align-center justify-space-between>
                   <v-text-field
@@ -303,6 +321,7 @@
                   </v-flex>
                 </template>
                 <v-btn
+                  v-if="getAreElementsForStampCreateAndEditDisplayed($store.getters.getStampDialogMode)"
                   round
                   :color="$store.state.mainColorOfTheme"
                   dark
@@ -323,18 +342,26 @@
           </v-form>
         </v-card-text>
         <v-card-actions>
-          <v-btn flat color="red" @click="clearForm">
+          <v-btn
+            v-if="getAreElementsForStampCreateAndEditDisplayed($store.getters.getStampDialogMode)"
+            flat
+            color="red"
+            @click="clearForm">
             Clear
             <v-icon dark left>loop</v-icon>
           </v-btn>
           <v-spacer></v-spacer>
           <!--<v-btn flat color="primary" @click="isNewStampDialogVisible = false">Cancel</v-btn>-->
           <!--<v-btn flat @click="isNewStampDialogVisible = false">Save</v-btn>-->
-          <v-btn flat color="blue-grey" @click="setIsStampDialogVisible(false)">
+          <v-btn flat color="blue-grey" @click="$store.commit('setIsStampDialogVisible', false)">
             <v-icon dark left>arrow_back</v-icon>
             Cancel
           </v-btn>
-          <v-btn color="green" :disabled="!areAllFieldsValidlyFilled" @click="submitForm()">
+          <v-btn
+            v-if="getAreElementsForStampCreateAndEditDisplayed($store.getters.getStampDialogMode)"
+            color="green"
+            :disabled="!areAllFieldsValidlyFilled"
+            @click="submitForm()">
             Save
             <v-icon dark right>check_circle</v-icon>
           </v-btn>
@@ -357,7 +384,8 @@
     data () {
       return {
 //        isStampDialogVisible: this.$store.state.isStampDialogVisible,
-        title: strings.stamps.titleAddNewStamp,
+//        title: strings.stamps.titleAddNewStamp,
+        stampIdOfLastStampInDialog: null,
         areAllFieldsValidlyFilled: false
       }
     },
@@ -366,20 +394,87 @@
 //    data () {
 //
 //    },
+    filters: {
+      getTitle (stampDialogMode) {
+        let stampDialogTitle
+        switch (stampDialogMode) {
+          case strings.stampDialog.mode.create:
+            stampDialogTitle = strings.stampDialog.title.create
+            break
+          case strings.stampDialog.mode.edit:
+            stampDialogTitle = strings.stampDialog.title.edit
+            break
+          case strings.stampDialog.mode.view:
+            stampDialogTitle = strings.stampDialog.title.view
+            break
+        }
+        return stampDialogTitle
+      }
+    },
     computed: {
-//      ,
-//      ...mapGetters({
-//        getFormFieldsAndValues: 'getFormFieldsAndValues'
-//      })
+      getIsStampDialogVisible () {
+//        $store.state.isStampDialogVisible
+        // This method is invoked only when state's variables, mentioned inside this method, changes.
+        // That means, it's invoked only when stamp dialog is being hidden or is opening for show.
+        // So if we want each time dialog opens, the dialog to be fully scrolled to top, we can
+        // do scrolling in this method.
+        console.log('@@@ getIsStampDialogVisible () kvietimas')
+        const container = document.getElementById('dialogVCardText')
+        const isStampDialogVisible = this.$store.getters.getIsStampDialogVisible
+        const stampIdOfCurrentStampInDialog = this.$store.getters.getStampId
+//        console.log('@@@ getIsStampDialogVisible () >>> container ', container, ' / isStampDialogVisible ', isStampDialogVisible)
+//        console.log('@@@ getIsStampDialogVisible () >>> stampIdOfCurrentStampInDialog ', stampIdOfCurrentStampInDialog, ' / this.stampIdOfLastStampInDialog ', this.stampIdOfLastStampInDialog)
+        if (container) {
+          container.scrollTop = 0
+          // Cia reikia clearForm() iskviest
+        }
+        if (isStampDialogVisible === false) {
+          this.stampIdOfLastStampInDialog = stampIdOfCurrentStampInDialog
+        }
+        else if (isStampDialogVisible) {
+          if (stampIdOfCurrentStampInDialog !== null) {
+            console.log('@@@ 666 if (stampIdOfCurrentStampInDialog !== null) {')
+            // No need to call clearForm(), because stamp dialog fields will be overwritten with newly loaded
+            // stamp attributes from server anyway.
+          }
+          else if (stampIdOfCurrentStampInDialog !== this.stampIdOfLastStampInDialog) {
+            console.log('@@@ getIsStampDialogVisible clearForm()')
+            this.stampIdOfLastStampInDialog = stampIdOfCurrentStampInDialog
+            this.clearForm()
+          }
+        }
+        return isStampDialogVisible
+      }
     },
     methods: {
-      setIsStampDialogVisible (booleanValue) {
-        this.$store.commit('setIsStampDialogVisible', booleanValue)
+//      setIsStampDialogVisible (booleanValue) {
+//        this.$store.commit('setIsStampDialogVisible', booleanValue)
+//      },
+      /*
+       * Had to move getAreElementsForStampCreateAndEditDisplayed (stampDialogMode)
+       * from computed: { ... } to methods: { ... }, because it's probably
+       * impossible to call a computed method from v-if.
+       */
+      getAreElementsForStampCreateAndEditDisplayed (stampDialogMode) {
+        let areButtonsDisplayed
+        switch (stampDialogMode) {
+          case strings.stampDialog.mode.create:
+            areButtonsDisplayed = true
+            break
+          case strings.stampDialog.mode.edit:
+            areButtonsDisplayed = true
+            break
+          case strings.stampDialog.mode.view:
+            areButtonsDisplayed = false
+            break
+        }
+        return areButtonsDisplayed
       },
       clearForm () {
         /*
          * Here can either be used this v statement OR this.$store.stampDialogStore.commit('resetState')
          */
+        console.log('@@@ clearForm ()')
         this.$refs.stampForm.reset()
         this.$store.state.stampStore.isExhibited.value = true
         this.$store.state.stampStore.isOnSale.value = false
@@ -413,7 +508,8 @@
             this.$store.state.snackbarColor = 'success'
             this.$store.state.snackbarMessage = 'Stamp successfully inserted/updated'
             this.$store.state.isSnackbarDisplayed = true
-            this.setIsStampDialogVisible(false)
+//            this.setIsStampDialogVisible(false)
+            this.$store.commit('setIsStampDialogVisible', false)
             this.clearForm()
             console.log('@@@ successfully uploaded stamp form to server: ', serverResponse)
           }
@@ -426,11 +522,37 @@
             console.log('@@@ error in uploading stamp form to server:  ', errorMessage)
           }
         }
+      },
+      correctInputValue (marketValue) {
+        console.log('@@@correctInputValue (marketValue) 1', marketValue)
+        if (marketValue) {
+          console.log('@@@correctInputValue (marketValue) 2', marketValue)
+          if (marketValue.value) {
+            console.log('@@@correctInputValue (marketValue) 3', marketValue)
+            if (marketValue.trim) {
+              console.log('@@@correctInputValue (marketValue) 4', marketValue)
+              marketValue.trim()
+            }
+          }
+        }
       }
+    },
+    beforeCreate () {
+      console.log('@@@ StampDialog....vue >>> beforeCreate ()  ')
+    },
+    created () {
+      console.log('@@@ StampDialog....vue >>> created ()  ')
+    },
+    beforeMount () {
+      console.log('@@@ StampDialog....vue >>> beforeMount ()  ')
+    },
+    mounted () {
+      console.log('@@@ StampDialog....vue >>> mounted ()  ')
     },
     beforeDestroy () {
       console.log('@@@ StampDialog....vue >>> beforeDestroy ()  ')
-      this.setIsStampDialogVisible(false)
+//      this.setIsStampDialogVisible(false)
+      this.$store.commit('setIsStampDialogVisible', false)
     },
     destroyed () {
       console.log('@@@ StampDialog....vue >>> destroyed () ')

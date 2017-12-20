@@ -25,7 +25,7 @@ const stampSchema = {
   isExhibited: Joi.boolean().allow(null),
   specimenCount: Joi.number().integer().allow(null),
   isOnSale: Joi.boolean().allow(null),
-  marketValue: Joi.number().positive().allow(null),
+  marketValue: Joi.number().positive().allow(0, null),
   faceDescription: Joi.string().max(300).allow('', null),
   comment: Joi.string().max(1000).allow('', null),
   arrayOfCustomAttributes: Joi.array().items(Joi.object())

@@ -14,42 +14,15 @@ import stampStore from './stampStore.js'
 
 Vue.use(Vuex)
 
-// const mainStore = new Vuex.Store({
-//   modules: {
-//     stampsStore
-//   },
-//   state: {
-//     isStampDialogVisible: false
-//     // registrations: [],
-//     // users: [
-//     //   {id: 1, name: 'Max', registered: false},
-//     //   {id: 2, name: 'Anna', registered: false}
-//     // ]
-//   },
-//   getters: {
-//     getIsStampDialogVisible (state) {
-//       return state.isStampDialogVisible
-//     }
-//   },
-//   mutations: {
-//     setIsStampDialogVisible (state, booleanValue) {
-//       state.isStampDialogVisible = booleanValue
-//     }
-//   }
-//   // getters,
-//   // mutations,
-//   // actions
-// })
-//
-// module.exports = mainStore
-
-export default new Vuex.Store({
+const mainStore = new Vuex.Store({
   modules: {
     stampStore
   },
   state: () => ({
     mainColorOfTheme: strings.mainColorOfTheme,
     isStampDialogVisible: false,
+    // Later, when we open stamp dialog, we change stampDialogMode to according value in strings.stampDialog.mode.<mode>
+    stampDialogMode: null,
     snackbarMessage: 'lalala',
     isSnackbarDisplayed: false,
     snackbarColor: 'success'
@@ -66,14 +39,38 @@ export default new Vuex.Store({
   getters: {
     getIsStampDialogVisible (state) {
       return state.isStampDialogVisible
+    },
+    getStampDialogMode (state) {
+      return state.stampDialogMode
     }
   },
   mutations: {
     setIsStampDialogVisible (state, booleanValue) {
       state.isStampDialogVisible = booleanValue
+    },
+    setStampDialogMode (state, mode) {
+      state.stampDialogMode = mode
     }
   }
   // getters,
   // mutations,
   // actions
 })
+
+// mainStore.watch((state) => state.stampStore.marketValue, (newValue, oldValue) => {
+//   // newValue.stampStore.marketValue.value = null
+//   // newValue.getters.getMarketValue = null
+//   console.log('@@@ in mainStore.watch(...) 1', newValue, newValue.value)
+//   if (newValue.value) {
+//     console.log('@@@ in mainStore.watch(...) 2', newValue, newValue.value)
+//     newValue.value = newValue.value.trim()
+//     // newValue.value = 'qweqwe'
+//     console.log('@@@ in mainStore.watch(...) 3', newValue, newValue.value)
+//   }
+//   // newValue.marketValue.value = 'awdawdawd'
+// }, {
+//   deep: true,
+//   immediate: true
+// })
+
+export default mainStore

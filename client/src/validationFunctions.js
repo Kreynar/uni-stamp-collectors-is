@@ -12,29 +12,34 @@ validationFunctions.validateRequired = (value) => {
 validationFunctions.validateCurrency = (value) => {
   // var value= $("#field1").val();
   const errorMessage = 'Must be correct amount of money (e.g. 1, 0.59, 148.3)'
-  const regex = /^[1-9]\d*(()?(\.\d{0,2})?)$/
+  const regex = /^[0-9]\d*(()?(\.\d{0,2})?)$/
   // var regex = /^[1-9]\d*(((,\d{3}){1})?(\.\d{0,2})?)$/;
-  if (regex.test(value)) {
-    // Input is valid, check the number of decimal places
-    const twoDecimalPlaces = /\.\d{2}$/g
-    const oneDecimalPlace = /\.\d{1}$/g
-    const noDecimalPlacesWithDecimal = /\.\d{0}$/g
-    if (value.match(twoDecimalPlaces)) {
-      // all good, return as is
-      return value
-    }
-    if (value.match(noDecimalPlacesWithDecimal)) {
-      // add two decimal places
-      return value + '00'
-    }
-    if (value.match(oneDecimalPlace)) {
-      // ad one decimal place
-      return value + '0'
-    }
-    // else there is no decimal places and no decimal
-    return value + '.00'
+  if ((value === null) || (regex.test(value))) {
+    return true
   }
-  return errorMessage
+  else {
+    return errorMessage
+  }
+  // if (regex.test(value)) {
+  //   // Input is valid, check the number of decimal places
+  //   const twoDecimalPlaces = /\.\d{2}$/g
+  //   const oneDecimalPlace = /\.\d{1}$/g
+  //   const noDecimalPlacesWithDecimal = /\.\d{0}$/g
+  //   if (value.match(twoDecimalPlaces)) {
+  //     // all good, return as is
+  //     return value
+  //   }
+  //   if (value.match(noDecimalPlacesWithDecimal)) {
+  //     // add two decimal places
+  //     return value + '00'
+  //   }
+  //   if (value.match(oneDecimalPlace)) {
+  //     // ad one decimal place
+  //     return value + '0'
+  //   }
+  //   // else there is no decimal places and no decimal
+  //   return value + '.00'
+  // }
 }
 
 validationFunctions.validateNullOrPositiveInteger = (value) => {

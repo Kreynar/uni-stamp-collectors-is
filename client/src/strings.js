@@ -21,8 +21,6 @@ vv.stamps = {
     'Corner block',
     'Coil Strip'
   ],
-  titleAddNewStamp: 'Add New Stamp',
-  titleEditStamp: 'Edit Stamp',
   // pictureOfFront: {
   //   name: 'pictureOfFront',
   //   label: 'Front picture'
@@ -68,6 +66,7 @@ vv.stamps = {
   category: 'Category',
   specimenCount: 'Quantity of same specimen',
   isExhibited: 'Exhibited',
+  // isExhibited: 'Hidden from other users',
   isOnSale: 'On sale',
   marketValue: 'Market value',
   isAdhesive: 'Adhesive',
@@ -90,6 +89,19 @@ vv.navigationDrawer.newStamp = 'newStamp'
 vv.navigationDrawer.allStamps = 'allStamps'
 vv.navigationDrawer.allCollectors = 'allCollectors'
 
+vv.stampDialog = {
+  mode: {
+    create: 'create',
+    edit: 'edit',
+    view: 'view'
+  },
+  title: {
+    create: 'Add New Stamp',
+    edit: 'Edit Stamp',
+    view: 'Stamp Info'
+  }
+}
+
 vv.baseURL = `http://localhost:8081/`
 vv.path = {}
 vv.path.register = '/register'
@@ -98,9 +110,9 @@ vv.path.users = '/users'
 vv.path.albums = '/albums'
 vv.path.new = '/new'
 vv.path.edit = '/edit'
-vv.path.albumId = '/:albumId'
-vv.path.stampId = '/:stampId'
-vv.path.username = '/:username'
+// vv.path.albumId = '/:albumId'
+// vv.path.stampId = '/:stampId'
+// vv.path.username = '/:username'
 vv.path.countries = '/countries'
 vv.path.grades = '/grades'
 vv.path.topics = '/topics'

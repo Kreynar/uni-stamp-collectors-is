@@ -4,9 +4,78 @@
 
 import strings from '../strings.js'
 import vf from '../validationFunctions.js'
+import axios from 'axios'
 const ss = strings.stamps
 
-export default {
+async function getArrayOfCountriesIdsAndNamesFromServer () {
+  try {
+    const serverResponse = await axios.create({
+      baseURL: strings.baseURL
+    }).get(strings.path.countries)
+    const arrayOfCountriesIdsAndNames = serverResponse.data
+    console.log('@@@ arrayOfCountriesNamesAndIds', arrayOfCountriesIdsAndNames)
+    return arrayOfCountriesIdsAndNames
+  }
+  catch (error) {
+    const errorMessage = error.response.data.errorMessage
+    console.log('@@@ error in getArrayOfCountriesIdsAndNamesFromServer:  ', errorMessage)
+  }
+  finally {
+  }
+}
+
+async function getArrayOfGradesIdsAndNamesFromServer () {
+  try {
+    const serverResponse = await axios.create({
+      baseURL: strings.baseURL
+    }).get(strings.path.grades)
+    const arrayOfGradesNamesAndIds = serverResponse.data
+    console.log('@@@ arrayOfGradesNamesAndIds', arrayOfGradesNamesAndIds)
+    return arrayOfGradesNamesAndIds
+  }
+  catch (error) {
+    const errorMessage = error.response.data.errorMessage
+    console.log('@@@ error in getArrayOfGradesIdsAndNamesFromServer:  ', errorMessage)
+  }
+  finally {
+  }
+}
+
+async function getArrayOfTopicsIdsAndNamesFromServer () {
+  try {
+    const serverResponse = await axios.create({
+      baseURL: strings.baseURL
+    }).get(strings.path.topics)
+    const arrayOfTopicsIdsAndNames = serverResponse.data
+    console.log('@@@ arrayOfTopicsIdsAndNames', serverResponse)
+    return arrayOfTopicsIdsAndNames
+  }
+  catch (error) {
+    const errorMessage = error.response.data.errorMessage
+    console.log('@@@ error in getArrayOfTopicsIdsAndNamesFromServer:  ', errorMessage)
+  }
+  finally {
+  }
+}
+
+async function getStampAttributesFromServer (stampId) {
+  try {
+    const serverResponse = await axios.create({
+      baseURL: strings.baseURL
+    }).get(strings.path.stamps + '/' + stampId)
+    const stampAttributes = serverResponse.data
+    console.log('@@@ getStampAttributesFromServer serverResponse.data', serverResponse)
+    return stampAttributes
+  }
+  catch (error) {
+    const errorMessage = error.response.data.errorMessage
+    console.log('@@@ error in getArrayOfTopicsIdsAndNamesFromServer:  ', errorMessage)
+  }
+  finally {
+  }
+}
+
+const stampStore = {
   state: () => ({
     arrayOfStamps: [],
     arrayOfCountriesIdsAndNames: [],
@@ -14,7 +83,6 @@ export default {
     arrayOfTopicsIdsAndNames: [],
     arrayOfCategoriesNames: ss.arrayOfCategoriesNames,
     arrayOfStructureTypesNames: ss.arrayOfStructureTypesNames,
-    arrayOfCustomAttributes: [],
     // pictureOfFront: {
     //   isShownInStampsList: true,
     //   label: ss.pictureOfFront
@@ -30,6 +98,10 @@ export default {
     //     vf.validateRequired()
     //   ]
     // },
+    arrayOfCustomAttributes: [],
+    id: {
+      value: null
+    },
     temporaryPictureUrl: {
       isShownInStampsList: true,
       label: ss.temporaryPictureUrl,
@@ -217,7 +289,8 @@ export default {
   }),
   getters: {
     getFormFieldsAndValues (state) {
-      let formFieldsAndValues = {}
+      console.log('@@@ getFormFieldsAndValues (state)')
+      let formFieldsAndValues = []
       for (const propertyName in state) {
         if (state.hasOwnProperty(propertyName)) {
           if (state[propertyName].hasOwnProperty('value')) {
@@ -225,7 +298,8 @@ export default {
           }
         }
       }
-      formFieldsAndValues['arrayOfCustomAttributes'] = state.arrayOfCustomAttributes
+      // formFieldsAndValues['arrayOfCustomAttributes'] = state.arrayOfCustomAttributes
+      formFieldsAndValues['arrayOfCustomAttributes'] = JSON.parse(JSON.stringify(state.arrayOfCustomAttributes))
       console.log('@@@ formFieldsAndValues ', formFieldsAndValues)
       return formFieldsAndValues
     },
@@ -235,11 +309,29 @@ export default {
         arrayOfTopicsNames.push(topic.name_)
       })
       return arrayOfTopicsNames
+    },
+    getStampId (state) {
+      return state.id.value
     }
   },
   mutations: {
     setArrayOfStamps (state, arrayOfStamps) {
       state.arrayOfStamps = arrayOfStamps
+    },
+    setStampAttributes (state, stampAttributes) {
+      for (const attributeName in stampAttributes) {
+        if (stampAttributes.hasOwnProperty(attributeName)) {
+          if (state.hasOwnProperty(attributeName)) {
+            if (attributeName === 'arrayOfCustomAttributes') {
+              // state[attributeName] = stampAttributes[attributeName]
+              state[attributeName] = JSON.parse(JSON.stringify(stampAttributes[attributeName]))
+            }
+            else {
+              state[attributeName].value = stampAttributes[attributeName]
+            }
+          }
+        }
+      }
     },
     /*
      * I tried using this resetState function, as it seems more suitable than this.$refs.stampForm.reset(),
@@ -273,12 +365,34 @@ export default {
       state.arrayOfCustomAttributes.splice(indexOfCustomAttribute, 1)
     },
     removeAllCustomAttributes (state) {
+      console.log('@@@@ removeAllCustomAttributes (state)')
       state.arrayOfCustomAttributes = []
+    },
+    setStampId (state, stampId) {
+      state.id.value = stampId
     }
   },
   actions: {
+    async loadCountriesGradesTopicsFromServer (context) {
+      const arrayOfCountriesIdsAndNames = await getArrayOfCountriesIdsAndNamesFromServer()
+      context.commit('setArrayOfCountriesIdsAndNames', arrayOfCountriesIdsAndNames)
+      const arrayOfGradesIdsAndNames = await getArrayOfGradesIdsAndNamesFromServer()
+      context.commit('setArrayOfGradesIdsAndNames', arrayOfGradesIdsAndNames)
+      const arrayOfTopicsIdsAndNames = await getArrayOfTopicsIdsAndNamesFromServer()
+      context.commit('setArrayOfTopicsIdsAndNames', arrayOfTopicsIdsAndNames)
+    },
+    async loadStampAttributesFromServer (context, stampId) {
+      const stampAttributes = await getStampAttributesFromServer(stampId)
+      context.commit('setStampAttributes', stampAttributes)
+    }
     // setArrayOfCountriesNamesAndIds (state, arrayOfCountriesNamesAndIds) {
     //   state.mutations.setArrayOfCountriesNamesAndIds(arrayOfCountriesNamesAndIds)
     // }
   }
 }
+
+// stampStore.watch((state) => state, (newValue, oldValue) => {
+//   newValue.marketValue.value = null
+// })
+
+export default stampStore

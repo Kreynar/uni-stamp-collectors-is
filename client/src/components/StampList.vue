@@ -74,8 +74,12 @@
                 :src="stamp.temporaryPictureUrl"
                 height="300px"
                 contain
+                @click="showStampDialogForView(stamp.id)"
               ></v-card-media>
-              <v-layout justify-center>
+              <v-layout
+                justify-center
+                @click="showStampDialogForView(stamp.id)"
+              >
                 <v-card-title class="text-xs-center">
                   <div class="text-xs-center" style="font-size:130%">
                     <span>{{ stamp.year }}, {{ stamp.country }}, {{ stamp.nominalValue }}</span><br>
@@ -98,7 +102,7 @@
                 </v-flex>
                 <v-flex xs5></v-flex>
                 <v-flex xs1>
-                  <v-btn flat icon color="black" @click="">
+                  <v-btn flat icon color="black" @click="showStampDialogForEdit(stamp.id)">
                     <v-icon>create</v-icon>
                   </v-btn>
                 </v-flex>
@@ -124,23 +128,33 @@
     computed: {
     },
     filters: {
-//      getIsCancelledDisplay: function (isCancelled) {
-//        if (isCancelled) {
-//          return 'Cancelled'
-//        }
-//        else {
-//          return 'Not cancelled'
-//        }
-//      }
+      getIsCancelledDisplay: function (isCancelled) {
+        if (isCancelled) {
+          return 'Cancelled'
+        }
+        else {
+          return 'Not cancelled'
+        }
+      }
     },
     methods: {
-      async showStampDialogForEdit () {
-        console.log('@@@ showStampDialogForEdit() kvietimas')
-        const isStampDialogVisible = !(this.$store.getters.getIsStampDialogVisible)
-        this.$store.commit('setIsStampDialogVisible', isStampDialogVisible)
-        if (isStampDialogVisible) {
-
-        }
+      async showStampDialogForView (stampId) {
+        console.log('@@@ showStampDialogForView(stampId) kvietimas')
+        this.$store.commit('setStampId', stampId)
+        this.$store.commit('setIsStampDialogVisible', true)
+        this.$store.commit('setStampDialogMode', strings.stampDialog.mode.view)
+        this.$store.dispatch('loadCountriesGradesTopicsFromServer')
+        // Now gotta load stamp attributes from server to client
+        this.$store.dispatch('loadStampAttributesFromServer', stampId)
+      },
+      async showStampDialogForEdit (stampId) {
+        console.log('@@@ showStampDialogForEdit(stampId) kvietimas')
+        this.$store.commit('setStampId', stampId)
+        this.$store.commit('setIsStampDialogVisible', true)
+        this.$store.commit('setStampDialogMode', strings.stampDialog.mode.edit)
+        this.$store.dispatch('loadCountriesGradesTopicsFromServer')
+        // Now gotta load stamp attributes from server to client
+        this.$store.dispatch('loadStampAttributesFromServer', stampId)
       }
     },
     async created () {

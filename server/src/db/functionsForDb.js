@@ -287,7 +287,7 @@ db.getStampsStampId = async (stampId) => {
   let resultOfQuery = await knex.raw(textOfQuery, {
     stampId: stampId
   })
-  return resultOfQuery.rows
+  return resultOfQuery.rows[0]
 }
 
 db.getUsersUsernameStamps = async (username) => {
