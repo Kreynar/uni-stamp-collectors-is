@@ -63,7 +63,7 @@ validationFunctions.validateNullOrPositiveInteger = (value) => {
 
 validationFunctions.validatePositiveInteger = (value) => {
   let isValueValid = false
-  const errorMessage = `Must be a an integer number`
+  const errorMessage = `Must be a positive integer number`
   let parsedInt
   try {
     // eslint-disable-next-line no-useless-escape

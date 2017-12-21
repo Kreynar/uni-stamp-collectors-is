@@ -312,9 +312,21 @@ const stampStore = {
     },
     getStampId (state) {
       return state.id.value
+    },
+    marketValue (state) {
+      return state.marketValue.value
     }
   },
   mutations: {
+    setMarketValue (state, value) {
+      state.marketValue.value = value
+    },
+    setSpecimenCount (state, value) {
+      state.specimenCount.value = value
+    },
+    setStructureStampCount (state, value) {
+      state.structureStampCount.value = value
+    },
     setArrayOfStamps (state, arrayOfStamps) {
       state.arrayOfStamps = arrayOfStamps
     },

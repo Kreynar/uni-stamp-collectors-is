@@ -3,15 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="d8554239-ead9-4d9a-8e9e-e2cf4a1f0f6a" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/App.vue" afterPath="$PROJECT_DIR$/client/src/App.vue" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/components/StampDialogForCreateAndEditAndView.vue" afterPath="$PROJECT_DIR$/client/src/components/StampDialogForCreateAndEditAndView.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/components/StampList.vue" afterPath="$PROJECT_DIR$/client/src/components/StampList.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/stores/mainStore.js" afterPath="$PROJECT_DIR$/client/src/stores/mainStore.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/stores/stampStore.js" afterPath="$PROJECT_DIR$/client/src/stores/stampStore.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/strings.js" afterPath="$PROJECT_DIR$/client/src/strings.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/validationFunctions.js" afterPath="$PROJECT_DIR$/client/src/validationFunctions.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/src/db/functionsForDb.js" afterPath="$PROJECT_DIR$/server/src/db/functionsForDb.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/src/resources/stamps/StampsPolicies.js" afterPath="$PROJECT_DIR$/server/src/resources/stamps/StampsPolicies.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -63,8 +57,8 @@
       <file leaf-file-name="validationFunctions.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/src/validationFunctions.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="161">
-              <caret line="7" column="25" lean-forward="false" selection-start-line="7" selection-start-column="21" selection-end-line="7" selection-end-column="25" />
+            <state relative-caret-position="391">
+              <caret line="65" column="42" lean-forward="false" selection-start-line="65" selection-start-column="42" selection-end-line="65" selection-end-column="42" />
               <folding />
             </state>
           </provider>
@@ -86,8 +80,8 @@
       <file leaf-file-name="StampDialogForCreateAndEditAndView.vue" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/client/src/components/StampDialogForCreateAndEditAndView.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
-              <caret line="441" column="12" lean-forward="false" selection-start-line="441" selection-start-column="12" selection-end-line="441" selection-end-column="75" />
+            <state relative-caret-position="516">
+              <caret line="412" column="8" lean-forward="true" selection-start-line="412" selection-start-column="8" selection-end-line="412" selection-end-column="8" />
               <folding />
             </state>
           </provider>
@@ -96,8 +90,8 @@
       <file leaf-file-name="stampStore.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/src/stores/stampStore.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="324" column="58" lean-forward="false" selection-start-line="324" selection-start-column="35" selection-end-line="324" selection-end-column="58" />
+            <state relative-caret-position="498">
+              <caret line="328" column="6" lean-forward="true" selection-start-line="328" selection-start-column="6" selection-end-line="328" selection-end-column="6" />
               <folding>
                 <element signature="e#47#82#0" expanded="true" />
               </folding>
@@ -148,14 +142,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>mode</find>
-      <find>custom</find>
-      <find>getAreElementsForStampCreateAndEditDisplayed</find>
-      <find>filterTest</find>
-      <find>market</find>
-      <find>isEx</find>
-      <find>marketva</find>
-      <find>scroll</find>
       <find>scrollt</find>
       <find>scrollToBottomOfDialog</find>
       <find>scrollTo</find>
@@ -170,14 +156,22 @@
       <find>@@@ formFieldsAndValues</find>
       <find>true)</find>
       <find>remov</find>
-      <find>trim</find>
       <find>showStampDialogForEdit</find>
       <find>removeAllCustomAttributes</find>
       <find>getFormFieldsAndValues</find>
       <find>addcus</find>
       <find>getStampAttributesFromServer</find>
       <find>getIsStampDialogVisible</find>
+      <find>mask</find>
       <find>arrayOfCustomAttributes</find>
+      <find>getIsStampDialogVisible2</find>
+      <find>pho</find>
+      <find>MarketValue</find>
+      <find>newmark</find>
+      <find>trim</find>
+      <find>marketValue</find>
+      <find>specimenCount</find>
+      <find>market</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -233,8 +227,8 @@
         <option value="$PROJECT_DIR$/client/src/components/StampList.vue" />
         <option value="$PROJECT_DIR$/server/src/resources/stamps/StampsPolicies.js" />
         <option value="$PROJECT_DIR$/client/src/strings.js" />
-        <option value="$PROJECT_DIR$/client/src/validationFunctions.js" />
         <option value="$PROJECT_DIR$/client/src/stores/mainStore.js" />
+        <option value="$PROJECT_DIR$/client/src/validationFunctions.js" />
         <option value="$PROJECT_DIR$/client/src/stores/stampStore.js" />
         <option value="$PROJECT_DIR$/client/src/components/StampDialogForCreateAndEditAndView.vue" />
       </list>
@@ -792,12 +786,12 @@
       <workItem from="1512916360680" duration="14984000" />
       <workItem from="1512992902487" duration="6912000" />
       <workItem from="1513252949714" duration="9849000" />
-      <workItem from="1513358444615" duration="117938000" />
+      <workItem from="1513358444615" duration="134359000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="315691000" />
+    <option name="totallyTimeSpent" value="332112000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -809,7 +803,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32968238" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23767799" sideWeight="0.49815303" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20591457" sideWeight="0.49815303" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -1131,14 +1125,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/validationFunctions.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="7" column="25" lean-forward="false" selection-start-line="7" selection-start-column="21" selection-end-line="7" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/src/App.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="559">
@@ -1160,10 +1146,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/validationFunctions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="65" column="42" lean-forward="false" selection-start-line="65" selection-start-column="42" selection-end-line="65" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/client/src/stores/stampStore.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="324" column="58" lean-forward="false" selection-start-line="324" selection-start-column="35" selection-end-line="324" selection-end-column="58" />
+        <state relative-caret-position="498">
+          <caret line="328" column="6" lean-forward="true" selection-start-line="328" selection-start-column="6" selection-end-line="328" selection-end-column="6" />
           <folding>
             <element signature="e#47#82#0" expanded="true" />
           </folding>
@@ -1172,8 +1166,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/client/src/components/StampDialogForCreateAndEditAndView.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="441" column="12" lean-forward="false" selection-start-line="441" selection-start-column="12" selection-end-line="441" selection-end-column="75" />
+        <state relative-caret-position="516">
+          <caret line="412" column="8" lean-forward="true" selection-start-line="412" selection-start-column="8" selection-end-line="412" selection-end-column="8" />
           <folding />
         </state>
       </provider>
