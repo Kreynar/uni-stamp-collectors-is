@@ -95,10 +95,30 @@
                 </v-card-title>
               </v-layout>
               <v-card-actions>
+                <!--<v-flex xs1>-->
+                  <!--<v-btn flat icon color="black" @click="initiateStampDelete(stamp.id)">-->
+                    <!--<v-icon>clear</v-icon>-->
+                  <!--</v-btn>-->
+                <!--</v-flex>-->
+                <!--<v-menu bottom offset-y>-->
+                  <!--<v-btn flat icon color="black" slot="activator">-->
+                    <!--<v-icon>clear</v-icon>-->
+                    <!--<v-list>-->
+                      <!--<v-list-tile @click="initiateStampDelete(stamp.id)">-->
+                        <!--<v-list-tile-title>Confirm delete</v-list-tile-title>-->
+                      <!--</v-list-tile>-->
+                    <!--</v-list>-->
+                  <!--</v-btn>-->
+                <!--</v-menu>-->
                 <v-flex xs1>
-                  <v-btn flat icon color="black">
-                    <v-icon>clear</v-icon>
-                  </v-btn>
+                  <v-menu bottom offset-y>
+                    <v-btn flat icon color="black" slot="activator"><v-icon>clear</v-icon></v-btn>
+                    <v-list>
+                      <v-list-tile @click="initiateStampDelete(stamp.id)">
+                        <v-list-tile-title>Confirm delete</v-list-tile-title>
+                      </v-list-tile>
+                    </v-list>
+                  </v-menu>
                 </v-flex>
                 <v-flex xs5></v-flex>
                 <v-flex xs1>
@@ -119,6 +139,13 @@
   import axios from 'axios'
   import strings from '../strings.js'
 
+  const getArrayOfStampsFromServer = async () => {
+    const serverResponse = await axios.create({
+      baseURL: strings.baseURL
+    }).get(strings.path.stamps)
+    return serverResponse.data
+  }
+
   export default {
     data () {
       return {
@@ -126,6 +153,15 @@
       }
     },
     computed: {
+      /*
+       * This computed: doesStampListNeedToReload () itself does nothing. It is only important, because it
+       * is being listened in watch: doesStampListNeedToReload (), where we detect that that
+       * this.$store.state.triggerDoesStampListNeedToReload has been changed - which means we need to
+       * reload stamp list.
+       */
+      doesStampListNeedToReload () {
+        return this.$store.state.doesStampListNeedToReload
+      }
     },
     filters: {
       getIsCancelledDisplay: function (isCancelled) {
@@ -155,19 +191,48 @@
         this.$store.dispatch('loadCountriesGradesTopicsFromServer')
         // Now gotta load stamp attributes from server to client
         this.$store.dispatch('loadStampAttributesFromServer', stampId)
+      },
+      async initiateStampDelete (stampId) {
+        console.log('@@@ initiateStampDelete(stampId) kvietimas')
+        try {
+          const axiosInstance = axios.create({
+            baseURL: strings.baseURL
+          })
+          await axiosInstance.delete(strings.path.stamps + '/' + stampId)
+          this.$store.commit('triggerDoesStampListNeedToReload')
+          this.$store.state.snackbarColor = 'success'
+          this.$store.state.snackbarMessage = 'Stamp successfully inserted/updated'
+          this.$store.state.isSnackbarDisplayed = true
+        }
+        catch (error) {
+          this.$store.state.snackbarColor = 'error'
+          this.$store.state.snackbarMessage = 'Error deleting stamp'
+          this.$store.state.isSnackbarDisplayed = true
+        }
+        finally {
+        }
       }
     },
     async created () {
       try {
-        const serverResponse = await axios.create({
-          baseURL: strings.baseURL
-        }).get(strings.path.stamps)
-        const arrayOfStamps = serverResponse.data
+        const arrayOfStamps = await getArrayOfStampsFromServer()
         this.$store.commit('setArrayOfStamps', arrayOfStamps)
       }
       catch (error) {
       }
       finally {
+      }
+    },
+    watch: {
+      async doesStampListNeedToReload () {
+        try {
+          const arrayOfStamps = await getArrayOfStampsFromServer()
+          this.$store.commit('setArrayOfStamps', arrayOfStamps)
+        }
+        catch (error) {
+        }
+        finally {
+        }
       }
     }
   }

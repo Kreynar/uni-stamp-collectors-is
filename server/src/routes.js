@@ -42,8 +42,13 @@ module.exports = (app) => {
     UsersPolicies.register,
     UsersControllers.register)
   app.post(ss.path.stamps,
-    StampsPolicies.post,
+    StampsPolicies.postOrPut,
     StampsControllers.post)
+  app.put(ss.path.stamps + ss.path.stampId,
+    StampsPolicies.postOrPut,
+    StampsControllers.put)
+  app.delete(ss.path.stamps + ss.path.stampId,
+    StampsControllers.deleteStampsStampId)
   // app.post(ss.path.stamps, (req, res) => {
   //   res.send({
   //     message: 'Hello world -Martynassss'

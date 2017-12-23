@@ -70,6 +70,38 @@ async function post (req, res) {
   }
 }
 
+async function put (req, res) {
+  try {
+    const updatedStampId = await db.putStampsStampId(req.params.stampId, req.body)
+    tracer.log(updatedStampId)
+    res.send(updatedStampId)
+  }
+  catch (error) {
+    tracer.log(error)
+    res.status(400).send({
+      errorMessage: 'Some error in updating stamp.'
+    })
+  }
+  finally {
+  }
+}
+
+async function deleteStampsStampId (req, res) {
+  try {
+    const deletedStampId = await db.deleteStampsStampId(req.params.stampId)
+    tracer.log(deletedStampId)
+    res.send(deletedStampId)
+  }
+  catch (error) {
+    tracer.log(error)
+    res.status(400).send({
+      errorMessage: 'Some error in deleting stamp.'
+    })
+  }
+  finally {
+  }
+}
+
 /*
  * When user opens a form for adding new stamp or editing existing stamp, this function
  * provides all needed data for generating a form in front-end app. For example, this
@@ -96,5 +128,7 @@ module.exports = {
   getStamps,
   getStampsStampId,
   getUsersUsernameStamps,
-  post
+  post,
+  put,
+  deleteStampsStampId
 }

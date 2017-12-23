@@ -6,6 +6,7 @@
 const vv = {}
 
 vv.mainColorOfTheme = 'orange'
+vv.secondaryColorOfTheme = 'grey lighten-3'
 
 vv.stamps = {
   arrayOfCategoriesNames: [
@@ -49,7 +50,7 @@ vv.stamps = {
   pictureOfBack: 'Back picture',
   album: 'Album',
   numberScott: 'Scott number',
-  numberMichel: 'Michael number',
+  numberMichel: 'Michel number',
   numberStanleyGibbons: 'Stanley Gibbons number',
   numberYvertEtTellier: 'Yvert et Tellier number',
   year: 'Year',

@@ -52,6 +52,9 @@
         </v-btn>
       </div>
     </v-toolbar>
+
+
+    <SearchAndSort></SearchAndSort>
     <StampList></StampList>
     <StampDialogForCreateAndEditAndView></StampDialogForCreateAndEditAndView>
     <v-snackbar
@@ -70,6 +73,7 @@
   import vv from './strings.js'
   import StampDialogForCreateAndEditAndView from './components/StampDialogForCreateAndEditAndView.vue'
   import StampList from './components/StampList.vue'
+  import SearchAndSort from './components/SearchAndSortPanel.vue'
 //  import axios from 'axios'
 
   export default {
@@ -109,7 +113,8 @@
     },
     components: {
       StampDialogForCreateAndEditAndView,
-      StampList
+      StampList,
+      SearchAndSort
     },
     props: {
       source: String

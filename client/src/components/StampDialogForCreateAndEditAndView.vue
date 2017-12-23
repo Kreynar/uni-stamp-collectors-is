@@ -119,14 +119,12 @@
                 <v-divider></v-divider>
                 <v-flex xs12 align-center justify-space-between><v-subheader xs12>Catalog numbers</v-subheader></v-flex>
                 <v-flex xs12 align-center justify-space-between>
-                  <v-layout align-center>
-                    <v-text-field
-                      :label="$store.state.stampStore.numberScott.label"
-                      v-model="$store.state.stampStore.numberScott.value"
-                      :counter="$store.state.stampStore.numberScott.validation.counter"
-                      prepend-icon="short_text"
-                    ></v-text-field>
-                  </v-layout>
+                  <v-text-field
+                    prepend-icon="short_text"
+                    :label="$store.state.stampStore.numberScott.label"
+                    v-model="$store.state.stampStore.numberScott.value"
+                    :counter="$store.state.stampStore.numberScott.validation.counter"
+                  ></v-text-field>
                 </v-flex>
                 <v-flex xs12 align-center justify-space-between>
                   <v-text-field
@@ -517,14 +515,20 @@
         if (this.$refs.stampForm.validate()) {
           const formFieldsAndValues = this.$store.getters.getFormFieldsAndValues
           try {
-            console.log('@@@ axios instance', axios.create({
+            const axiosInstance = axios.create({
               baseURL: strings.baseURL
-            }))
+            })
+            console.log('@@@ axios instance', axiosInstance)
 //            const serverResponse = await axiosInstance.post(strings.path.stamps, formFieldsAndValues)
 //            const serverResponse = await axios.create({baseURL: strings.baseURL}).post(strings.path.stamps, formFieldsAndValues)
-            const serverResponse = await axios.create({
-              baseURL: strings.baseURL
-            }).post(strings.path.stamps, formFieldsAndValues)
+            let serverResponse
+            if (this.$store.getters.getStampDialogMode === strings.stampDialog.mode.create) {
+              serverResponse = await axiosInstance.post(strings.path.stamps, formFieldsAndValues)
+            }
+            else if (this.$store.getters.getStampDialogMode === strings.stampDialog.mode.edit) {
+              serverResponse = await axiosInstance.put(strings.path.stamps + '/' + this.$store.getters.getStampId, formFieldsAndValues)
+            }
+            this.$store.commit('triggerDoesStampListNeedToReload')
             this.$store.state.snackbarColor = 'success'
             this.$store.state.snackbarMessage = 'Stamp successfully inserted/updated'
             this.$store.state.isSnackbarDisplayed = true

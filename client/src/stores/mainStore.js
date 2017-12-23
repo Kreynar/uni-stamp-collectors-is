@@ -20,12 +20,20 @@ const mainStore = new Vuex.Store({
   },
   state: () => ({
     mainColorOfTheme: strings.mainColorOfTheme,
+    secondaryColorOfTheme: strings.secondaryColorOfTheme,
     isStampDialogVisible: false,
-    // Later, when we open stamp dialog, we change stampDialogMode to according value in strings.stampDialog.mode.<mode>
+    /*
+     * Later, when we open stamp dialog, we change stampDialogMode to according value in strings.stampDialog.mode.<mode>
+     */
     stampDialogMode: null,
     snackbarMessage: 'lalala',
     isSnackbarDisplayed: false,
-    snackbarColor: 'success'
+    snackbarColor: 'success',
+    /*
+     * doesStampListNeedToReload specific value doesn't matter. It is only used in StampList.vue, where is computed and
+     * watch, where doesStampListNeedToReload value change is being listened. When value changes, stamp list reloads.
+     */
+    doesStampListNeedToReload: 1
   }),
   // state: {
   //   isStampDialogVisible: false,
@@ -50,6 +58,9 @@ const mainStore = new Vuex.Store({
     },
     setStampDialogMode (state, mode) {
       state.stampDialogMode = mode
+    },
+    triggerDoesStampListNeedToReload (state) {
+      state.doesStampListNeedToReload = state.doesStampListNeedToReload + 1
     }
   }
   // getters,

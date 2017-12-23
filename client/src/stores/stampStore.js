@@ -99,9 +99,7 @@ const stampStore = {
     //   ]
     // },
     arrayOfCustomAttributes: [],
-    id: {
-      value: null
-    },
+    stampId: null,
     temporaryPictureUrl: {
       isShownInStampsList: true,
       label: ss.temporaryPictureUrl,
@@ -290,11 +288,13 @@ const stampStore = {
   getters: {
     getFormFieldsAndValues (state) {
       console.log('@@@ getFormFieldsAndValues (state)')
-      let formFieldsAndValues = []
+      let formFieldsAndValues = {}
       for (const propertyName in state) {
         if (state.hasOwnProperty(propertyName)) {
-          if (state[propertyName].hasOwnProperty('value')) {
-            formFieldsAndValues[propertyName] = state[propertyName].value
+          if (state[propertyName]) {
+            if (state[propertyName].hasOwnProperty('value')) {
+              formFieldsAndValues[propertyName] = state[propertyName].value
+            }
           }
         }
       }
@@ -311,7 +311,7 @@ const stampStore = {
       return arrayOfTopicsNames
     },
     getStampId (state) {
-      return state.id.value
+      return state.stampId
     },
     marketValue (state) {
       return state.marketValue.value
@@ -381,7 +381,7 @@ const stampStore = {
       state.arrayOfCustomAttributes = []
     },
     setStampId (state, stampId) {
-      state.id.value = stampId
+      state.stampId = stampId
     }
   },
   actions: {

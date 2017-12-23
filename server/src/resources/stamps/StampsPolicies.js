@@ -7,6 +7,7 @@ const tracer = require('tracer').console(ss.tracerOutputCustomization)
 const Joi = require('joi')
 
 const stampSchema = {
+  // id: Joi.number().integer().allow(null),
   temporaryPictureUrl: Joi.string(),
   numberScott: Joi.string().allow('', null),
   numberMichel: Joi.string().allow('', null),
@@ -37,26 +38,26 @@ const stampSchema = {
   // lastName: Joi.string().allow('').max(100)
 }
 
-function getPostErrorMessage (errorInValidationResult) {
+function getValidationErrorMessage (errorInValidationResult) {
   let errorMessage
   switch (errorInValidationResult.details[0].context.key) {
-    case 'year':
-      errorMessage = 'Invalid year.'
-      break
+    // case 'year':
+    //   errorMessage = 'Invalid year.'
+    //   break
     default:
-      errorMessage = 'Invalid information.'
+      errorMessage = 'Invalid stamp attributes.'
   }
   return errorMessage
 }
 
 module.exports = {
-  post (req, res, next) {
+  postOrPut (req, res, next) {
     tracer.log(req.body)
     const validationResult = Joi.validate(req.body, stampSchema)
     tracer.log(validationResult)
     if (validationResult.error) {
       tracer.log()
-      const errorMessage = getPostErrorMessage(validationResult.error)
+      const errorMessage = getValidationErrorMessage(validationResult.error)
       tracer.log(errorMessage)
       res.status(400).send({
         errorMessage
