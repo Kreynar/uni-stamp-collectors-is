@@ -3,8 +3,9 @@
  */
 
 import strings from '../strings.js'
-import vf from '../validationFunctions.js'
+// import vf from '../validationFunctions.js'
 import axios from 'axios'
+import stampModel from '../models/stamp.js'
 const ss = strings.stamps
 
 async function getArrayOfCountriesIdsAndNamesFromServer () {
@@ -75,6 +76,73 @@ async function getStampAttributesFromServer (stampId) {
   }
 }
 
+function getArrayOfFieldsNamesAndLabelsFrom (modelForDialogOrSearchPanel) {
+  let fieldsNamesAndLabels = []
+  for (const propertyName in modelForDialogOrSearchPanel) {
+    if (modelForDialogOrSearchPanel.hasOwnProperty(propertyName)) {
+      if (modelForDialogOrSearchPanel[propertyName]) {
+        if (modelForDialogOrSearchPanel[propertyName].hasOwnProperty('value')) {
+          if (propertyName !== 'temporaryPictureUrl') {
+            fieldsNamesAndLabels.push({
+              name: propertyName,
+              label: modelForDialogOrSearchPanel[propertyName].label
+            })
+          }
+        }
+      }
+    }
+  }
+  console.log('@@@ fieldsNamesAndLabels ', fieldsNamesAndLabels)
+  return fieldsNamesAndLabels
+}
+
+function getFieldsAndValuesFrom (modelForDialogOrSearchPanel) {
+  let fieldsAndValues = {}
+  for (const propertyName in modelForDialogOrSearchPanel) {
+    if (modelForDialogOrSearchPanel.hasOwnProperty(propertyName)) {
+      if (modelForDialogOrSearchPanel[propertyName]) {
+        if (modelForDialogOrSearchPanel[propertyName].hasOwnProperty('value')) {
+          if (typeof modelForDialogOrSearchPanel[propertyName].value === 'string') {
+            if (modelForDialogOrSearchPanel[propertyName].value.length === 0) {
+              fieldsAndValues[propertyName] = null
+            }
+            else {
+              fieldsAndValues[propertyName] = modelForDialogOrSearchPanel[propertyName].value
+            }
+          }
+          else {
+            fieldsAndValues[propertyName] = modelForDialogOrSearchPanel[propertyName].value
+          }
+        }
+      }
+    }
+  }
+  // formFieldsAndValues['arrayOfCustomAttributes'] = state.arrayOfCustomAttributes
+  fieldsAndValues['arrayOfCustomAttributes'] = JSON.parse(JSON.stringify(modelForDialogOrSearchPanel.arrayOfCustomAttributes))
+  console.log('@@@ formFieldsAndValues ', fieldsAndValues)
+  return fieldsAndValues
+}
+
+function setStampAttributesIn (modelForDialogOrSearchPanel, stampAttributes) {
+  for (const attributeName in stampAttributes) {
+    if (stampAttributes.hasOwnProperty(attributeName)) {
+      if (modelForDialogOrSearchPanel.hasOwnProperty(attributeName)) {
+        if (attributeName === 'arrayOfCustomAttributes') {
+          // state[attributeName] = stampAttributes[attributeName]
+          modelForDialogOrSearchPanel[attributeName] = JSON.parse(JSON.stringify(stampAttributes[attributeName]))
+        }
+        else {
+          modelForDialogOrSearchPanel[attributeName].value = stampAttributes[attributeName]
+        }
+      }
+    }
+  }
+}
+
+function removeItemFromArrayOfTopicsIn (modelForDialogOrSearchPanel, nameOfTopic) {
+  modelForDialogOrSearchPanel.arrayOfTopics.value.splice(modelForDialogOrSearchPanel.arrayOfTopics.value.indexOf(nameOfTopic), 1)
+}
+
 const stampStore = {
   state: () => ({
     arrayOfStamps: [],
@@ -83,225 +151,28 @@ const stampStore = {
     arrayOfTopicsIdsAndNames: [],
     arrayOfCategoriesNames: ss.arrayOfCategoriesNames,
     arrayOfStructureTypesNames: ss.arrayOfStructureTypesNames,
-    // pictureOfFront: {
-    //   isShownInStampsList: true,
-    //   label: ss.pictureOfFront
-    // },
-    // pictureOfBack: {
-    //   isShownInStampsList: false,
-    //   label: ss.pictureOfBack
-    // },
-    // album: {
-    //   isShownInStampsList: true,
-    //   label: ss.pictureOfBack,
-    //   validationFunctions: [
-    //     vf.validateRequired()
-    //   ]
-    // },
-    arrayOfCustomAttributes: [],
     stampId: null,
-    temporaryPictureUrl: {
-      isShownInStampsList: true,
-      label: ss.temporaryPictureUrl,
-      validation: {
-        functions: [
-          vf.validateRequired
-        ]
-      },
-      value: null
-    },
-    numberScott: {
-      isShownInStampsList: true,
-      label: ss.numberScott,
-      validation: {
-        counter: 50
-      },
-      value: null
-    },
-    numberMichel: {
-      isShownInStampsList: true,
-      label: ss.numberMichel,
-      validation: {
-        counter: 50
-      },
-      value: null
-    },
-    numberStanleyGibbons: {
-      isShownInStampsList: true,
-      label: ss.numberStanleyGibbons,
-      validation: {
-        counter: 50
-      },
-      value: null
-    },
-    numberYvertEtTellier: {
-      isShownInStampsList: true,
-      label: ss.numberYvertEtTellier,
-      validation: {
-        counter: 50
-      },
-      value: null
-    },
-    year: {
-      isShownInStampsList: true,
-      label: ss.year,
-      validation: {
-        functions: [
-          vf.validateRequired,
-          vf.validateStampPublishYear
-        ],
-        mask: '####',
-        counter: 4
-      },
-      value: null
-    },
-    country: {
-      isShownInStampsList: true,
-      label: ss.country,
-      validation: {
-        functions: [
-          vf.validateRequired
-        ]
-      },
-      value: null
-    },
-    nominalValue: {
-      isShownInStampsList: true,
-      label: ss.nominalValue,
-      validation: {
-        functions: [
-          vf.validateRequired
-        ],
-        counter: 50
-      },
-      value: null
-    },
-    grade: {
-      isShownInStampsList: true,
-      label: ss.grade,
-      validation: {
-        functions: [
-          vf.validateRequired
-        ]
-      },
-      value: null
-    },
-    isCancelled: {
-      isShownInStampsList: true,
-      label: ss.isCancelled,
-      validation: {},
-      value: false
-    },
-    arrayOfTopics: {
-      isShownInStampsList: true,
-      label: ss.arrayOfTopics,
-      validation: {
-        functions: [
-          vf.validateRequired
-        ]
-      },
-      value: null
-    },
-    category: {
-      isShownInStampsList: false,
-      label: ss.category,
-      validation: {
-        counter: 50
-      },
-      value: null
-    },
-    structureType: {
-      isShownInStampsList: false,
-      label: ss.structureType,
-      validation: {
-        counter: 50
-      },
-      value: null
-    },
-    structureNumber: {
-      isShownInStampsList: false,
-      label: ss.structureNumber,
-      validation: {
-        counter: 50
-      },
-      value: null
-    },
-    structureStampCount: {
-      isShownInStampsList: false,
-      label: ss.structureStampCount,
-      validation: {
-        functions: [
-          vf.validateNullOrPositiveInteger
-        ]
-      },
-      value: null
-    },
-    isExhibited: {
-      isShownInStampsList: false,
-      label: ss.isExhibited,
-      validation: {},
-      value: true
-    },
-    specimenCount: {
-      isShownInStampsList: false,
-      label: ss.specimenCount,
-      validation: {
-        functions: [
-          vf.validateNullOrPositiveInteger
-        ]
-      },
-      value: null
-    },
-    isOnSale: {
-      isShownInStampsList: false,
-      label: ss.isOnSale,
-      validation: {},
-      value: false
-    },
-    marketValue: {
-      isShownInStampsList: false,
-      label: ss.marketValue,
-      validation: {
-        functions: [
-          vf.validateCurrency
-        ]
-      },
-      value: null
-    },
-    faceDescription: {
-      isShownInStampsList: false,
-      label: ss.faceDescription,
-      validation: {
-        counter: 300
-      },
-      value: null
-    },
-    comment: {
-      isShownInStampsList: false,
-      label: ss.comment,
-      validation: {
-        counter: 1000
-      },
-      value: null
-    }
+    // modelForDialog: JSON.parse(JSON.stringify(stampModel)),
+    // modelForSearch: JSON.parse(JSON.stringify(stampModel))
+    modelForDialog: stampModel.getStampModel('dialog'),
+    modelForSearch: stampModel.getStampModel('searchPanel')
   }),
   getters: {
+    /*
+     * Retrieves array of objects { name: ..., label: ...} with field names and labels,
+     * except temporaryPictureUrl, arrayOfCustomAttributes.
+     */
+    getArrayOfFieldsNamesAndLabelsFromSearchPanel (state) {
+      // console.log('@@@ getArrayOfFieldsNamesAndLabelsExceptCustomAttributesFromSearchPanel (state)')
+      return getArrayOfFieldsNamesAndLabelsFrom(state.modelForSearch)
+    },
     getFormFieldsAndValues (state) {
       console.log('@@@ getFormFieldsAndValues (state)')
-      let formFieldsAndValues = {}
-      for (const propertyName in state) {
-        if (state.hasOwnProperty(propertyName)) {
-          if (state[propertyName]) {
-            if (state[propertyName].hasOwnProperty('value')) {
-              formFieldsAndValues[propertyName] = state[propertyName].value
-            }
-          }
-        }
-      }
-      // formFieldsAndValues['arrayOfCustomAttributes'] = state.arrayOfCustomAttributes
-      formFieldsAndValues['arrayOfCustomAttributes'] = JSON.parse(JSON.stringify(state.arrayOfCustomAttributes))
-      console.log('@@@ formFieldsAndValues ', formFieldsAndValues)
-      return formFieldsAndValues
+      return getFieldsAndValuesFrom(state.modelForDialog)
+    },
+    getFormFieldsAndValuesFromSearchPanel (state) {
+      console.log('@@@ getFormFieldsAndValuesInSearchPanel (state)')
+      return getFieldsAndValuesFrom(state.modelForSearch)
     },
     getArrayOfTopicsNames (state) {
       let arrayOfTopicsNames = []
@@ -314,36 +185,24 @@ const stampStore = {
       return state.stampId
     },
     marketValue (state) {
-      return state.marketValue.value
+      return state.modelForDialog.marketValue.value
     }
   },
   mutations: {
     setMarketValue (state, value) {
-      state.marketValue.value = value
+      state.modelForDialog.marketValue.value = value
     },
     setSpecimenCount (state, value) {
-      state.specimenCount.value = value
+      state.modelForDialog.specimenCount.value = value
     },
     setStructureStampCount (state, value) {
-      state.structureStampCount.value = value
+      state.modelForDialog.structureStampCount.value = value
     },
     setArrayOfStamps (state, arrayOfStamps) {
       state.arrayOfStamps = arrayOfStamps
     },
     setStampAttributes (state, stampAttributes) {
-      for (const attributeName in stampAttributes) {
-        if (stampAttributes.hasOwnProperty(attributeName)) {
-          if (state.hasOwnProperty(attributeName)) {
-            if (attributeName === 'arrayOfCustomAttributes') {
-              // state[attributeName] = stampAttributes[attributeName]
-              state[attributeName] = JSON.parse(JSON.stringify(stampAttributes[attributeName]))
-            }
-            else {
-              state[attributeName].value = stampAttributes[attributeName]
-            }
-          }
-        }
-      }
+      setStampAttributesIn(state.modelForDialog, stampAttributes)
     },
     /*
      * I tried using this resetState function, as it seems more suitable than this.$refs.stampForm.reset(),
@@ -364,32 +223,47 @@ const stampStore = {
       state.arrayOfTopicsIdsAndNames = arrayOfTopicsIdsAndNames
     },
     removeItemFromArrayOfTopics (state, nameOfTopic) {
-      state.arrayOfTopics.value.splice(state.arrayOfTopics.value.indexOf(nameOfTopic), 1)
+      removeItemFromArrayOfTopicsIn(state.modelForDialog, nameOfTopic)
+    },
+    removeItemFromArrayOfTopicsInSearchPanel (state, nameOfTopic) {
+      removeItemFromArrayOfTopicsIn(state.modelForSearch, nameOfTopic)
     },
     addCustomAttribute (state) {
-      state.arrayOfCustomAttributes.push({
-        id: state.arrayOfCustomAttributes.length,
+      state.modelForDialog.arrayOfCustomAttributes.push({
+        id: state.modelForDialog.arrayOfCustomAttributes.length,
         label: null,
         value: null
       })
     },
     removeCustomAttribute (state, indexOfCustomAttribute) {
-      state.arrayOfCustomAttributes.splice(indexOfCustomAttribute, 1)
+      state.modelForDialog.arrayOfCustomAttributes.splice(indexOfCustomAttribute, 1)
     },
     removeAllCustomAttributes (state) {
       console.log('@@@@ removeAllCustomAttributes (state)')
-      state.arrayOfCustomAttributes = []
+      state.modelForDialog.arrayOfCustomAttributes = []
     },
     setStampId (state, stampId) {
       state.stampId = stampId
     }
   },
   actions: {
-    async loadCountriesGradesTopicsFromServer (context) {
+    // async loadCountriesGradesTopicsFromServer (context) {
+    //   const arrayOfCountriesIdsAndNames = await getArrayOfCountriesIdsAndNamesFromServer()
+    //   context.commit('setArrayOfCountriesIdsAndNames', arrayOfCountriesIdsAndNames)
+    //   const arrayOfGradesIdsAndNames = await getArrayOfGradesIdsAndNamesFromServer()
+    //   context.commit('setArrayOfGradesIdsAndNames', arrayOfGradesIdsAndNames)
+    //   const arrayOfTopicsIdsAndNames = await getArrayOfTopicsIdsAndNamesFromServer()
+    //   context.commit('setArrayOfTopicsIdsAndNames', arrayOfTopicsIdsAndNames)
+    // },
+    async loadCountriesFromServer (context) {
       const arrayOfCountriesIdsAndNames = await getArrayOfCountriesIdsAndNamesFromServer()
       context.commit('setArrayOfCountriesIdsAndNames', arrayOfCountriesIdsAndNames)
+    },
+    async loadGradesFromServer (context) {
       const arrayOfGradesIdsAndNames = await getArrayOfGradesIdsAndNamesFromServer()
       context.commit('setArrayOfGradesIdsAndNames', arrayOfGradesIdsAndNames)
+    },
+    async loadTopicsFromServer (context) {
       const arrayOfTopicsIdsAndNames = await getArrayOfTopicsIdsAndNamesFromServer()
       context.commit('setArrayOfTopicsIdsAndNames', arrayOfTopicsIdsAndNames)
     },

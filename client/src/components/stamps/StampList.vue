@@ -1,5 +1,63 @@
 <template>
-  <v-content>
+  <v-content style="padding-top: 1px;">
+      <!--<v-content style="padding:300px 300px 300px 300px">-->
+    <v-container fluid grid-list-xl class="grey lighten-4">
+      <!--<v-layout row wrap style="max-height: 1px; background-color:blue">-->
+      <v-layout row wrap>
+        <!--<v-flex xs12>-->
+          <!--<div class="text-xs-center">-->
+            <!--<v-btn-->
+              <!--fab-->
+              <!--fixed-->
+              <!--top-->
+              <!--left-->
+              <!--:color="this.$store.state.mainColorOfTheme"-->
+              <!--dark-->
+              <!--@click.stop="isStampDialogVisible = !isStampDialogVisible"-->
+            <!--&gt;-->
+              <!--<v-icon>add</v-icon>-->
+            <!--</v-btn>-->
+          <!--</div>-->
+        <!--</v-flex>-->
+        <v-btn
+          round
+          :color="$store.state.mainColorOfTheme"
+          dark
+          block
+          @click="showStampDialogForCreate()">
+          New Stamp
+          <v-icon right>add</v-icon>
+        </v-btn>
+      </v-layout>
+    </v-container>
+
+    <!--<v-layout row wrap class="fab-container" height="1px" style="max-height: 50px" text-xs-center>-->
+      <!--&lt;!&ndash;<v-btn fab>&ndash;&gt;-->
+      <!--&lt;!&ndash;<v-icon>add</v-icon>&ndash;&gt;-->
+      <!--&lt;!&ndash;</v-btn>&ndash;&gt;-->
+      <!--&lt;!&ndash;<v-btn fab>&ndash;&gt;-->
+      <!--&lt;!&ndash;<v-icon>remove</v-icon>&ndash;&gt;-->
+      <!--&lt;!&ndash;</v-btn>&ndash;&gt;-->
+      <!--&lt;!&ndash;<v-btn&ndash;&gt;-->
+      <!--&lt;!&ndash;fab&ndash;&gt;-->
+      <!--&lt;!&ndash;right&ndash;&gt;-->
+      <!--&lt;!&ndash;bottom&ndash;&gt;-->
+      <!--&lt;!&ndash;:color="this.$store.state.mainColorOfTheme"&ndash;&gt;-->
+      <!--&lt;!&ndash;dark&ndash;&gt;-->
+      <!--&lt;!&ndash;fixed&ndash;&gt;-->
+      <!--&lt;!&ndash;@click.stop="isStampDialogVisible = !isStampDialogVisible"&ndash;&gt;-->
+      <!--&lt;!&ndash;&gt;&ndash;&gt;-->
+      <!--&lt;!&ndash;<v-icon>add</v-icon>&ndash;&gt;-->
+      <!--&lt;!&ndash;</v-btn>&ndash;&gt;-->
+      <!--<v-btn-->
+        <!--fab-->
+        <!--:color="this.$store.state.mainColorOfTheme"-->
+        <!--dark-->
+        <!--@click.stop="isStampDialogVisible = !isStampDialogVisible"-->
+      <!--&gt;-->
+        <!--<v-icon>add</v-icon>-->
+      <!--</v-btn>-->
+    <!--</v-layout>-->
     <v-container fluid grid-list-xl class="grey lighten-4">
       <v-layout row wrap>
         <!--<v-flex-->
@@ -82,11 +140,14 @@
               >
                 <v-card-title class="text-xs-center">
                   <div class="text-xs-center" style="font-size:130%">
-                    <span>{{ stamp.year }}, {{ stamp.country }}, {{ stamp.nominalValue }}</span><br>
+                    <span style="font-weight: bold;">{{ stamp.year }}, {{ stamp.country }}, {{ stamp.nominalValue }}</span><br>
                     <!--<span>{{ stamp.country }}</span><br>-->
                     <!--<span>{{ stamp.nominalValue }}</span><br>-->
-                    <span>{{ stamp.grade }}</span><br>
-                    <span>{{ stamp.isCancelled | getIsCancelledDisplay }}</span><br>
+                    <span v-if="(stamp.grade === '100 - Superb Gem')" style="color: green;">{{ stamp.grade }}</span>
+                    <span v-else>{{ stamp.grade }}</span>
+                    <br>
+                    <span>{{ stamp.isCancelled | getIsCancelledDisplay }}</span>
+                    <v-icon v-if="stamp.isCancelled" small style="font-size:80%">not_interested</v-icon><br>
                     <!--<span>{{ stamp.arrayOfTopics }}</span>-->
                     <span v-for="topic in stamp.arrayOfTopics">
                         <v-chip>{{ topic }}</v-chip>
@@ -132,19 +193,21 @@
         </template>
       </v-layout>
     </v-container>
+
   </v-content>
+
 </template>
 
 <script>
   import axios from 'axios'
-  import strings from '../strings.js'
+  import strings from '../../strings.js'
 
-  const getArrayOfStampsFromServer = async () => {
-    const serverResponse = await axios.create({
-      baseURL: strings.baseURL
-    }).get(strings.path.stamps)
-    return serverResponse.data
-  }
+//  const getArrayOfStampsFromServer = async () => {
+//    const serverResponse = await axios.create({
+//      baseURL: strings.baseURL
+//    }).get(strings.path.stamps)
+//    return serverResponse.data
+//  }
 
   export default {
     data () {
@@ -174,23 +237,49 @@
       }
     },
     methods: {
+      async loadStampList () {
+//    const arrayOfStamps = await getArrayOfStampsFromServer()
+        const serverResponse = await axios.create({
+          baseURL: strings.baseURL
+        }).get(strings.path.stamps)
+        const arrayOfStamps = serverResponse.data
+        this.$store.commit('setArrayOfStamps', arrayOfStamps)
+        /*
+         * Also (for now - only for SearchAndSortPanel needs) load topics, grades and countries.
+         * User topic list is added with new values frequently, so refresh it everytime.
+         * Countries and grades are only edited by website admins very rarely, so no need to refresh every time.
+         */
+        this.$store.dispatch('loadTopicsFromServer')
+        if (this.$store.state.stampStore.arrayOfGradesIdsAndNames.length === 0) {
+          this.$store.dispatch('loadGradesFromServer')
+        }
+        if (this.$store.state.stampStore.arrayOfCountriesIdsAndNames.length === 0) {
+          this.$store.dispatch('loadCountriesFromServer')
+        }
+      },
+      async showStampDialogForCreate () {
+        console.log('@@@ changeNewStampDialogVisibility() kvietimas')
+        this.$store.commit('setStampId', null)
+        this.$store.commit('setIsStampDialogVisible', true)
+        this.$store.commit('setStampDialogMode', strings.stampDialog.mode.create)
+      },
       async showStampDialogForView (stampId) {
         console.log('@@@ showStampDialogForView(stampId) kvietimas')
         this.$store.commit('setStampId', stampId)
         this.$store.commit('setIsStampDialogVisible', true)
         this.$store.commit('setStampDialogMode', strings.stampDialog.mode.view)
-        this.$store.dispatch('loadCountriesGradesTopicsFromServer')
+//        this.$store.dispatch('loadCountriesGradesTopicsFromServer')
         // Now gotta load stamp attributes from server to client
-        this.$store.dispatch('loadStampAttributesFromServer', stampId)
+//        this.$store.dispatch('loadStampAttributesFromServer', stampId)
       },
       async showStampDialogForEdit (stampId) {
         console.log('@@@ showStampDialogForEdit(stampId) kvietimas')
         this.$store.commit('setStampId', stampId)
         this.$store.commit('setIsStampDialogVisible', true)
         this.$store.commit('setStampDialogMode', strings.stampDialog.mode.edit)
-        this.$store.dispatch('loadCountriesGradesTopicsFromServer')
+//        this.$store.dispatch('loadCountriesGradesTopicsFromServer')
         // Now gotta load stamp attributes from server to client
-        this.$store.dispatch('loadStampAttributesFromServer', stampId)
+//        this.$store.dispatch('loadStampAttributesFromServer', stampId)
       },
       async initiateStampDelete (stampId) {
         console.log('@@@ initiateStampDelete(stampId) kvietimas')
@@ -215,8 +304,7 @@
     },
     async created () {
       try {
-        const arrayOfStamps = await getArrayOfStampsFromServer()
-        this.$store.commit('setArrayOfStamps', arrayOfStamps)
+        this.loadStampList()
       }
       catch (error) {
       }
@@ -226,8 +314,7 @@
     watch: {
       async doesStampListNeedToReload () {
         try {
-          const arrayOfStamps = await getArrayOfStampsFromServer()
-          this.$store.commit('setArrayOfStamps', arrayOfStamps)
+          this.loadStampList()
         }
         catch (error) {
         }
@@ -238,6 +325,13 @@
   }
 </script>
 
-<style scoped>
-
-</style>
+<!--<style scoped>-->
+  <!--.fab-container {-->
+    <!--position: fixed;-->
+    <!--top: 50px;-->
+    <!--//bottom: 0;-->
+  <!--//right: 0;-->
+    <!--left: 50%;-->
+    <!--transform: translateX(-50%);-->
+  <!--}-->
+<!--</style>-->

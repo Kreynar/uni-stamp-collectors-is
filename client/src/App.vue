@@ -6,17 +6,17 @@
       app
       v-model="isNavigationDrawerVisible"
     >
-      <v-btn
-        fab
-        right
-        bottom
-        :color="this.$store.state.mainColorOfTheme"
-        dark
-        fixed
-        @click.stop="isStampDialogVisible = !isStampDialogVisible"
-      >
-        <v-icon>add</v-icon>
-      </v-btn>
+      <!--<v-btn-->
+        <!--fab-->
+        <!--right-->
+        <!--bottom-->
+        <!--:color="this.$store.state.mainColorOfTheme"-->
+        <!--dark-->
+        <!--fixed-->
+        <!--@click.stop="isStampDialogVisible = !isStampDialogVisible"-->
+      <!--&gt;-->
+        <!--<v-icon>add</v-icon>-->
+      <!--</v-btn>-->
       <v-list dense>
         <template v-for="(item, i) in items">
           <v-divider v-if="item.divider"></v-divider>
@@ -54,9 +54,26 @@
     </v-toolbar>
 
 
-    <SearchAndSort></SearchAndSort>
-    <StampList></StampList>
-    <StampDialogForCreateAndEditAndView></StampDialogForCreateAndEditAndView>
+
+    <template>
+      <SearchAndSort></SearchAndSort>
+      <StampList></StampList>
+      <StampDialogForCreateAndEditAndView></StampDialogForCreateAndEditAndView>
+    </template>
+
+
+    <v-btn
+      fab
+      right
+      bottom
+      :color="this.$store.state.mainColorOfTheme"
+      dark
+      fixed
+      @click.stop="scrollToTop()"
+    >
+      <v-icon>arrow_upward</v-icon>
+    </v-btn>
+
     <v-snackbar
       :timeout="6000"
       v-model="$store.state.isSnackbarDisplayed"
@@ -71,9 +88,9 @@
 
 <script>
   import vv from './strings.js'
-  import StampDialogForCreateAndEditAndView from './components/StampDialogForCreateAndEditAndView.vue'
-  import StampList from './components/StampList.vue'
-  import SearchAndSort from './components/SearchAndSortPanel.vue'
+  import StampDialogForCreateAndEditAndView from './components/stamps/StampDialogForCreateAndEditAndView.vue'
+  import StampList from './components/stamps/StampList.vue'
+  import SearchAndSort from './components/stamps/SearchAndSortPanel.vue'
 //  import axios from 'axios'
 
   export default {
@@ -82,12 +99,15 @@
       isNavigationDrawerVisible: null,
       items: [
         { header: 'My collection' },
+//        { name: vv.navigationDrawer.newStamp, icon: 'add', text: 'New stamp' },
         { name: vv.navigationDrawer.myStamps, icon: 'view_module', text: 'My stamps' },
-        { name: vv.navigationDrawer.newStamp, icon: 'add', text: 'New stamp' },
         { divider: true },
         { header: 'Other collectors' },
-        { name: vv.navigationDrawer.allCollectors, icon: 'list', text: 'All collectors' },
-        { name: vv.navigationDrawer.allStamps, icon: 'view_module', text: 'All stamps' }
+        { name: vv.navigationDrawer.allCollectors, icon: 'list', text: 'All collectors', disabled: true },
+        { name: vv.navigationDrawer.allStamps, icon: 'view_module', text: 'All stamps', disabled: true },
+        { divider: true },
+        { header: 'Information' },
+        { name: vv.navigationDrawer.about, icon: 'info_outline', text: 'About' }
       ]
     }),
     methods: {
@@ -96,28 +116,32 @@
           this.showStampDialogForCreate()
         }
       },
-      async showStampDialogForCreate () {
-        console.log('@@@ changeNewStampDialogVisibility() kvietimas')
-//        const isStampDialogVisible = !(this.$store.getters.getIsStampDialogVisible)
-//        this.$store.commit('setIsStampDialogVisible', isStampDialogVisible)
-//        if (isStampDialogVisible) {
-//          this.$store.commit('setStampDialogMode', vv.stampDialog.mode.create)
-//          // We get all possible countries list from server and put this array into store >>> ... >>> arrayOfVariants
-//          this.$store.dispatch('loadCountriesGradesTopicsFromServer')
-//        }
-        this.$store.commit('setStampId', null)
-        this.$store.commit('setIsStampDialogVisible', true)
-        this.$store.commit('setStampDialogMode', vv.stampDialog.mode.create)
-        this.$store.dispatch('loadCountriesGradesTopicsFromServer')
+      scrollToTop () {
+        window.scrollTo(0, 0)
       }
+//      async showStampDialogForCreate () {
+//        console.log('@@@ changeNewStampDialogVisibility() kvietimas')
+//        this.$store.commit('setStampId', null)
+//        this.$store.commit('setIsStampDialogVisible', true)
+//        this.$store.commit('setStampDialogMode', vv.stampDialog.mode.create)
+//      }
     },
     components: {
       StampDialogForCreateAndEditAndView,
       StampList,
       SearchAndSort
-    },
-    props: {
-      source: String
     }
+//    props: {
+//      source: String
+//    }
+//    created: () => {
+//      window.scrollTo(0, 0)
+//    },
+//    mounted: () => {
+//      window.scrollTo(0, 0)
+//      document.body.scrollTop = document.documentElement.scrollTop = 0
+//    }
   }
 </script>
+
+

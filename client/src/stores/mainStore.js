@@ -5,8 +5,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import strings from '../strings.js'
-
 import stampStore from './stampStore.js'
+import userStore from './userStore.js'
 
 // import actions from './actions.js'
 // import mutations from './mutations.js'
@@ -16,7 +16,8 @@ Vue.use(Vuex)
 
 const mainStore = new Vuex.Store({
   modules: {
-    stampStore
+    stampStore,
+    userStore
   },
   state: () => ({
     mainColorOfTheme: strings.mainColorOfTheme,
@@ -55,6 +56,7 @@ const mainStore = new Vuex.Store({
   mutations: {
     setIsStampDialogVisible (state, booleanValue) {
       state.isStampDialogVisible = booleanValue
+      // ++state.stampStore.testVariable
     },
     setStampDialogMode (state, mode) {
       state.stampDialogMode = mode

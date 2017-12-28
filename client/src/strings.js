@@ -82,6 +82,7 @@ vv.stamps = {
   sellPrice: 'Price of sale',
   sellDate: 'Date of sale',
   sellPlace: 'Place of sale'
+  // arrayOfCustomAttributes: 'Custom attributes'
 }
 
 vv.navigationDrawer = {}
@@ -89,6 +90,7 @@ vv.navigationDrawer.myStamps = 'myStamps'
 vv.navigationDrawer.newStamp = 'newStamp'
 vv.navigationDrawer.allStamps = 'allStamps'
 vv.navigationDrawer.allCollectors = 'allCollectors'
+vv.navigationDrawer.about = 'about'
 
 vv.stampDialog = {
   mode: {
@@ -102,6 +104,8 @@ vv.stampDialog = {
     view: 'Stamp Info'
   }
 }
+
+vv.testTemporaryUserUsername = 'testUserName'
 
 vv.baseURL = `http://localhost:8081/`
 vv.path = {}

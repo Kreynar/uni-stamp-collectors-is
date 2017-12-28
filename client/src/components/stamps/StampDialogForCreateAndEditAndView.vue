@@ -4,37 +4,48 @@
 
       <v-card>
         <v-card-title
-          class="py-4 title" :class="this.$store.state.mainColorOfTheme"
+          class="py-4 title" :class="$store.state.mainColorOfTheme"
         >
           {{ $store.getters.getStampDialogMode | getTitle }}
         </v-card-title>
 
 
         <v-card-text id="dialogVCardText">
-          <v-card-media :src="$store.state.stampStore.temporaryPictureUrl.value" height="300px" contain></v-card-media>
+          <v-card-media :src="$store.state.stampStore.modelForDialog.temporaryPictureUrl.value" height="300px" contain></v-card-media>
           <v-form v-model="areAllFieldsValidlyFilled" ref="stampForm">
             <v-container grid-list-sm class="pa-4">
               <v-layout row wrap>
-                <!--<v-card-media :src="$store.state.stampStore.temporaryPictureUrl.value" height="200px"></v-card-media>-->
                 <v-divider></v-divider>
                 <v-flex xs12 align-center justify-space-between><v-subheader xs12>Basic info (required)</v-subheader></v-flex>
                 <v-flex xs12 align-center justify-space-between>
                   <v-text-field
                     prepend-icon="image"
-                    :label="$store.state.stampStore.temporaryPictureUrl.label"
-                    v-model="$store.state.stampStore.temporaryPictureUrl.value"
-                    :rules="$store.state.stampStore.temporaryPictureUrl.validation.functions"
+                    :label="$store.state.stampStore.modelForDialog.temporaryPictureUrl.label"
+                    v-model="$store.state.stampStore.modelForDialog.temporaryPictureUrl.value"
+                    :rules="$store.state.stampStore.modelForDialog.temporaryPictureUrl.validation.functions"
                     required
                   ></v-text-field>
                 </v-flex>
+                <!--<v-flex xs12 align-center justify-space-between>-->
+                  <!--<v-text-field-->
+                    <!--prepend-icon="short_text"-->
+                    <!--type="number"-->
+                    <!--:label="$store.state.stampStore.modelForDialog.year.label"-->
+                    <!--v-model="$store.state.stampStore.modelForDialog.year.value"-->
+                    <!--:counter="$store.state.stampStore.modelForDialog.year.validation.counter"-->
+                    <!--:mask="$store.state.stampStore.modelForDialog.year.validation.mask"-->
+                    <!--:rules="$store.state.stampStore.modelForDialog.year.validation.functions"-->
+                    <!--required-->
+                  <!--&gt;</v-text-field>-->
+                <!--</v-flex>-->
                 <v-flex xs12 align-center justify-space-between>
                   <v-text-field
                     prepend-icon="short_text"
-                    :label="$store.state.stampStore.year.label"
-                    v-model="$store.state.stampStore.year.value"
-                    :counter="$store.state.stampStore.year.validation.counter"
-                    :mask="$store.state.stampStore.year.validation.mask"
-                    :rules="$store.state.stampStore.year.validation.functions"
+                    type="number"
+                    :label="$store.state.stampStore.modelForDialog.year.label"
+                    v-model="$store.state.stampStore.modelForDialog.year.value"
+                    :counter="$store.state.stampStore.modelForDialog.year.validation.counter"
+                    :rules="$store.state.stampStore.modelForDialog.year.validation.functions"
                     required
                   ></v-text-field>
                 </v-flex>
@@ -44,9 +55,9 @@
                     :items="$store.state.stampStore.arrayOfCountriesIdsAndNames"
                     item-value="id_"
                     item-text="name_"
-                    v-model="$store.state.stampStore.country.value"
-                    :label="$store.state.stampStore.country.label"
-                    :rules="$store.state.stampStore.country.validation.functions"
+                    v-model="$store.state.stampStore.modelForDialog.country.value"
+                    :label="$store.state.stampStore.modelForDialog.country.label"
+                    :rules="$store.state.stampStore.modelForDialog.country.validation.functions"
                     autocomplete
                     required
                   ></v-select>
@@ -54,10 +65,10 @@
                 <v-flex xs12 align-center justify-space-between>
                   <v-text-field
                     prepend-icon="short_text"
-                    :label="$store.state.stampStore.nominalValue.label"
-                    v-model="$store.state.stampStore.nominalValue.value"
-                    :rules="$store.state.stampStore.nominalValue.validation.functions"
-                    :counter="$store.state.stampStore.nominalValue.validation.counter"
+                    :label="$store.state.stampStore.modelForDialog.nominalValue.label"
+                    v-model="$store.state.stampStore.modelForDialog.nominalValue.value"
+                    :rules="$store.state.stampStore.modelForDialog.nominalValue.validation.functions"
+                    :counter="$store.state.stampStore.modelForDialog.nominalValue.validation.counter"
                     required
                   ></v-text-field>
                 </v-flex>
@@ -67,9 +78,9 @@
                     :items="$store.state.stampStore.arrayOfGradesIdsAndNames"
                     item-value="id_"
                     item-text="name_"
-                    v-model="$store.state.stampStore.grade.value"
-                    :label="$store.state.stampStore.grade.label"
-                    :rules="$store.state.stampStore.grade.validation.functions"
+                    v-model="$store.state.stampStore.modelForDialog.grade.value"
+                    :label="$store.state.stampStore.modelForDialog.grade.label"
+                    :rules="$store.state.stampStore.modelForDialog.grade.validation.functions"
                     autocomplete
                     required
                   ></v-select>
@@ -77,8 +88,8 @@
                 <v-flex xs12 align-center justify-space-between>
                   <v-checkbox
                     prepend-icon="short_text"
-                    v-model="$store.state.stampStore.isCancelled.value"
-                    :label="$store.state.stampStore.isCancelled.label"
+                    v-model="$store.state.stampStore.modelForDialog.isCancelled.value"
+                    :label="$store.state.stampStore.modelForDialog.isCancelled.label"
                     required
                   ></v-checkbox>
                 </v-flex>
@@ -86,15 +97,15 @@
                   <v-select
                     prepend-icon="short_text"
                     :items="$store.getters.getArrayOfTopicsNames"
-                    v-model="$store.state.stampStore.arrayOfTopics.value"
-                    :label="$store.state.stampStore.arrayOfTopics.label"
+                    v-model="$store.state.stampStore.modelForDialog.arrayOfTopics.value"
+                    :label="$store.state.stampStore.modelForDialog.arrayOfTopics.label"
                     :rules="[
                       function validateRequired (value) {
                         let trueOrValidationErrorMessage = true
-                        if ($store.state.stampStore.arrayOfTopics.value === null) {
+                        if ($store.state.stampStore.modelForDialog.arrayOfTopics.value === null) {
                           trueOrValidationErrorMessage = 'Required.'
                         }
-                        else if ($store.state.stampStore.arrayOfTopics.value.length === 0) {
+                        else if ($store.state.stampStore.modelForDialog.arrayOfTopics.value.length === 0) {
                           trueOrValidationErrorMessage = 'Required.'
                         }
                         return trueOrValidationErrorMessage
@@ -121,33 +132,33 @@
                 <v-flex xs12 align-center justify-space-between>
                   <v-text-field
                     prepend-icon="short_text"
-                    :label="$store.state.stampStore.numberScott.label"
-                    v-model="$store.state.stampStore.numberScott.value"
-                    :counter="$store.state.stampStore.numberScott.validation.counter"
+                    :label="$store.state.stampStore.modelForDialog.numberScott.label"
+                    v-model="$store.state.stampStore.modelForDialog.numberScott.value"
+                    :counter="$store.state.stampStore.modelForDialog.numberScott.validation.counter"
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12 align-center justify-space-between>
                   <v-text-field
                     prepend-icon="short_text"
-                    :label="$store.state.stampStore.numberMichel.label"
-                    v-model="$store.state.stampStore.numberMichel.value"
-                    :counter="$store.state.stampStore.numberMichel.validation.counter"
+                    :label="$store.state.stampStore.modelForDialog.numberMichel.label"
+                    v-model="$store.state.stampStore.modelForDialog.numberMichel.value"
+                    :counter="$store.state.stampStore.modelForDialog.numberMichel.validation.counter"
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12 align-center justify-space-between>
                   <v-text-field
                     prepend-icon="short_text"
-                    :label="$store.state.stampStore.numberStanleyGibbons.label"
-                    v-model="$store.state.stampStore.numberStanleyGibbons.value"
-                    :counter="$store.state.stampStore.numberStanleyGibbons.validation.counter"
+                    :label="$store.state.stampStore.modelForDialog.numberStanleyGibbons.label"
+                    v-model="$store.state.stampStore.modelForDialog.numberStanleyGibbons.value"
+                    :counter="$store.state.stampStore.modelForDialog.numberStanleyGibbons.validation.counter"
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12 align-center justify-space-between>
                   <v-text-field
                     prepend-icon="short_text"
-                    :label="$store.state.stampStore.numberYvertEtTellier.label"
-                    v-model="$store.state.stampStore.numberYvertEtTellier.value"
-                    :counter="$store.state.stampStore.numberYvertEtTellier.validation.counter"
+                    :label="$store.state.stampStore.modelForDialog.numberYvertEtTellier.label"
+                    v-model="$store.state.stampStore.modelForDialog.numberYvertEtTellier.value"
+                    :counter="$store.state.stampStore.modelForDialog.numberYvertEtTellier.validation.counter"
                   ></v-text-field>
                 </v-flex>
                 <v-divider></v-divider>
@@ -156,10 +167,10 @@
                   <v-select
                     prepend-icon="short_text"
                     :items="$store.state.stampStore.arrayOfCategoriesNames"
-                    v-model="$store.state.stampStore.category.value"
-                    :label="$store.state.stampStore.category.label"
-                    :rules="$store.state.stampStore.category.validation.functions"
-                    :counter="$store.state.stampStore.category.validation.counter"
+                    v-model="$store.state.stampStore.modelForDialog.category.value"
+                    :label="$store.state.stampStore.modelForDialog.category.label"
+                    :rules="$store.state.stampStore.modelForDialog.category.validation.functions"
+                    :counter="$store.state.stampStore.modelForDialog.category.validation.counter"
                     combobox
                   ></v-select>
                 </v-flex>
@@ -167,29 +178,29 @@
                   <v-select
                     prepend-icon="short_text"
                     :items="$store.state.stampStore.arrayOfStructureTypesNames"
-                    v-model="$store.state.stampStore.structureType.value"
-                    :label="$store.state.stampStore.structureType.label"
-                    :rules="$store.state.stampStore.structureType.validation.functions"
-                    :counter="$store.state.stampStore.structureType.validation.counter"
+                    v-model="$store.state.stampStore.modelForDialog.structureType.value"
+                    :label="$store.state.stampStore.modelForDialog.structureType.label"
+                    :rules="$store.state.stampStore.modelForDialog.structureType.validation.functions"
+                    :counter="$store.state.stampStore.modelForDialog.structureType.validation.counter"
                     combobox
                   ></v-select>
                 </v-flex>
                 <v-flex xs12 align-center justify-space-between>
                   <v-text-field
                     prepend-icon="short_text"
-                    :label="$store.state.stampStore.structureNumber.label"
-                    v-model="$store.state.stampStore.structureNumber.value"
-                    :rules="$store.state.stampStore.structureNumber.validation.functions"
-                    :counter="$store.state.stampStore.structureNumber.validation.counter"
+                    :label="$store.state.stampStore.modelForDialog.structureNumber.label"
+                    v-model="$store.state.stampStore.modelForDialog.structureNumber.value"
+                    :rules="$store.state.stampStore.modelForDialog.structureNumber.validation.functions"
+                    :counter="$store.state.stampStore.modelForDialog.structureNumber.validation.counter"
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12 align-center justify-space-between>
                   <v-text-field
                     prepend-icon="short_text"
                     type="number"
-                    :label="$store.state.stampStore.structureStampCount.label"
+                    :label="$store.state.stampStore.modelForDialog.structureStampCount.label"
                     v-model="structureStampCount"
-                    :rules="$store.state.stampStore.structureStampCount.validation.functions"
+                    :rules="$store.state.stampStore.modelForDialog.structureStampCount.validation.functions"
                     ref="structureStampCount"
                   ></v-text-field>
                 </v-flex>
@@ -198,65 +209,56 @@
                 <v-flex xs12 align-center justify-space-between>
                   <v-checkbox
                     prepend-icon="short_text"
-                    :label="$store.state.stampStore.isExhibited.label"
-                    v-model="$store.state.stampStore.isExhibited.value"
-                    :rules="$store.state.stampStore.isExhibited.validation.functions"
+                    :label="$store.state.stampStore.modelForDialog.isExhibited.label"
+                    v-model="$store.state.stampStore.modelForDialog.isExhibited.value"
+                    :rules="$store.state.stampStore.modelForDialog.isExhibited.validation.functions"
                   ></v-checkbox>
                 </v-flex>
                 <v-flex xs12 align-center justify-space-between>
                   <v-text-field
                     prepend-icon="short_text"
                     type="number"
-                    :label="$store.state.stampStore.specimenCount.label"
+                    :label="$store.state.stampStore.modelForDialog.specimenCount.label"
                     v-model="specimenCount"
-                    :rules="$store.state.stampStore.specimenCount.validation.functions"
+                    :rules="$store.state.stampStore.modelForDialog.specimenCount.validation.functions"
                     ref="specimenCount"
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12 align-center justify-space-between>
                   <v-checkbox
                     prepend-icon="short_text"
-                    :label="$store.state.stampStore.isOnSale.label"
-                    v-model="$store.state.stampStore.isOnSale.value"
-                    :rules="$store.state.stampStore.isOnSale.validation.functions"
+                    :label="$store.state.stampStore.modelForDialog.isOnSale.label"
+                    v-model="$store.state.stampStore.modelForDialog.isOnSale.value"
+                    :rules="$store.state.stampStore.modelForDialog.isOnSale.validation.functions"
                   ></v-checkbox>
                 </v-flex>
-                <!--<v-flex xs12 align-center justify-space-between>-->
-                  <!--<v-text-field-->
-                    <!--prepend-icon="short_text"-->
-                    <!--suffix="$"-->
-                    <!--:label="$store.state.stampStore.marketValue.label"-->
-                    <!--v-model="$store.state.stampStore.marketValue.value"-->
-                    <!--:rules="$store.state.stampStore.marketValue.validation.functions"-->
-                  <!--&gt;</v-text-field>-->
-                <!--</v-flex>-->
                 <v-flex xs12 align-center justify-space-between>
                   <v-text-field
                     prepend-icon="short_text"
                     suffix="$"
                     type="number"
-                    :label="$store.state.stampStore.marketValue.label"
+                    :label="$store.state.stampStore.modelForDialog.marketValue.label"
                     v-model="marketValue"
-                    :rules="$store.state.stampStore.marketValue.validation.functions"
+                    :rules="$store.state.stampStore.modelForDialog.marketValue.validation.functions"
                     ref="marketValue"
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12 align-center justify-space-between>
                   <v-text-field
                     prepend-icon="short_text"
-                    :label="$store.state.stampStore.faceDescription.label"
-                    v-model="$store.state.stampStore.faceDescription.value"
-                    :rules="$store.state.stampStore.faceDescription.validation.functions"
-                    :counter="$store.state.stampStore.faceDescription.validation.counter"
+                    :label="$store.state.stampStore.modelForDialog.faceDescription.label"
+                    v-model="$store.state.stampStore.modelForDialog.faceDescription.value"
+                    :rules="$store.state.stampStore.modelForDialog.faceDescription.validation.functions"
+                    :counter="$store.state.stampStore.modelForDialog.faceDescription.validation.counter"
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12 align-center justify-space-between>
                   <v-text-field
                     prepend-icon="short_text"
-                    :label="$store.state.stampStore.comment.label"
-                    v-model="$store.state.stampStore.comment.value"
-                    :rules="$store.state.stampStore.comment.validation.functions"
-                    :counter="$store.state.stampStore.comment.validation.counter"
+                    :label="$store.state.stampStore.modelForDialog.comment.label"
+                    v-model="$store.state.stampStore.modelForDialog.comment.value"
+                    :rules="$store.state.stampStore.modelForDialog.comment.validation.functions"
+                    :counter="$store.state.stampStore.modelForDialog.comment.validation.counter"
                     multi-line
                   ></v-text-field>
                 </v-flex>
@@ -264,7 +266,7 @@
                 <v-flex xs12 align-center justify-space-between><v-subheader xs12>Custom attributes</v-subheader></v-flex>
                 <!--<v-subheader xs12>Other</v-subheader>-->
                 <!--<v-subheader xs12>Custom attributes</v-subheader>-->
-                <template v-for="(customAttribute, index) in $store.state.stampStore.arrayOfCustomAttributes">
+                <template v-for="(customAttribute, index) in $store.state.stampStore.modelForDialog.arrayOfCustomAttributes">
                   <v-flex xs12 sm4 :key="customAttribute.id">
                     <v-text-field
                       prepend-icon="short_text"
@@ -290,13 +292,6 @@
                   Add new attribute
                   <v-icon dark right>add</v-icon>
                 </v-btn>
-                <!--<v-flex xs12 sm3 v-for="(customAttribute, i) in $store.state.stampStore.arrayOfCustomAttributes" :key="customAttribute.id">-->
-                  <!--<v-text-field label="Title" v-model="customAttribute.label"></v-text-field>-->
-                <!--</v-flex>-->
-                <!--<v-flex xs12 sm9 v-for="(customAttribute, i) in $store.state.stampStore.arrayOfCustomAttributes" :key="customAttribute.id">-->
-                  <!--<v-text-field label="Value" v-model="customAttribute.value"></v-text-field>-->
-                <!--</v-flex>-->
-                <!--<v-btn round color="primary" dark @click="$store.commit('addCustomAttribute')">Add new attribute</v-btn>-->
               </v-layout>
             </v-container>
           </v-form>
@@ -333,7 +328,7 @@
 
 <script>
   // eslint-disable-next-line no-unused-vars
-  import strings from '../strings.js'
+  import strings from '../../strings.js'
 //  import axiosInstance from '../services/AxiosInstance.js'
   import axios from 'axios'
 //  import VTextField from 'vuetify/es5/components/VTextField/VTextField'
@@ -356,8 +351,6 @@
   export default {
     data () {
       return {
-//        isStampDialogVisible: this.$store.state.isStampDialogVisible,
-//        title: strings.stamps.titleAddNewStamp,
         stampIdOfLastStampInDialog: null,
         areAllFieldsValidlyFilled: false
       }
@@ -399,7 +392,7 @@
       },
       specimenCount: {
         get () {
-          return this.$store.state.stampStore.specimenCount.value
+          return this.$store.state.stampStore.modelForDialog.specimenCount.value
         },
         set (value) {
           const correctedValueAfterInput = getNullIfEmptyStringOrNull(value)
@@ -411,7 +404,7 @@
       },
       structureStampCount: {
         get () {
-          return this.$store.state.stampStore.structureStampCount.value
+          return this.$store.state.stampStore.modelForDialog.structureStampCount.value
         },
         set (value) {
           const correctedValueAfterInput = getNullIfEmptyStringOrNull(value)
@@ -428,41 +421,6 @@
          * Also, this computed: is being listened in watch:, where we do some changes to dialog.
          */
       }
-//      getIsStampDialogVisible () {
-/// /        $store.state.isStampDialogVisible
-//        /*
-//         * This method is invoked only when state's variables, mentioned inside this method, changes.
-//         * That means, it's invoked only when stamp dialog is being hidden or is opening for show.
-//         * So if we want each time dialog opens, the dialog to be fully scrolled to top, we can
-//         * do scrolling in this method.
-//         */
-//        console.log('@@@ getIsStampDialogVisible () kvietimas')
-/// /        console.log('@@@ getIsStampDialogVisible () >>> container ', container, ' / isStampDialogVisible ', isStampDialogVisible)
-/// /        console.log('@@@ getIsStampDialogVisible () >>> stampIdOfCurrentStampInDialog ', stampIdOfCurrentStampInDialog, ' / this.stampIdOfLastStampInDialog ', this.stampIdOfLastStampInDialog)
-//        const container = document.getElementById('dialogVCardText')
-//        if (container) {
-//          container.scrollTop = 0
-//          // Cia reikia clearForm() iskviest
-//        }
-//        const isStampDialogVisible = this.$store.getters.getIsStampDialogVisible
-//        const stampIdOfCurrentStampInDialog = this.$store.getters.getStampId
-//        if (isStampDialogVisible === false) {
-//          this.stampIdOfLastStampInDialog = stampIdOfCurrentStampInDialog
-//        }
-//        else if (isStampDialogVisible) {
-//          if (stampIdOfCurrentStampInDialog !== null) {
-//            console.log('@@@ 666 if (stampIdOfCurrentStampInDialog !== null) {')
-//            // No need to call clearForm(), because stamp dialog fields will be overwritten with newly loaded
-//            // stamp attributes from server anyway.
-//          }
-//          else if (stampIdOfCurrentStampInDialog !== this.stampIdOfLastStampInDialog) {
-//            console.log('@@@ getIsStampDialogVisible clearForm()')
-//            this.stampIdOfLastStampInDialog = stampIdOfCurrentStampInDialog
-//            this.clearForm()
-//          }
-//        }
-//        return isStampDialogVisible
-//      }
     },
     methods: {
 //      setIsStampDialogVisible (booleanValue) {
@@ -494,8 +452,8 @@
          */
         console.log('@@@ clearForm ()')
         this.$refs.stampForm.reset()
-        this.$store.state.stampStore.isExhibited.value = true
-        this.$store.state.stampStore.isOnSale.value = false
+        this.$store.state.stampStore.modelForDialog.isExhibited.value = true
+        this.$store.state.stampStore.modelForDialog.isOnSale.value = false
         this.$store.commit('removeAllCustomAttributes')
         // Scroll to top of dialog:
         let container = document.getElementById('dialogVCardText')
@@ -548,32 +506,6 @@
         }
       }
     },
-//    beforeCreate () {
-//      console.log('@@@ StampDialog....vue >>> beforeCreate ()  ')
-//    },
-//    created () {
-//      console.log('@@@ StampDialog....vue >>> created ()  ')
-//    },
-//    beforeMount () {
-//      console.log('@@@ StampDialog....vue >>> beforeMount ()  ')
-//    },
-//    mounted () {
-//      console.log('@@@ StampDialog....vue >>> mounted ()  ')
-//    },
-//    beforeDestroy () {
-//      console.log('@@@ StampDialog....vue >>> beforeDestroy ()  ')
-/// /      this.setIsStampDialogVisible(false)
-//      this.$store.commit('setIsStampDialogVisible', false)
-//    },
-//    destroyed () {
-//      console.log('@@@ StampDialog....vue >>> destroyed () ')
-//    },
-//    deactivated () {
-//      console.log('@@@ StampDialog....vue >>> deactivated () ')
-//    },
-//    updated () {
-//      console.log('@@@ StampDialog....vue >>> updated () ')
-//    },
     watch: {
 //      getMarketValue (newValue, oldValue) {
 //        console.log('@@@ watch: getMarketValue (newValue, oldValue) ', newValue, oldValue)
@@ -585,12 +517,24 @@
         console.log('@@@ watch: getIsStampDialogVisible2 (newValue, oldValue) ', newValue, oldValue)
         const stampIdOfCurrentStampInDialog = this.$store.getters.getStampId
         if (newValue === true) {
+          /*
+           * Refresh topic list every time, because user topic list is often added with new values by user.
+           * No need to refresh countries and grades, because they are only changed by website admins and
+           * it only happens in very rare occasions.
+           */
+          this.$store.dispatch('loadTopicsFromServer')
+          if (this.$store.state.stampStore.arrayOfGradesIdsAndNames.length === 0) {
+            this.$store.dispatch('loadGradesFromServer')
+          }
+          if (this.$store.state.stampStore.arrayOfCountriesIdsAndNames.length === 0) {
+            this.$store.dispatch('loadCountriesFromServer')
+          }
           if (stampIdOfCurrentStampInDialog !== null) {
             /*
-             * Do nothing.
              * No need to call clearForm(), because stamp dialog fields will be overwritten with newly loaded
              * stamp attributes from server anyway.
              */
+            this.$store.dispatch('loadStampAttributesFromServer', stampIdOfCurrentStampInDialog)
           }
           else if (stampIdOfCurrentStampInDialog !== this.stampIdOfLastStampInDialog) {
 //            this.stampIdOfLastStampInDialog = stampIdOfCurrentStampInDialog
