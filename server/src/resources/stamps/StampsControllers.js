@@ -22,22 +22,6 @@ async function getStamps (req, res) {
   }
 }
 
-async function getStampsStampId (req, res) {
-  try {
-    const stamp = await db.getStampsStampId(req.params.stampId)
-    tracer.log(stamp)
-    res.send(stamp)
-  }
-  catch (error) {
-    tracer.log(error)
-    res.status(400).send({
-      errorMessage: 'Some error in retrieving stamp.'
-    })
-  }
-  finally {
-  }
-}
-
 async function getUsersUsernameStamps (req, res) {
   try {
     const stamps = await db.getUsersUsernameStamps(req.params.username)
@@ -48,6 +32,22 @@ async function getUsersUsernameStamps (req, res) {
     tracer.log(error)
     res.status(400).send({
       errorMessage: 'Some error in retrieving stamps.'
+    })
+  }
+  finally {
+  }
+}
+
+async function getStampsStampId (req, res) {
+  try {
+    const stamp = await db.getStampsStampId(req.params.stampId)
+    tracer.log(stamp)
+    res.send(stamp)
+  }
+  catch (error) {
+    tracer.log(error)
+    res.status(400).send({
+      errorMessage: 'Some error in retrieving stamp.'
     })
   }
   finally {

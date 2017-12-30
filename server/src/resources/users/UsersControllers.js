@@ -25,6 +25,23 @@ async function register (req, res) {
   }
 }
 
+async function getUsers (req, res) {
+  try {
+    const users = await db.getUsers()
+    tracer.log(users)
+    res.send(users)
+  }
+  catch (error) {
+    tracer.log(error)
+    res.status(400).send({
+      errorMessage: 'Some error in retrieving users.'
+    })
+  }
+  finally {
+  }
+}
+
 module.exports = {
-  register
+  register,
+  getUsers
 }

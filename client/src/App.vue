@@ -18,22 +18,87 @@
         <!--<v-icon>add</v-icon>-->
       <!--</v-btn>-->
       <v-list dense>
-        <template v-for="(item, i) in items">
-          <v-divider v-if="item.divider"></v-divider>
-          <v-subheader v-else-if="item.header" v-text="item.header"></v-subheader>
-          <v-list-tile v-else @click.stop="doAction(item.name)">
-          <!--<v-list-tile v-else @click.stop="isNewStampDialogVisible = !isNewStampDialogVisible">-->
-            <v-list-tile-action>
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>
-                {{ item.text }}
-              </v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </template>
+        <v-divider></v-divider>
+        <v-subheader>My collection</v-subheader>
+        <v-list-tile
+          :to="{
+                  name: 'usersUsernameStamps',
+                  params: {
+                    username: $store.state.userStore.usernameOfLoggedInUser
+                  }
+                }"
+        >
+          <v-list-tile-action>
+            <v-icon>view_module</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>My stamps</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-divider></v-divider>
+        <v-subheader>Other collectors</v-subheader>
+        <v-list-tile
+          :to="{
+                  name: 'users'
+                }"
+        >
+          <v-list-tile-action>
+            <v-icon>list</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>
+              All collectors
+            </v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile
+          :to="{
+                  name: 'stamps'
+                }"
+        >
+          <v-list-tile-action>
+            <v-icon>view_module</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>
+              All stamps
+            </v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-divider></v-divider>
+        <v-subheader>Information</v-subheader>
+        <v-list-tile
+          :to="{
+                  name: 'about'
+                }"
+        >
+          <v-list-tile-action>
+            <v-icon>info_outline</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>
+              About
+            </v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
       </v-list>
+      <!--<v-list dense>-->
+        <!--<template v-for="(item, i) in items">-->
+          <!--<v-divider v-if="item.divider"></v-divider>-->
+          <!--<v-subheader v-else-if="item.header" v-text="item.header"></v-subheader>-->
+          <!--<v-list-tile v-else @click.stop="doAction(item.name)">-->
+            <!--&lt;!&ndash;<v-list-tile v-else @click.stop="isNewStampDialogVisible = !isNewStampDialogVisible">&ndash;&gt;-->
+            <!--<v-list-tile-action>-->
+              <!--<v-icon>{{ item.icon }}</v-icon>-->
+            <!--</v-list-tile-action>-->
+            <!--<v-list-tile-content>-->
+              <!--<v-list-tile-title>-->
+                <!--{{ item.text }}-->
+              <!--</v-list-tile-title>-->
+            <!--</v-list-tile-content>-->
+          <!--</v-list-tile>-->
+        <!--</template>-->
+      <!--</v-list>-->
     </v-navigation-drawer>
     <v-toolbar
       color="orange"
@@ -55,11 +120,8 @@
 
 
 
-    <template>
-      <SearchAndSort></SearchAndSort>
-      <StampList></StampList>
-      <StampDialogForCreateAndEditAndView></StampDialogForCreateAndEditAndView>
-    </template>
+    <router-view></router-view>
+
 
 
     <v-btn
@@ -88,15 +150,17 @@
 
 <script>
   import vv from './strings.js'
-  import StampDialogForCreateAndEditAndView from './components/stamps/StampDialogForCreateAndEditAndView.vue'
-  import StampList from './components/stamps/StampList.vue'
-  import SearchAndSort from './components/stamps/SearchAndSortPanel.vue'
+//  import StampDialogForCreateAndEditAndView from './components/stamps/StampDialogForCreateAndEditAndView.vue'
+//  import StampList from './components/stamps/StampList.vue'
+//  import SearchAndSort from './components/stamps/SearchAndSortPanel.vue'
 //  import axios from 'axios'
 
   export default {
     data: () => ({
       testValue: '140test',
       isNavigationDrawerVisible: null,
+      navigationDrawer: {
+      },
       items: [
         { header: 'My collection' },
 //        { name: vv.navigationDrawer.newStamp, icon: 'add', text: 'New stamp' },
@@ -125,12 +189,12 @@
 //        this.$store.commit('setIsStampDialogVisible', true)
 //        this.$store.commit('setStampDialogMode', vv.stampDialog.mode.create)
 //      }
-    },
-    components: {
-      StampDialogForCreateAndEditAndView,
-      StampList,
-      SearchAndSort
     }
+//    components: {
+//      StampDialogForCreateAndEditAndView,
+//      StampList,
+//      SearchAndSort
+//    }
 //    props: {
 //      source: String
 //    }

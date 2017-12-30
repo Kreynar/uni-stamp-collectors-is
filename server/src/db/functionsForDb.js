@@ -136,21 +136,21 @@ async function deleteStamp (stampId) {
 
 async function insertIntoTopic (arrayOfTopicsNames) {
   const textOfQueryForInsertingTopics = `
-INSERT INTO topic_ (user_id_, name_)
-SELECT user_id_.user_id_, topic_name_.topic_name_
-FROM
-  (VALUES (:userId ::BIGINT)) user_id_(user_id_)
-  , UNNEST(:arrayOfTopicsNames ::TEXT[]) AS topic_name_(topic_name_)
-WHERE NOT EXISTS
-(
-  SELECT 999
-  FROM topic_
-  WHERE (
-    ( topic_.name_ = topic_name_.topic_name_ )
-    AND ( (topic_.user_id_ IS NULL) OR (topic_.user_id_ = user_id_.user_id_) )
+  INSERT INTO topic_ (user_id_, name_)
+  SELECT user_id_.user_id_, topic_name_.topic_name_
+  FROM
+    (VALUES (:userId ::BIGINT)) user_id_(user_id_)
+    , UNNEST(:arrayOfTopicsNames ::TEXT[]) AS topic_name_(topic_name_)
+  WHERE NOT EXISTS
+  (
+    SELECT 999
+    FROM topic_
+    WHERE (
+      ( topic_.name_ = topic_name_.topic_name_ )
+      AND ( (topic_.user_id_ IS NULL) OR (topic_.user_id_ = user_id_.user_id_) )
+    )
   )
-)
-;
+  ;
   `
   const resultOfQuery = await knex.raw(textOfQueryForInsertingTopics, {
     userId: vv.testTemporaryUserId,
@@ -162,13 +162,13 @@ WHERE NOT EXISTS
 
 async function deleteFromStampTopic (stampId) {
   const textOfQueryForDeletingFromStampTopic = `
-DELETE
-FROM stamp_topic_
-USING (VALUES (:stampId ::BIGINT)) stamp_id_(stamp_id_)
-WHERE stamp_topic_.stamp_id_ = stamp_id_.stamp_id_
-RETURNING stamp_id_.stamp_id_
-;
-    `
+  DELETE
+  FROM stamp_topic_
+  USING (VALUES (:stampId ::BIGINT)) stamp_id_(stamp_id_)
+  WHERE stamp_topic_.stamp_id_ = stamp_id_.stamp_id_
+  RETURNING stamp_id_.stamp_id_
+  ;
+  `
   const resultOfQuery = await knex.raw(textOfQueryForDeletingFromStampTopic, {
     stampId: stampId
   })
@@ -177,14 +177,14 @@ RETURNING stamp_id_.stamp_id_
 
 async function insertIntoStampTopic (insertedStampId, arrayOfTopicsNames) {
   const textOfQueryForInsertingIntoStampTopic = `
-INSERT INTO stamp_topic_(stamp_id_, topic_id_)
-SELECT stamp_id_.stamp_id_, topic_.id_
-FROM
-  (VALUES (:stampId ::BIGINT)) stamp_id_(stamp_id_)
-  , UNNEST(:arrayOfTopicsNames ::TEXT[]) AS topic_name_(topic_name_)
-  , topic_
-WHERE topic_name_.topic_name_ = topic_.name_
-;
+  INSERT INTO stamp_topic_(stamp_id_, topic_id_)
+  SELECT stamp_id_.stamp_id_, topic_.id_
+  FROM
+    (VALUES (:stampId ::BIGINT)) stamp_id_(stamp_id_)
+    , UNNEST(:arrayOfTopicsNames ::TEXT[]) AS topic_name_(topic_name_)
+    , topic_
+  WHERE topic_name_.topic_name_ = topic_.name_
+  ;
   `
   const resultOfQuery = await knex.raw(textOfQueryForInsertingIntoStampTopic, {
     stampId: insertedStampId,
@@ -333,20 +333,45 @@ db.getArrayOfTopicsIdsAndNames = async (userId) => {
 }
 
 db.getStamps = async () => {
-  const textOfQuery = '\
-  SELECT stamp_.id_ AS "id", stamp_.temporary_picture_url_ AS "temporaryPictureUrl"\
-  , stamp_.year_ AS "year", country_.name_ AS country, stamp_.nominal_value_ AS "nominalValue"\
-  , grade_.name_ AS grade, stamp_.is_cancelled_ AS "isCancelled", ARRAY_AGG(topic_.name_) AS "arrayOfTopics"\
-  FROM stamp_\
-  LEFT JOIN country_ ON (stamp_.country_id_ = country_.id_)\
-  LEFT JOIN grade_ ON (stamp_.grade_id_ = grade_.id_)\
-  LEFT JOIN stamp_topic_ ON (stamp_.id_ = stamp_topic_.stamp_id_)\
-  LEFT JOIN topic_ ON (stamp_topic_.topic_id_ = topic_.id_)\
-  GROUP BY stamp_.id_, country_.name_, grade_.name_\
-  ORDER BY stamp_.modified_at_ DESC\
-  ;\
-  '
+  const textOfQuery = `
+  SELECT stamp_.id_ AS "id", stamp_.temporary_user_id_ AS "userId", user_.name_ AS "username",
+  stamp_.temporary_picture_url_ AS "temporaryPictureUrl"
+  , stamp_.year_ AS "year", country_.name_ AS "country", stamp_.nominal_value_ AS "nominalValue"
+  , grade_.name_ AS "grade", stamp_.is_cancelled_ AS "isCancelled", ARRAY_AGG(topic_.name_) AS "arrayOfTopics"
+  FROM stamp_
+  LEFT JOIN country_ ON (stamp_.country_id_ = country_.id_)
+  LEFT JOIN grade_ ON (stamp_.grade_id_ = grade_.id_)
+  LEFT JOIN stamp_topic_ ON (stamp_.id_ = stamp_topic_.stamp_id_)
+  LEFT JOIN topic_ ON (stamp_topic_.topic_id_ = topic_.id_)
+  INNER JOIN user_ ON (stamp_.temporary_user_id_ = user_.id_)
+  GROUP BY stamp_.id_, country_.name_, grade_.name_, user_.name_
+  ORDER BY stamp_.modified_at_ DESC
+  ;
+  `
   let resultOfQuery = await knex.raw(textOfQuery)
+  return resultOfQuery.rows
+}
+
+db.getUsersUsernameStamps = async (username) => {
+  const textOfQuery = `
+  SELECT stamp_.id_ AS "id", stamp_.temporary_user_id_ AS "userId", user_.name_ AS "username",
+  stamp_.temporary_picture_url_ AS "temporaryPictureUrl", 
+  stamp_.year_ AS "year", country_.name_ AS country, stamp_.nominal_value_ AS "nominalValue", 
+  grade_.name_ AS grade, stamp_.is_cancelled_ AS "isCancelled", ARRAY_AGG(topic_.name_) AS "arrayOfTopics"
+  FROM stamp_
+  LEFT JOIN country_ ON (stamp_.country_id_ = country_.id_)
+  LEFT JOIN grade_ ON (stamp_.grade_id_ = grade_.id_)
+  LEFT JOIN stamp_topic_ ON (stamp_.id_ = stamp_topic_.stamp_id_)
+  LEFT JOIN topic_ ON (stamp_topic_.topic_id_ = topic_.id_)
+  INNER JOIN user_ ON (stamp_.temporary_user_id_ = user_.id_)
+  WHERE (user_.name_ = :username ::TEXT)
+  GROUP BY stamp_.id_, user_.name_, country_.name_, grade_.name_ 
+  ORDER BY stamp_.modified_at_ DESC
+  ;
+  `
+  let resultOfQuery = await knex.raw(textOfQuery, {
+    username: username
+  })
   return resultOfQuery.rows
 }
 
@@ -378,25 +403,18 @@ db.getStampsStampId = async (stampId) => {
   return resultOfQuery.rows[0]
 }
 
-db.getUsersUsernameStamps = async (username) => {
-  const textOfQuery = '\
-  SELECT stamp_.id_ AS "id", stamp_.temporary_picture_url_ AS "temporaryPictureUrl", \
-  stamp_.year_ AS "year", country_.name_ AS country, stamp_.nominal_value_ AS "nominalValue", \
-  grade_.name_ AS grade, stamp_.is_cancelled_ AS "isCancelled", ARRAY_AGG(topic_.name_) AS "arrayOfTopics"\
-  FROM stamp_\
-  LEFT JOIN country_ ON (stamp_.country_id_ = country_.id_)\
-  LEFT JOIN grade_ ON (stamp_.grade_id_ = grade_.id_)\
-  LEFT JOIN stamp_topic_ ON (stamp_.id_ = stamp_topic_.stamp_id_)\
-  LEFT JOIN topic_ ON (stamp_topic_.topic_id_ = topic_.id_)\
-  INNER JOIN user_ ON (stamp_.temporary_user_id_ = user_.id_)\
-  WHERE (user_.name_ = :username ::TEXT)\
-  GROUP BY stamp_.id_, country_.name_, grade_.name_\
-  ORDER BY stamp_.modified_at_ DESC\
-  ;\
-  '
-  let resultOfQuery = await knex.raw(textOfQuery, {
-    username: username
-  })
+db.getUsers = async () => {
+  const textOfQuery = `
+  SELECT user_.id_ AS "id", user_.temporary_picture_url_ AS "temporaryPictureUrl", user_.rating_ AS "rating", user_.name_ AS "username",
+  user_.email_address_ AS "emailAddress", user_.is_email_displayed_ AS "isEmailDisplayed", 
+  COUNT(stamp_.id_) AS "stampCount", user_.last_seen_at_ AS "lastSeenAt"
+  FROM user_
+  LEFT JOIN stamp_ ON (user_.id_ = stamp_.temporary_user_id_)
+  GROUP BY user_.id_, user_.temporary_picture_url_, user_.rating_, user_.name_, user_.email_address_, 
+  user_.is_email_displayed_, user_.last_seen_at_
+  ORDER BY "stampCount" DESC
+  `
+  let resultOfQuery = await knex.raw(textOfQuery)
   return resultOfQuery.rows
 }
 

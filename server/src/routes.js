@@ -38,6 +38,8 @@ module.exports = (app) => {
     StampsControllers.getStampsStampId)
   app.get(ss.path.users + ss.path.username + ss.path.stamps,
     StampsControllers.getUsersUsernameStamps)
+  app.get(ss.path.users,
+    UsersControllers.getUsers)
   app.post(ss.path.register,
     UsersPolicies.register,
     UsersControllers.register)

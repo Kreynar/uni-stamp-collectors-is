@@ -3,7 +3,7 @@
     <v-container fluid grid-list-xs class="grey lighten-1">
       <v-layout row wrap>
         <v-expansion-panel>
-          <v-expansion-panel-content :class="$store.state.secondaryColorOfTheme">
+          <v-expansion-panel-content :class="$store.state.secondaryColorOfTheme" v-model="isExpansionPanelExpanded">
             <div slot="header" class="text-xs-center" style="font-size:150%">
               <v-flex xs12>
                 <!--<span>Search  </span><v-icon>search</v-icon>-->
@@ -82,7 +82,6 @@
                             chips
                             tags
                             clearable
-                            required
                           >
                             <template slot="selection" slot-scope="data">
                               <v-chip
@@ -166,12 +165,12 @@
                     <v-subheader>Other</v-subheader>
                     <v-container fluid grid-list-md>
                       <v-layout row wrap>
-                        <v-flex xs12 sm6 md3 >
-                          <v-checkbox
-                            :label="$store.state.stampStore.modelForSearch.isExhibited.label"
-                            v-model="$store.state.stampStore.modelForSearch.isExhibited.value"
-                          ></v-checkbox>
-                        </v-flex>
+                        <!--<v-flex xs12 sm6 md3 >-->
+                          <!--<v-checkbox-->
+                            <!--:label="$store.state.stampStore.modelForSearch.isExhibited.label"-->
+                            <!--v-model="$store.state.stampStore.modelForSearch.isExhibited.value"-->
+                          <!--&gt;</v-checkbox>-->
+                        <!--</v-flex>-->
                         <v-flex xs12 sm6 md3 >
                           <v-text-field
                             type="number"
@@ -238,7 +237,7 @@
                             <!--autocomplete-->
                           <!--&gt;</v-select>-->
                           <v-select
-                            :items="getArrayOfAttributesNamesAndLabels"
+                            :items="getArrayOfAttributesNamesAndLabelsForSort"
                             item-value="name"
                             item-text="label"
                             v-model="sortField"
@@ -284,7 +283,8 @@
     data () {
       return {
         sortField: null,
-        sortOrder: '+'
+        sortOrder: '+',
+        isExpansionPanelExpanded: false
       }
     },
     computed: {
@@ -322,17 +322,60 @@
 //          }
 //        }
 //      }
-      getArrayOfAttributesNamesAndLabels () {
-        let arrayOfAttributesNamesAndLabels = JSON.parse(JSON.stringify(this.$store.getters.getArrayOfFieldsNamesAndLabelsFromSearchPanel))
-        arrayOfAttributesNamesAndLabels.push({
-          name: 'modifiedAt',
-          label: 'Date modified'
-        })
-        arrayOfAttributesNamesAndLabels.push({
-          name: null,
-          label: ''
-        })
-        return arrayOfAttributesNamesAndLabels
+      getArrayOfAttributesNamesAndLabelsForSort () {
+        const ss = strings.stamps
+//        let arrayOfAttributesNamesAndLabelsForSort = JSON.parse(JSON.stringify(this.$store.getters.getArrayOfFieldsNamesAndLabelsForSort))
+        const arrayOfAttributesNamesAndLabelsForSort = [
+          {
+            name: null,
+            label: ''
+          },
+          {
+            name: 'modifiedAt',
+            label: 'Date modified'
+          },
+          {
+            name: 'numberScott',
+            label: ss.numberScott
+          },
+          {
+            name: 'numberMichel',
+            label: ss.numberMichel
+          },
+          {
+            name: 'numberStanleyGibbons',
+            label: ss.numberStanleyGibbons
+          },
+          {
+            name: 'numberYvertEtTellier',
+            label: ss.numberYvertEtTellier
+          },
+          {
+            name: 'year',
+            label: ss.year
+          },
+          {
+            name: 'country',
+            label: ss.country
+          },
+          {
+            name: 'grade',
+            label: ss.grade
+          },
+          {
+            name: 'isCancelled',
+            label: ss.isCancelled
+          },
+          {
+            name: 'specimenCount',
+            label: ss.specimenCount
+          },
+          {
+            name: 'marketValue',
+            label: ss.marketValue
+          }
+        ]
+        return arrayOfAttributesNamesAndLabelsForSort
       }
     },
     methods: {
@@ -353,6 +396,24 @@
         })
         console.log('@@@ searchAndSort ()', 'this.$route.path', this.$route.path, 'this.$route.params', this.$route.params)
         console.log('this.$route.query', this.$route.query, 'this.$route.hash', this.$route.hash, 'this.$route.fullPath', this.$route.fullPath)
+      }
+    },
+    watch: {
+      isExpansionPanelExpanded (newValue, oldValue) {
+        if (newValue) {
+          /*
+           * Also (for now - only for SearchAndSortPanel needs) load topics, grades and countries.
+           * User topic list is added with new values frequently, so refresh it everytime.
+           * Countries and grades are only edited by website admins very rarely, so no need to refresh every time.
+           */
+          this.$store.dispatch('loadTopicsFromServer')
+          if (this.$store.state.stampStore.arrayOfGradesIdsAndNames.length === 0) {
+            this.$store.dispatch('loadGradesFromServer')
+          }
+          if (this.$store.state.stampStore.arrayOfCountriesIdsAndNames.length === 0) {
+            this.$store.dispatch('loadCountriesFromServer')
+          }
+        }
       }
     }
   }

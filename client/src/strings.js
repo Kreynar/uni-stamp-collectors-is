@@ -105,7 +105,7 @@ vv.stampDialog = {
   }
 }
 
-vv.testTemporaryUserUsername = 'testUserName'
+vv.testTemporaryUserUsername = 'testUsername'
 
 vv.baseURL = `http://localhost:8081/`
 vv.path = {}

@@ -5,7 +5,7 @@
 import strings from '../strings.js'
 // import vf from '../validationFunctions.js'
 import axios from 'axios'
-import stampModel from '../models/stamp.js'
+import stampModel from '../models/stampModel.js'
 const ss = strings.stamps
 
 async function getArrayOfCountriesIdsAndNamesFromServer () {
@@ -59,6 +59,26 @@ async function getArrayOfTopicsIdsAndNamesFromServer () {
   }
 }
 
+// function getArrayOfFieldsNamesAndLabelsFrom (modelForDialogOrSearchPanel) {
+//   let fieldsNamesAndLabels = []
+//   for (const propertyName in modelForDialogOrSearchPanel) {
+//     if (modelForDialogOrSearchPanel.hasOwnProperty(propertyName)) {
+//       if (modelForDialogOrSearchPanel[propertyName]) {
+//         if (modelForDialogOrSearchPanel[propertyName].hasOwnProperty('value')) {
+//           if (propertyName !== 'temporaryPictureUrl') {
+//             fieldsNamesAndLabels.push({
+//               name: propertyName,
+//               label: modelForDialogOrSearchPanel[propertyName].label
+//             })
+//           }
+//         }
+//       }
+//     }
+//   }
+//   console.log('@@@ fieldsNamesAndLabels ', fieldsNamesAndLabels)
+//   return fieldsNamesAndLabels
+// }
+
 async function getStampAttributesFromServer (stampId) {
   try {
     const serverResponse = await axios.create({
@@ -76,24 +96,24 @@ async function getStampAttributesFromServer (stampId) {
   }
 }
 
-function getArrayOfFieldsNamesAndLabelsFrom (modelForDialogOrSearchPanel) {
-  let fieldsNamesAndLabels = []
-  for (const propertyName in modelForDialogOrSearchPanel) {
-    if (modelForDialogOrSearchPanel.hasOwnProperty(propertyName)) {
-      if (modelForDialogOrSearchPanel[propertyName]) {
-        if (modelForDialogOrSearchPanel[propertyName].hasOwnProperty('value')) {
-          if (propertyName !== 'temporaryPictureUrl') {
-            fieldsNamesAndLabels.push({
-              name: propertyName,
-              label: modelForDialogOrSearchPanel[propertyName].label
-            })
-          }
-        }
-      }
-    }
+async function getArrayOfStampsFromServer (fullPath) {
+  try {
+    // const serverResponse = await axios.create({
+    //   baseURL: strings.baseURL
+    // }).get(strings.path.stamps)
+    const serverResponse = await axios.create({
+      baseURL: strings.baseURL
+    }).get(fullPath)
+    const arrayOfStamps = serverResponse.data
+    console.log('@@@ getArrayOfStampsFromServer serverResponse.data', arrayOfStamps)
+    return arrayOfStamps
   }
-  console.log('@@@ fieldsNamesAndLabels ', fieldsNamesAndLabels)
-  return fieldsNamesAndLabels
+  catch (error) {
+    const errorMessage = error.response.data.errorMessage
+    console.log('@@@ error in getArrayOfStampsFromServer:  ', errorMessage)
+  }
+  finally {
+  }
 }
 
 function getFieldsAndValuesFrom (modelForDialogOrSearchPanel) {
@@ -154,18 +174,21 @@ const stampStore = {
     stampId: null,
     // modelForDialog: JSON.parse(JSON.stringify(stampModel)),
     // modelForSearch: JSON.parse(JSON.stringify(stampModel))
-    modelForDialog: stampModel.getStampModel('dialog'),
-    modelForSearch: stampModel.getStampModel('searchPanel')
+    modelForDialog: stampModel.getStampModel(),
+    modelForSearch: stampModel.getStampModelForSearch()
   }),
   getters: {
     /*
-     * Retrieves array of objects { name: ..., label: ...} with field names and labels,
+     * Retrieves array of objects: [{ name: ..., label: ...}, ...] with field names and labels,
      * except temporaryPictureUrl, arrayOfCustomAttributes.
      */
-    getArrayOfFieldsNamesAndLabelsFromSearchPanel (state) {
-      // console.log('@@@ getArrayOfFieldsNamesAndLabelsExceptCustomAttributesFromSearchPanel (state)')
-      return getArrayOfFieldsNamesAndLabelsFrom(state.modelForSearch)
-    },
+    // getArrayOfFieldsNamesAndLabelsFromSearchPanel (state) {
+    //   // console.log('@@@ getArrayOfFieldsNamesAndLabelsExceptCustomAttributesFromSearchPanel (state)')
+    //   return getArrayOfFieldsNamesAndLabelsFrom(state.modelForSearch)
+    // },
+    // getArrayOfFieldsNamesAndLabelsForSort () {
+    //   return getArrayOfFieldsNamesAndLabelsFrom(stampModel.getStampModel())
+    // },
     getFormFieldsAndValues (state) {
       console.log('@@@ getFormFieldsAndValues (state)')
       return getFieldsAndValuesFrom(state.modelForDialog)
@@ -270,6 +293,10 @@ const stampStore = {
     async loadStampAttributesFromServer (context, stampId) {
       const stampAttributes = await getStampAttributesFromServer(stampId)
       context.commit('setStampAttributes', stampAttributes)
+    },
+    async loadArrayOfStampsFromServer (context, fullPath) {
+      const arrayOfStamps = await getArrayOfStampsFromServer(fullPath)
+      context.commit('setArrayOfStamps', arrayOfStamps)
     }
     // setArrayOfCountriesNamesAndIds (state, arrayOfCountriesNamesAndIds) {
     //   state.mutations.setArrayOfCountriesNamesAndIds(arrayOfCountriesNamesAndIds)
