@@ -49,7 +49,7 @@
                             item-text="name_"
                             v-model="$store.state.stampStore.modelForSearch.country.value"
                             :label="$store.state.stampStore.modelForSearch.country.label"
-                            autocomplete
+                            combobox
                           ></v-select>
                         </v-flex>
                         <v-flex xs12 sm6 md3>
@@ -65,33 +65,27 @@
                             item-text="name_"
                             v-model="$store.state.stampStore.modelForSearch.grade.value"
                             :label="$store.state.stampStore.modelForSearch.grade.label"
-                            autocomplete
+                            combobox
                           ></v-select>
                         </v-flex>
-                        <v-flex xs12 sm6 md3>
-                          <v-checkbox
-                            v-model="$store.state.stampStore.modelForSearch.isCancelled.value"
-                            :label="$store.state.stampStore.modelForSearch.isCancelled.label"
-                          ></v-checkbox>
-                        </v-flex>
+                        <!--<v-flex xs12 sm6 md3>-->
+                          <!--<v-select-->
+                            <!--:items="getIsCancelledNamesAndLabelsForSelectForSearch"-->
+                            <!--item-value="value"-->
+                            <!--item-text="label"-->
+                            <!--v-model="$store.state.stampStore.modelForSearch.isCancelled.value"-->
+                            <!--:label="$store.state.stampStore.modelForSearch.isCancelled.label"-->
+                            <!--autocomplete-->
+                          <!--&gt;-->
+                          <!--</v-select>-->
+                        <!--</v-flex>-->
                         <v-flex xs12 sm6 md3>
                           <v-select
                             :items="$store.getters.getArrayOfTopicsNames"
                             v-model="$store.state.stampStore.modelForSearch.arrayOfTopics.value"
                             :label="$store.state.stampStore.modelForSearch.arrayOfTopics.label"
-                            chips
-                            tags
-                            clearable
+                            combobox
                           >
-                            <template slot="selection" slot-scope="data">
-                              <v-chip
-                                close
-                                @input="$store.commit('removeItemFromArrayOfTopics', data.item)"
-                                :selected="data.selected"
-                              >
-                                <strong>{{ data.item }}</strong>
-                              </v-chip>
-                            </template>
                           </v-select>
                         </v-flex>
                       </v-layout>
@@ -178,12 +172,23 @@
                             v-model="$store.state.stampStore.modelForSearch.specimenCount.value"
                           ></v-text-field>
                         </v-flex>
-                        <v-flex xs12 sm6 md3 >
-                          <v-checkbox
-                            :label="$store.state.stampStore.modelForSearch.isOnSale.label"
-                            v-model="$store.state.stampStore.modelForSearch.isOnSale.value"
-                          ></v-checkbox>
-                        </v-flex>
+                        <!--<v-flex xs12 sm6 md3>-->
+                          <!--<v-select-->
+                            <!--:items="getIsCancelledNamesAndLabelsForSelectForSearch"-->
+                            <!--item-value="value"-->
+                            <!--item-text="label"-->
+                            <!--v-model="$store.state.stampStore.modelForSearch.isCancelled.value"-->
+                            <!--:label="$store.state.stampStore.modelForSearch.isCancelled.label"-->
+                            <!--autocomplete-->
+                          <!--&gt;-->
+                          <!--</v-select>-->
+                        <!--</v-flex>-->
+                        <!--<v-flex xs12 sm6 md3 >-->
+                          <!--<v-checkbox-->
+                            <!--:label="$store.state.stampStore.modelForSearch.isOnSale.label"-->
+                            <!--v-model="$store.state.stampStore.modelForSearch.isOnSale.value"-->
+                          <!--&gt;</v-checkbox>-->
+                        <!--</v-flex>-->
                         <v-flex xs12 sm6 md3 >
                           <v-text-field
                             suffix="$"
@@ -212,12 +217,14 @@
                       <v-layout row wrap>
                         <v-flex xs6>
                           <v-text-field
-                            label="Title"
+                            :label="$store.state.stampStore.modelForSearch.customAttributeLabel.label"
+                            v-model="$store.state.stampStore.modelForSearch.customAttributeLabel.value"
                           ></v-text-field>
                         </v-flex>
                         <v-flex xs6>
                           <v-text-field
-                            label="Value"
+                            :label="$store.state.stampStore.modelForSearch.customAttributeValue.label"
+                            v-model="$store.state.stampStore.modelForSearch.customAttributeValue.value"
                           ></v-text-field>
                         </v-flex>
                       </v-layout>
@@ -249,8 +256,8 @@
                         </v-flex>
                         <v-flex xs2 v-if="(sortField !== null)">
                           <v-btn :color="$store.state.mainColorOfTheme" fab dark small @click="changeSortOrder">
-                            <v-icon v-if="(sortOrder === '+')">arrow_downward</v-icon>
-                            <v-icon v-if="(sortOrder === '-')">arrow_upward</v-icon>
+                            <v-icon v-if="(sortOrder === 'asc')">arrow_downward</v-icon>
+                            <v-icon v-if="(sortOrder === 'desc')">arrow_upward</v-icon>
                           </v-btn>
                         </v-flex>
                       </v-layout>
@@ -278,12 +285,13 @@
 <script>
 // eslint-disable-next-line no-unused-vars
   import strings from '../../strings.js'
+//  import axios from 'axios'
 
   export default {
     data () {
       return {
         sortField: null,
-        sortOrder: '+',
+        sortOrder: 'asc',
         isExpansionPanelExpanded: false
       }
     },
@@ -322,6 +330,40 @@
 //          }
 //        }
 //      }
+      getIsCancelledNamesAndLabelsForSelectForSearch () {
+        const isCancelledNamesAndLabels = [
+          {
+            value: null,
+            label: ''
+          },
+          {
+            value: true,
+            label: 'Cancelled'
+          },
+          {
+            value: false,
+            label: 'Not cancelled'
+          }
+        ]
+        return isCancelledNamesAndLabels
+      },
+      getIsOnSaleNamesAndLabelsForSelectForSearch () {
+        const isOnSaleNamesAndLabels = [
+          {
+            value: null,
+            label: ''
+          },
+          {
+            value: true,
+            label: 'On sale'
+          },
+          {
+            value: false,
+            label: 'Not on sale'
+          }
+        ]
+        return isOnSaleNamesAndLabels
+      },
       getArrayOfAttributesNamesAndLabelsForSort () {
         const ss = strings.stamps
 //        let arrayOfAttributesNamesAndLabelsForSort = JSON.parse(JSON.stringify(this.$store.getters.getArrayOfFieldsNamesAndLabelsForSort))
@@ -380,22 +422,33 @@
     },
     methods: {
       changeSortOrder () {
-        if (this.sortOrder !== '+') {
-          this.sortOrder = '+'
+        if (this.sortOrder !== 'asc') {
+          this.sortOrder = 'asc'
         }
         else {
-          this.sortOrder = '-'
+          this.sortOrder = 'desc'
         }
       },
-      searchAndSort () {
-        this.$router.push({
-          path: 'register',
-          query: {
-            plan: 'private'
+      async searchAndSort () {
+        const formFieldsAndValues = this.$store.getters.getNonNullFieldsAndValuesFromSearchPanel
+        try {
+          const fullPathObject = {
+            name: this.$route.name,
+            query: {
+              ...formFieldsAndValues
+            }
           }
-        })
-        console.log('@@@ searchAndSort ()', 'this.$route.path', this.$route.path, 'this.$route.params', this.$route.params)
-        console.log('this.$route.query', this.$route.query, 'this.$route.hash', this.$route.hash, 'this.$route.fullPath', this.$route.fullPath)
+          if (this.sortField !== null) {
+            fullPathObject.query.sortField = this.sortField
+            fullPathObject.query.sortOrder = this.sortOrder
+          }
+          this.$router.push(fullPathObject)
+          await this.$store.dispatch('loadArrayOfStampsFromServer', this.$route.fullPath)
+        }
+        catch (error) {
+          const errorMessage = error.response.data.errorMessage
+          console.log('@@@ error in searchAndSort ():', errorMessage)
+        }
       }
     },
     watch: {

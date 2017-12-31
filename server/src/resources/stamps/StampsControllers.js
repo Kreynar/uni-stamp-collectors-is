@@ -24,7 +24,8 @@ async function getStamps (req, res) {
 
 async function getUsersUsernameStamps (req, res) {
   try {
-    const stamps = await db.getUsersUsernameStamps(req.params.username)
+    tracer.log(req.query)
+    const stamps = await db.getUsersUsernameStamps(req.params.username, req.query)
     tracer.log(stamps)
     res.send(stamps)
   }

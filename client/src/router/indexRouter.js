@@ -5,6 +5,7 @@ import About from '../components/About.vue'
 import Register from '../components/Register.vue'
 import IndexStamps from '../components/stamps/IndexStamps.vue'
 import UserList from '../components/UserList.vue'
+// import mainStore from '../stores/mainStore.js'
 // import vv from '../variables.js'
 
 Vue.use(Router)
@@ -48,8 +49,28 @@ const vueRouter = new Router({
       name: 'about',
       component: About
     }
-  ]
+  ],
+  scrollBehavior (to, from, savedPosition) {
+    return { x: 0, y: 0 }
+  }
 })
+//
+// vueRouter.beforeEach((to, from, next) => {
+//   console.log('@@@ beforeEach (to, from, next)')
+//   mainStore.state.isSomethingLoading = true
+//   ++mainStore.state.testVariable
+//   next()
+// })
+//
+// vueRouter.afterEach((to, from, next) => {
+//   console.log('@@@ async afterEach (to, from, next)')
+//   // setTimeout(() => {
+//   //   mainStore.state.isSomethingLoading = false
+//   // }, 1500) // timeout for demo purposes
+//   mainStore.state.isSomethingLoading = false
+//   ++mainStore.state.testVariable
+//   next()
+// })
 
 // vueRouter.beforeEach(function (to, from, next) {
 //   setTimeout(() => {

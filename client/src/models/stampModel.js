@@ -114,7 +114,7 @@ function getStampModel () {
       isShownInStampsList: true,
       label: ss.isCancelled,
       validation: {},
-      value: false
+      value: null
     },
     arrayOfTopics: {
       isShownInStampsList: true,
@@ -164,7 +164,7 @@ function getStampModel () {
       isShownInStampsList: false,
       label: ss.isExhibited,
       validation: {},
-      value: true
+      value: null
     },
     specimenCount: {
       isShownInStampsList: false,
@@ -180,7 +180,7 @@ function getStampModel () {
       isShownInStampsList: false,
       label: ss.isOnSale,
       validation: {},
-      value: false
+      value: null
     },
     marketValue: {
       isShownInStampsList: false,
@@ -214,7 +214,13 @@ function getStampModel () {
 }
 
 export default {
-  getStampModel,
+  getStampModelForDialog: () => {
+    const stampModelForDialog = getStampModel()
+    stampModelForDialog.isCancelled.value = false
+    stampModelForDialog.isOnSale.value = false
+    stampModelForDialog.isExhibited.value = true
+    return stampModelForDialog
+  },
   getStampModelForSearch: () => {
     const stampModelForSearch = getStampModel()
     stampModelForSearch.year.label = 'Exact year'
@@ -232,6 +238,14 @@ export default {
         mask: '####',
         counter: 4
       },
+      value: null
+    }
+    stampModelForSearch.customAttributeLabel = {
+      label: 'Title',
+      value: null
+    }
+    stampModelForSearch.customAttributeValue = {
+      label: 'Value',
       value: null
     }
     return stampModelForSearch

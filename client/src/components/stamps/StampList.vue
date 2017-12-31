@@ -15,6 +15,11 @@
       </v-layout>
     </v-container>
 
+    <div style="text-align: center; height:50px" class="grey lighten-4">
+      <v-progress-circular v-if="$store.state.isSomethingLoading" indeterminate :size="50" v-bind:width="7" color="orange"></v-progress-circular>
+    </div>
+    <!--<Loading v-if="$store.state.isSomethingLoading"></Loading>-->
+
     <v-container fluid grid-list-xl class="grey lighten-4">
       <v-layout row wrap>
 
@@ -178,7 +183,12 @@
 //        }).get(strings.path.stamps)
 //        const arrayOfStamps = serverResponse.data
 //        this.$store.commit('setArrayOfStamps', arrayOfStamps)
-        this.$store.dispatch('loadArrayOfStampsFromServer', route.fullPath)
+        this.$store.state.isSomethingLoading = true
+        await this.$store.dispatch('loadArrayOfStampsFromServer', route.fullPath)
+        setTimeout(() => {
+          this.$store.state.isSomethingLoading = false
+        }, 1000)
+
 //        /*
 //         * Also (for now - only for SearchAndSortPanel needs) load topics, grades and countries.
 //         * User topic list is added with new values frequently, so refresh it everytime.

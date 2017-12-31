@@ -352,8 +352,8 @@ db.getStamps = async () => {
   return resultOfQuery.rows
 }
 
-db.getUsersUsernameStamps = async (username) => {
-  const textOfQuery = `
+db.getUsersUsernameStamps = async (username, query) => {
+  let textOfQuery = `
   SELECT stamp_.id_ AS "id", stamp_.temporary_user_id_ AS "userId", user_.name_ AS "username",
   stamp_.temporary_picture_url_ AS "temporaryPictureUrl", 
   stamp_.year_ AS "year", country_.name_ AS country, stamp_.nominal_value_ AS "nominalValue", 
@@ -365,12 +365,102 @@ db.getUsersUsernameStamps = async (username) => {
   LEFT JOIN topic_ ON (stamp_topic_.topic_id_ = topic_.id_)
   INNER JOIN user_ ON (stamp_.temporary_user_id_ = user_.id_)
   WHERE (user_.name_ = :username ::TEXT)
-  GROUP BY stamp_.id_, user_.name_, country_.name_, grade_.name_ 
-  ORDER BY stamp_.modified_at_ DESC
+    AND ((stamp_.year_ = :year ::SMALLINT) OR (:year ::SMALLINT IS NULL))
+    AND ((stamp_.year_ >= :yearMin ::SMALLINT) OR (:yearMin ::SMALLINT IS NULL))
+    AND ((stamp_.year_ <= :yearMax ::SMALLINT) OR (:yearMax ::SMALLINT IS NULL))
+    AND ((country_.name_ = :country ::TEXT) OR (:country ::TEXT IS NULL))
+    AND ((stamp_.nominal_value_ = :nominalValue ::TEXT) OR (:nominalValue ::TEXT IS NULL))
+    AND ((grade_.name_ = :grade ::TEXT) OR (:grade ::TEXT IS NULL))
+    AND ((stamp_.is_cancelled_ = :isCancelled ::BOOLEAN) OR (:isCancelled ::BOOLEAN IS NULL))
+  GROUP BY stamp_.id_, user_.name_, country_.name_, grade_.name_, grade_.mark_
+  ORDER BY :sortField: :sortOrder
   ;
   `
+  let sortField = 'stamp_.modified_at_'
+  if (query.sortField !== undefined) {
+    switch (query.sortField) {
+      case 'modifiedAt':
+        sortField = 'stamp_.modified_at_'
+        break
+      case 'numberScott':
+        sortField = 'stamp_.scott_'
+        break
+      case 'numberMichel':
+        sortField = 'stamp_.michel_'
+        break
+      case 'numberStanleyGibbons':
+        sortField = 'stamp_.stanley_gibbons_'
+        break
+      case 'numberYvertEtTellier':
+        sortField = 'stamp_.yvert_et_tellier_'
+        break
+      case 'year':
+        sortField = 'stamp_.year_'
+        break
+      case 'country':
+        sortField = 'stamp_.country_id_'
+        break
+      case 'grade':
+        // sortField = 'stamp_.grade_id_'
+        sortField = 'grade_.mark_'
+        break
+      case 'isCancelled':
+        sortField = 'stamp_.is_cancelled_'
+        break
+      case 'specimenCount':
+        sortField = 'stamp_.specimen_count_'
+        break
+      case 'marketValue':
+        sortField = 'stamp_.market_value_in_usd_'
+        break
+      default:
+        sortField = 'stamp_.modified_at_'
+        break
+    }
+  }
+  let sortOrder = knex.raw('DESC')
+  if (query.sortOrder === 'asc') {
+    sortOrder = knex.raw('ASC')
+  }
   let resultOfQuery = await knex.raw(textOfQuery, {
-    username: username
+    username: username,
+    /*
+     * By default, all SELECT query properties (except username) are null
+     * (because knex would throw error, if would leave these properties undefined)...
+     */
+    year: null,
+    yearMin: null,
+    yearMax: null,
+    country: null,
+    nominalValue: null,
+    grade: null,
+    isCancelled: null,
+    arrayOfTopics: null,
+    numberScott: null,
+    numberMichel: null,
+    numberStanleyGibbons: null,
+    numberYvertEtTellier: null,
+    category: null,
+    structureType: null,
+    structureNumber: null,
+    structureStampCount: null,
+    specimenCount: null,
+    marketValue: null,
+    faceDescription: null,
+    comment: null,
+    customAttributeLabel: null,
+    customAttributeValue: null,
+    /*
+     * ... but if query object from client contains any properties,
+     * then these properties will overwrite default properties with same names.
+     */
+    ...query,
+    /*
+     * Gotta be careful, to always keep these v sortField and sortOrder key definitions BELOW ...query,
+     * otherwise, query.sortField and query.sortOrder will overwrite them (and this will cause bugs).
+     */
+    sortField: sortField,
+    sortOrder: sortOrder
   })
   return resultOfQuery.rows
 }

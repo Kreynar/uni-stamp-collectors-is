@@ -34,7 +34,9 @@ const mainStore = new Vuex.Store({
      * doesStampListNeedToReload specific value doesn't matter. It is only used in StampList.vue, where is computed and
      * watch, where doesStampListNeedToReload value change is being listened. When value changes, stamp list reloads.
      */
-    doesStampListNeedToReload: 1
+    doesStampListNeedToReload: 1,
+    isSomethingLoading: false
+    // testVariable: 1
   }),
   // state: {
   //   isStampDialogVisible: false,

@@ -119,7 +119,7 @@
     </v-toolbar>
 
 
-
+    <!--<Loading v-if="$store.state.isSomethingLoading"></Loading>-->
     <router-view></router-view>
 
 
@@ -150,6 +150,7 @@
 
 <script>
   import vv from './strings.js'
+//  import Loading from './components/Loading_OLD.vue'
 //  import StampDialogForCreateAndEditAndView from './components/stamps/StampDialogForCreateAndEditAndView.vue'
 //  import StampList from './components/stamps/StampList.vue'
 //  import SearchAndSort from './components/stamps/SearchAndSortPanel.vue'
@@ -191,6 +192,7 @@
 //      }
     }
 //    components: {
+//      Loading
 //      StampDialogForCreateAndEditAndView,
 //      StampList,
 //      SearchAndSort

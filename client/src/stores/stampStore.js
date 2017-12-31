@@ -143,6 +143,35 @@ function getFieldsAndValuesFrom (modelForDialogOrSearchPanel) {
   return fieldsAndValues
 }
 
+function getNonNullFieldsAndValuesFrom (modelForDialogOrSearchPanel) {
+  let fieldsAndValues = {}
+  for (const propertyName in modelForDialogOrSearchPanel) {
+    if (modelForDialogOrSearchPanel.hasOwnProperty(propertyName)) {
+      if (modelForDialogOrSearchPanel[propertyName]) {
+        if (modelForDialogOrSearchPanel[propertyName].hasOwnProperty('value')) {
+          if (modelForDialogOrSearchPanel[propertyName].value !== null) {
+            if (typeof modelForDialogOrSearchPanel[propertyName].value === 'string') {
+              if (modelForDialogOrSearchPanel[propertyName].value.length === 0) {
+                // fieldsAndValues[propertyName] = null
+              }
+              else {
+                fieldsAndValues[propertyName] = modelForDialogOrSearchPanel[propertyName].value
+              }
+            }
+            else {
+              fieldsAndValues[propertyName] = modelForDialogOrSearchPanel[propertyName].value
+            }
+          }
+        }
+      }
+    }
+  }
+  // formFieldsAndValues['arrayOfCustomAttributes'] = state.arrayOfCustomAttributes
+  fieldsAndValues['arrayOfCustomAttributes'] = JSON.parse(JSON.stringify(modelForDialogOrSearchPanel.arrayOfCustomAttributes))
+  console.log('@@@ formFieldsAndValues ', fieldsAndValues)
+  return fieldsAndValues
+}
+
 function setStampAttributesIn (modelForDialogOrSearchPanel, stampAttributes) {
   for (const attributeName in stampAttributes) {
     if (stampAttributes.hasOwnProperty(attributeName)) {
@@ -174,7 +203,7 @@ const stampStore = {
     stampId: null,
     // modelForDialog: JSON.parse(JSON.stringify(stampModel)),
     // modelForSearch: JSON.parse(JSON.stringify(stampModel))
-    modelForDialog: stampModel.getStampModel(),
+    modelForDialog: stampModel.getStampModelForDialog(),
     modelForSearch: stampModel.getStampModelForSearch()
   }),
   getters: {
@@ -193,9 +222,9 @@ const stampStore = {
       console.log('@@@ getFormFieldsAndValues (state)')
       return getFieldsAndValuesFrom(state.modelForDialog)
     },
-    getFormFieldsAndValuesFromSearchPanel (state) {
+    getNonNullFieldsAndValuesFromSearchPanel (state) {
       console.log('@@@ getFormFieldsAndValuesInSearchPanel (state)')
-      return getFieldsAndValuesFrom(state.modelForSearch)
+      return getNonNullFieldsAndValuesFrom(state.modelForSearch)
     },
     getArrayOfTopicsNames (state) {
       let arrayOfTopicsNames = []
