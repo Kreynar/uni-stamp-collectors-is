@@ -270,10 +270,12 @@ db.getArrayOfCountriesIdsAndNames = async () => {
 }
 
 db.getArrayOfGradesIdsAndNames = async () => {
-  const textOfQuery = '\
-    SELECT id_, name_ \
-    FROM public.grade_ \
-    WHERE (NOT is_deleted_  OR  is_deleted_ IS NULL);'
+  const textOfQuery = `
+    SELECT id_, name_ 
+    FROM public.grade_ 
+    ORDER BY mark_ DESC
+    ;
+    `
   try {
     let resultOfQuery = await knex.raw(textOfQuery)
     return resultOfQuery.rows
@@ -372,6 +374,31 @@ db.getUsersUsernameStamps = async (username, query) => {
     AND ((stamp_.nominal_value_ = :nominalValue ::TEXT) OR (:nominalValue ::TEXT IS NULL))
     AND ((grade_.name_ = :grade ::TEXT) OR (:grade ::TEXT IS NULL))
     AND ((stamp_.is_cancelled_ = :isCancelled ::BOOLEAN) OR (:isCancelled ::BOOLEAN IS NULL))
+    AND ((topic_.name_ = :arrayOfTopics ::TEXT) OR (:arrayOfTopics ::TEXT IS NULL))
+    AND ((stamp_.scott_ = :numberScott ::TEXT) OR (:numberScott ::TEXT IS NULL))
+    AND ((stamp_.michel_ = :numberMichel ::TEXT) OR (:numberMichel ::TEXT IS NULL))
+    AND ((stamp_.stanley_gibbons_ = :numberStanleyGibbons ::TEXT) OR (:numberStanleyGibbons ::TEXT IS NULL))
+    AND ((stamp_.yvert_et_tellier_ = :numberYvertEtTellier ::TEXT) OR (:numberYvertEtTellier ::TEXT IS NULL))
+    AND ((stamp_.category_ = :category ::TEXT) OR (:category ::TEXT IS NULL))
+    AND ((stamp_.structure_type_ = :structureType ::TEXT) OR (:structureType ::TEXT IS NULL))
+    AND ((stamp_.structure_number_ = :structureNumber ::TEXT) OR (:structureNumber ::TEXT IS NULL))
+    AND ((stamp_.structure_stamp_count_ = :structureStampCount ::SMALLINT) OR (:structureStampCount ::SMALLINT IS NULL))
+    AND ((stamp_.specimen_count_ = :specimenCount ::INTEGER) OR (:specimenCount ::INTEGER IS NULL))
+    AND ((stamp_.market_value_in_usd_ = :marketValue ::INTEGER) OR (:marketValue ::INTEGER IS NULL))
+    AND ((stamp_.face_description_ = :faceDescription ::TEXT) OR (:faceDescription ::TEXT IS NULL))
+    AND ((stamp_.comment_ = :comment ::TEXT) OR (:comment ::TEXT IS NULL))
+    AND (
+          ( (:customAttributeLabel ::TEXT IS NULL) AND (:customAttributeValue ::TEXT IS NULL) )
+          OR
+          ( (stamp_.custom_attributes_ @> ('[{"label": "' || :customAttributeLabel ::TEXT || '" }]')::JSONB) AND (:customAttributeValue ::TEXT IS NULL) )
+          OR
+          ( (stamp_.custom_attributes_ @> ('[{"value": "' || :customAttributeValue ::TEXT || '" }]')::JSONB) AND (:customAttributeLabel ::TEXT IS NULL) )
+          OR
+          (stamp_.custom_attributes_ @> ('[{' ||
+                                            '"label": "' || :customAttributeLabel ::TEXT || '",' ||
+                                            '"value": "' || :customAttributeValue ::TEXT || '"' ||
+                                         '}]')::JSONB)
+        )
   GROUP BY stamp_.id_, user_.name_, country_.name_, grade_.name_, grade_.mark_
   ORDER BY :sortField: :sortOrder
   ;
@@ -461,6 +488,9 @@ db.getUsersUsernameStamps = async (username, query) => {
      */
     sortField: sortField,
     sortOrder: sortOrder
+    // customAttributeLabel: knex.raw(':customAttributeLabel ::TEXT', {
+    //   customAttributeLabel: query.customAttributeLabel
+    // })
   })
   return resultOfQuery.rows
 }
