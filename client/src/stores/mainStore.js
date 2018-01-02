@@ -31,11 +31,18 @@ const mainStore = new Vuex.Store({
     isSnackbarDisplayed: false,
     snackbarColor: 'success',
     /*
-     * doesStampListNeedToReload specific value doesn't matter. It is only used in StampList.vue, where is computed and
-     * watch, where doesStampListNeedToReload value change is being listened. When value changes, stamp list reloads.
+     * doesStampListNeedToReload specific value doesn't matter. It is only used in StampList.vue, where is computed: and
+     * watch:, where doesStampListNeedToReload value change is being listened. When value changes, stamp list reloads.
      */
     doesStampListNeedToReload: 1,
-    isSomethingLoading: false
+    isSomethingLoading: false,
+    /*
+     * doesSearchAndSortNeedToReset specific value doesn't matter. It is only used to inform SearchAndSortPanel, that
+     * it needs to reset. Firstly, some component (for now - only Navigation drawer buttons) changes value
+     * of doesSearchAndSortNeedToReset. Then in SearchAndSortPanel.vue we have this variable changes being
+     * listened by computed: and watch:, which together work to reset search and sort panel.
+     */
+    doesSearchAndSortNeedToReset: 1
     // testVariable: 1
   }),
   // state: {
@@ -64,7 +71,11 @@ const mainStore = new Vuex.Store({
       state.stampDialogMode = mode
     },
     triggerDoesStampListNeedToReload (state) {
-      state.doesStampListNeedToReload = state.doesStampListNeedToReload + 1
+      // state.doesStampListNeedToReload = state.doesStampListNeedToReload + 1
+      ++(state.doesStampListNeedToReload)
+    },
+    triggerDoesSearchAndSortNeedToReset (state) {
+      ++(state.doesSearchAndSortNeedToReset)
     }
   }
   // getters,

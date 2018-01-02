@@ -27,6 +27,7 @@
                     username: $store.state.userStore.usernameOfLoggedInUser
                   }
                 }"
+          @click="resetSearchAndSort()"
         >
           <v-list-tile-action>
             <v-icon>view_module</v-icon>
@@ -41,6 +42,7 @@
           :to="{
                   name: 'users'
                 }"
+          @click="resetSearchAndSort()"
         >
           <v-list-tile-action>
             <v-icon>list</v-icon>
@@ -55,6 +57,7 @@
           :to="{
                   name: 'stamps'
                 }"
+          @click="resetSearchAndSort()"
         >
           <v-list-tile-action>
             <v-icon>view_module</v-icon>
@@ -71,6 +74,7 @@
           :to="{
                   name: 'about'
                 }"
+          @click="resetSearchAndSort()"
         >
           <v-list-tile-action>
             <v-icon>info_outline</v-icon>
@@ -183,6 +187,9 @@
       },
       scrollToTop () {
         window.scrollTo(0, 0)
+      },
+      resetSearchAndSort () {
+        this.$store.commit('triggerDoesSearchAndSortNeedToReset')
       }
 //      async showStampDialogForCreate () {
 //        console.log('@@@ changeNewStampDialogVisibility() kvietimas')

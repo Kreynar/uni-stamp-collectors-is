@@ -188,19 +188,20 @@
         setTimeout(() => {
           this.$store.state.isSomethingLoading = false
         }, 1000)
-
-//        /*
-//         * Also (for now - only for SearchAndSortPanel needs) load topics, grades and countries.
-//         * User topic list is added with new values frequently, so refresh it everytime.
-//         * Countries and grades are only edited by website admins very rarely, so no need to refresh every time.
-//         */
+        /*
+         * After stamp list is loaded, also (for now - only for SearchAndSortPanel needs) load grades and countries.
+         * This will speed up potential SearchAndSortPanel use in future. Otherwise, if countries and grades
+         * are not loaded in advance, then by the time user clicks on SearchAndSortPanel to expand it,
+         * it takes like 1 second before SearchAndSortPanel expands.
+         * Countries and grades are only edited by website admins very rarely, so no need to refresh every time.
+         */
 //        this.$store.dispatch('loadTopicsFromServer')
-//        if (this.$store.state.stampStore.arrayOfGradesIdsAndNames.length === 0) {
-//          this.$store.dispatch('loadGradesFromServer')
-//        }
-//        if (this.$store.state.stampStore.arrayOfCountriesIdsAndNames.length === 0) {
-//          this.$store.dispatch('loadCountriesFromServer')
-//        }
+        if (this.$store.state.stampStore.arrayOfGradesIdsAndNames.length === 0) {
+          this.$store.dispatch('loadGradesFromServer')
+        }
+        if (this.$store.state.stampStore.arrayOfCountriesIdsAndNames.length === 0) {
+          this.$store.dispatch('loadCountriesFromServer')
+        }
       },
       async showStampDialogForCreate () {
         console.log('@@@ changeNewStampDialogVisibility() kvietimas')
@@ -268,6 +269,7 @@
       },
       '$route' (to, from) {
         try {
+          console.log('@@@ watch: $route (to, from)', to.fullPath, from.fullPath)
           this.loadStampList(this.$route)
         }
         catch (error) {

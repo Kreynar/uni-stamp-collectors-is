@@ -16,262 +16,281 @@
             <v-card>
               <v-card-text>
                 <v-list>
-                  <template>
-                    <v-subheader style="font-size:150%">Filter by:</v-subheader>
-                    <v-subheader>Basic info</v-subheader>
-                    <v-container fluid grid-list-md text-xs-center>
-                      <v-layout row wrap text-xs-center>
-                        <v-flex xs12 sm6 md3>
-                          <v-text-field
-                            type="number"
-                            :label="$store.state.stampStore.modelForSearch.year.label"
-                            v-model="$store.state.stampStore.modelForSearch.year.value"
-                          ></v-text-field>
-                        </v-flex>
-                        <v-flex xs12 sm6 md3>
-                          <v-text-field
-                            type="number"
-                            :label="$store.state.stampStore.modelForSearch.yearMin.label"
-                            v-model="$store.state.stampStore.modelForSearch.yearMin.value"
-                          ></v-text-field>
-                        </v-flex>
-                        <v-flex xs12 sm6 md3>
-                          <v-text-field
-                            type="number"
-                            :label="$store.state.stampStore.modelForSearch.yearMax.label"
-                            v-model="$store.state.stampStore.modelForSearch.yearMax.value"
-                          ></v-text-field>
-                        </v-flex>
-                        <v-flex xs12 sm6 md3>
-                          <v-select
-                            :items="$store.state.stampStore.arrayOfCountriesIdsAndNames"
-                            item-value="id_"
-                            item-text="name_"
-                            v-model="$store.state.stampStore.modelForSearch.country.value"
-                            :label="$store.state.stampStore.modelForSearch.country.label"
-                            combobox
-                          ></v-select>
-                        </v-flex>
-                        <v-flex xs12 sm6 md3>
-                          <v-text-field
-                            :label="$store.state.stampStore.modelForSearch.nominalValue.label"
-                            v-model="$store.state.stampStore.modelForSearch.nominalValue.value"
-                          ></v-text-field>
-                        </v-flex>
-                        <v-flex xs12 sm6 md3>
-                          <v-select
-                            :items="$store.state.stampStore.arrayOfGradesIdsAndNames"
-                            item-value="id_"
-                            item-text="name_"
-                            v-model="$store.state.stampStore.modelForSearch.grade.value"
-                            :label="$store.state.stampStore.modelForSearch.grade.label"
-                            combobox
-                          ></v-select>
-                        </v-flex>
-                        <!--<v-flex xs12 sm6 md3>-->
-                          <!--<v-select-->
-                            <!--:items="getIsCancelledNamesAndLabelsForSelectForSearch"-->
-                            <!--item-value="value"-->
-                            <!--item-text="label"-->
-                            <!--v-model="$store.state.stampStore.modelForSearch.isCancelled.value"-->
-                            <!--:label="$store.state.stampStore.modelForSearch.isCancelled.label"-->
-                            <!--autocomplete-->
-                          <!--&gt;-->
-                          <!--</v-select>-->
-                        <!--</v-flex>-->
-                        <v-flex xs12 sm6 md3>
-                          <v-select
-                            :items="$store.getters.getArrayOfTopicsNames"
-                            v-model="$store.state.stampStore.modelForSearch.arrayOfTopics.value"
-                            :label="$store.state.stampStore.modelForSearch.arrayOfTopics.label"
-                            combobox
-                          >
-                          </v-select>
-                        </v-flex>
-                      </v-layout>
-                    </v-container>
-                    <v-divider></v-divider>
-                    <v-subheader>Catalog numbers</v-subheader>
-                    <v-container fluid grid-list-md>
-                      <v-layout row wrap>
-                        <v-flex xs12 sm6 md3>
-                          <v-text-field
-                            :label="$store.state.stampStore.modelForSearch.numberScott.label"
-                            v-model="$store.state.stampStore.modelForSearch.numberScott.value"
-                          ></v-text-field>
-                        </v-flex>
-                        <v-flex xs12 sm6 md3 >
-                          <v-text-field
-                            :label="$store.state.stampStore.modelForSearch.numberMichel.label"
-                            v-model="$store.state.stampStore.modelForSearch.numberMichel.value"
-                          ></v-text-field>
-                        </v-flex>
-                        <v-flex xs12 sm6 md3 >
-                          <v-text-field
-                            :label="$store.state.stampStore.modelForSearch.numberStanleyGibbons.label"
-                            v-model="$store.state.stampStore.modelForSearch.numberStanleyGibbons.value"
-                          ></v-text-field>
-                        </v-flex>
-                        <v-flex xs12 sm6 md3 >
-                          <v-text-field
-                            :label="$store.state.stampStore.modelForSearch.numberYvertEtTellier.label"
-                            v-model="$store.state.stampStore.modelForSearch.numberYvertEtTellier.value"
-                          ></v-text-field>
-                        </v-flex>
-                      </v-layout>
-                    </v-container>
-                    <v-divider></v-divider>
-                    <v-subheader>Category & structure</v-subheader>
-                    <v-container fluid grid-list-md>
-                      <v-layout row wrap>
-                        <v-flex xs12 sm6 md3 >
-                          <v-select
-                            :items="$store.state.stampStore.arrayOfCategoriesNames"
-                            v-model="$store.state.stampStore.modelForSearch.category.value"
-                            :label="$store.state.stampStore.modelForSearch.category.label"
-                            combobox
-                          ></v-select>
-                        </v-flex>
-                        <v-flex xs12 sm6 md3 >
-                          <v-select
-                            :items="$store.state.stampStore.arrayOfStructureTypesNames"
-                            v-model="$store.state.stampStore.modelForSearch.structureType.value"
-                            :label="$store.state.stampStore.modelForSearch.structureType.label"
-                            combobox
-                          ></v-select>
-                        </v-flex>
-                        <v-flex xs12 sm6 md3 >
-                          <v-text-field
-                            :label="$store.state.stampStore.modelForSearch.structureNumber.label"
-                            v-model="$store.state.stampStore.modelForSearch.structureNumber.value"
-                          ></v-text-field>
-                        </v-flex>
-                        <v-flex xs12 sm6 md3 >
-                          <v-text-field
-                            type="number"
-                            :label="$store.state.stampStore.modelForSearch.structureStampCount.label"
-                            v-model="$store.state.stampStore.modelForSearch.structureStampCount.value"
-                          ></v-text-field>
-                        </v-flex>
-                      </v-layout>
-                    </v-container>
-                    <v-divider></v-divider>
-                    <v-subheader>Other</v-subheader>
-                    <v-container fluid grid-list-md>
-                      <v-layout row wrap>
-                        <!--<v-flex xs12 sm6 md3 >-->
-                          <!--<v-checkbox-->
-                            <!--:label="$store.state.stampStore.modelForSearch.isExhibited.label"-->
-                            <!--v-model="$store.state.stampStore.modelForSearch.isExhibited.value"-->
-                          <!--&gt;</v-checkbox>-->
-                        <!--</v-flex>-->
-                        <v-flex xs12 sm6 md3 >
-                          <v-text-field
-                            type="number"
-                            :label="$store.state.stampStore.modelForSearch.specimenCount.label"
-                            v-model="$store.state.stampStore.modelForSearch.specimenCount.value"
-                          ></v-text-field>
-                        </v-flex>
-                        <!--<v-flex xs12 sm6 md3>-->
-                          <!--<v-select-->
-                            <!--:items="getIsCancelledNamesAndLabelsForSelectForSearch"-->
-                            <!--item-value="value"-->
-                            <!--item-text="label"-->
-                            <!--v-model="$store.state.stampStore.modelForSearch.isCancelled.value"-->
-                            <!--:label="$store.state.stampStore.modelForSearch.isCancelled.label"-->
-                            <!--autocomplete-->
-                          <!--&gt;-->
-                          <!--</v-select>-->
-                        <!--</v-flex>-->
-                        <!--<v-flex xs12 sm6 md3 >-->
-                          <!--<v-checkbox-->
-                            <!--:label="$store.state.stampStore.modelForSearch.isOnSale.label"-->
-                            <!--v-model="$store.state.stampStore.modelForSearch.isOnSale.value"-->
-                          <!--&gt;</v-checkbox>-->
-                        <!--</v-flex>-->
-                        <v-flex xs12 sm6 md3 >
-                          <v-text-field
-                            suffix="$"
-                            type="number"
-                            :label="$store.state.stampStore.modelForSearch.marketValue.label"
-                            v-model="$store.state.stampStore.modelForSearch.marketValue.value"
-                          ></v-text-field>
-                        </v-flex>
-                        <v-flex xs12 sm6 md3 >
-                          <v-text-field
-                            :label="$store.state.stampStore.modelForSearch.faceDescription.label"
-                            v-model="$store.state.stampStore.modelForSearch.faceDescription.value"
-                          ></v-text-field>
-                        </v-flex>
-                        <v-flex xs12 sm6 md3 >
-                          <v-text-field
-                            :label="$store.state.stampStore.modelForSearch.comment.label"
-                            v-model="$store.state.stampStore.modelForSearch.comment.value"
-                          ></v-text-field>
-                        </v-flex>
-                      </v-layout>
-                    </v-container>
-                    <v-divider></v-divider>
-                    <v-subheader>Custom attributes</v-subheader>
-                    <v-container fluid grid-list-md>
-                      <v-layout row wrap>
-                        <v-flex xs6>
-                          <v-text-field
-                            :label="$store.state.stampStore.modelForSearch.customAttributeLabel.label"
-                            v-model="$store.state.stampStore.modelForSearch.customAttributeLabel.value"
-                          ></v-text-field>
-                        </v-flex>
-                        <v-flex xs6>
-                          <v-text-field
-                            :label="$store.state.stampStore.modelForSearch.customAttributeValue.label"
-                            v-model="$store.state.stampStore.modelForSearch.customAttributeValue.value"
-                          ></v-text-field>
-                        </v-flex>
-                      </v-layout>
-                    </v-container>
-                    <v-divider></v-divider>
-                    <v-subheader style="font-size:150%">Sort by:</v-subheader>
-                    <v-container fluid grid-list-md>
-                      <v-layout row wrap>
-                        <v-flex xs10>
-                          <!--<v-select-->
-                            <!--:items="this.$store.getters.getArrayOfFieldsNamesAndLabelsFromSearchPanel"-->
-                            <!--item-value="name"-->
-                            <!--item-text="label"-->
-                            <!--v-model="sortFieldComputed"-->
-                            <!--label="Attribute"-->
-                            <!--ref="sortField"-->
-                            <!--autocomplete-->
-                          <!--&gt;</v-select>-->
-                          <v-select
-                            :items="getArrayOfAttributesNamesAndLabelsForSort"
-                            item-value="name"
-                            item-text="label"
-                            v-model="sortField"
-                            label="Attribute"
-                            hint="Default order - Date modified"
-                            ref="sortField"
-                            autocomplete
-                          ></v-select>
-                        </v-flex>
-                        <v-flex xs2 v-if="(sortField !== null)">
-                          <v-btn :color="$store.state.mainColorOfTheme" fab dark small @click="changeSortOrder">
-                            <v-icon v-if="(sortOrder === 'asc')">arrow_downward</v-icon>
-                            <v-icon v-if="(sortOrder === 'desc')">arrow_upward</v-icon>
-                          </v-btn>
-                        </v-flex>
-                      </v-layout>
-                    </v-container>
-                    <v-btn
-                      round
-                      :color="$store.state.mainColorOfTheme"
-                      dark
-                      block
-                      @click="searchAndSort()">
-                      Search
-                      <v-icon right>search</v-icon>
-                    </v-btn>
-                  </template>
+                  <v-form ref="searchAndSortForm">
+                    <template>
+                      <v-subheader style="font-size:150%">Filter by:</v-subheader>
+                      <v-subheader>Basic info</v-subheader>
+                      <v-container fluid grid-list-md text-xs-center>
+                        <v-layout row wrap text-xs-center>
+                          <v-flex xs12 sm6 md3>
+                            <v-text-field
+                              type="number"
+                              :label="$store.state.stampStore.modelForSearch.year.label"
+                              v-model="$store.state.stampStore.modelForSearch.year.value"
+                            ></v-text-field>
+                          </v-flex>
+                          <v-flex xs12 sm6 md3>
+                            <v-text-field
+                              type="number"
+                              :label="$store.state.stampStore.modelForSearch.yearMin.label"
+                              v-model="$store.state.stampStore.modelForSearch.yearMin.value"
+                            ></v-text-field>
+                          </v-flex>
+                          <v-flex xs12 sm6 md3>
+                            <v-text-field
+                              type="number"
+                              :label="$store.state.stampStore.modelForSearch.yearMax.label"
+                              v-model="$store.state.stampStore.modelForSearch.yearMax.value"
+                            ></v-text-field>
+                          </v-flex>
+
+
+                          <v-flex xs12 sm6 md3>
+                            <v-select
+                              :items="getArrayOfAttributesNamesAndLabelsForSort"
+                              item-value="name"
+                              item-text="label"
+                              v-model="sortField"
+                              label="Attribute"
+                              hint="Default order - Date modified"
+                              ref="sortField"
+                              combobox
+                            ></v-select>
+                          </v-flex>
+                          <!--autocomplete-->
+
+
+                          <v-flex xs12 sm6 md3>
+                            <v-select
+                              :items="$store.state.stampStore.arrayOfCountriesIdsAndNames"
+                              item-value="id_"
+                              item-text="name_"
+                              v-model="$store.state.stampStore.modelForSearch.country.value"
+                              :label="$store.state.stampStore.modelForSearch.country.label"
+                              combobox
+                            ></v-select>
+                          </v-flex>
+                          <v-flex xs12 sm6 md3>
+                            <v-text-field
+                              :label="$store.state.stampStore.modelForSearch.nominalValue.label"
+                              v-model="$store.state.stampStore.modelForSearch.nominalValue.value"
+                            ></v-text-field>
+                          </v-flex>
+                          <v-flex xs12 sm6 md3>
+                            <v-select
+                              :items="$store.state.stampStore.arrayOfGradesIdsAndNames"
+                              item-value="id_"
+                              item-text="name_"
+                              v-model="$store.state.stampStore.modelForSearch.grade.value"
+                              :label="$store.state.stampStore.modelForSearch.grade.label"
+                              combobox
+                            ></v-select>
+                          </v-flex>
+                          <!--<v-flex xs12 sm6 md3>-->
+                            <!--<v-select-->
+                              <!--:items="getIsCancelledNamesAndLabelsForSelectForSearch"-->
+                              <!--item-value="value"-->
+                              <!--item-text="label"-->
+                              <!--v-model="$store.state.stampStore.modelForSearch.isCancelled.value"-->
+                              <!--:label="$store.state.stampStore.modelForSearch.isCancelled.label"-->
+                              <!--autocomplete-->
+                            <!--&gt;-->
+                            <!--</v-select>-->
+                          <!--</v-flex>-->
+                          <v-flex xs12 sm6 md3>
+                            <v-select
+                              :items="$store.getters.getArrayOfTopicsNames"
+                              v-model="$store.state.stampStore.modelForSearch.arrayOfTopics.value"
+                              :label="$store.state.stampStore.modelForSearch.arrayOfTopics.label"
+                              combobox
+                            >
+                            </v-select>
+                          </v-flex>
+                        </v-layout>
+                      </v-container>
+                      <v-divider></v-divider>
+                      <v-subheader>Catalog numbers</v-subheader>
+                      <v-container fluid grid-list-md>
+                        <v-layout row wrap>
+                          <v-flex xs12 sm6 md3>
+                            <v-text-field
+                              :label="$store.state.stampStore.modelForSearch.numberScott.label"
+                              v-model="$store.state.stampStore.modelForSearch.numberScott.value"
+                            ></v-text-field>
+                          </v-flex>
+                          <v-flex xs12 sm6 md3 >
+                            <v-text-field
+                              :label="$store.state.stampStore.modelForSearch.numberMichel.label"
+                              v-model="$store.state.stampStore.modelForSearch.numberMichel.value"
+                            ></v-text-field>
+                          </v-flex>
+                          <v-flex xs12 sm6 md3 >
+                            <v-text-field
+                              :label="$store.state.stampStore.modelForSearch.numberStanleyGibbons.label"
+                              v-model="$store.state.stampStore.modelForSearch.numberStanleyGibbons.value"
+                            ></v-text-field>
+                          </v-flex>
+                          <v-flex xs12 sm6 md3 >
+                            <v-text-field
+                              :label="$store.state.stampStore.modelForSearch.numberYvertEtTellier.label"
+                              v-model="$store.state.stampStore.modelForSearch.numberYvertEtTellier.value"
+                            ></v-text-field>
+                          </v-flex>
+                        </v-layout>
+                      </v-container>
+                      <v-divider></v-divider>
+                      <v-subheader>Category & structure</v-subheader>
+                      <v-container fluid grid-list-md>
+                        <v-layout row wrap>
+                          <v-flex xs12 sm6 md3 >
+                            <v-select
+                              :items="$store.state.stampStore.arrayOfCategoriesNames"
+                              v-model="$store.state.stampStore.modelForSearch.category.value"
+                              :label="$store.state.stampStore.modelForSearch.category.label"
+                              combobox
+                            ></v-select>
+                          </v-flex>
+                          <v-flex xs12 sm6 md3 >
+                            <v-select
+                              :items="$store.state.stampStore.arrayOfStructureTypesNames"
+                              v-model="$store.state.stampStore.modelForSearch.structureType.value"
+                              :label="$store.state.stampStore.modelForSearch.structureType.label"
+                              combobox
+                            ></v-select>
+                          </v-flex>
+                          <v-flex xs12 sm6 md3 >
+                            <v-text-field
+                              :label="$store.state.stampStore.modelForSearch.structureNumber.label"
+                              v-model="$store.state.stampStore.modelForSearch.structureNumber.value"
+                            ></v-text-field>
+                          </v-flex>
+                          <v-flex xs12 sm6 md3 >
+                            <v-text-field
+                              type="number"
+                              :label="$store.state.stampStore.modelForSearch.structureStampCount.label"
+                              v-model="$store.state.stampStore.modelForSearch.structureStampCount.value"
+                            ></v-text-field>
+                          </v-flex>
+                        </v-layout>
+                      </v-container>
+                      <v-divider></v-divider>
+                      <v-subheader>Other</v-subheader>
+                      <v-container fluid grid-list-md>
+                        <v-layout row wrap>
+                          <!--<v-flex xs12 sm6 md3 >-->
+                            <!--<v-checkbox-->
+                              <!--:label="$store.state.stampStore.modelForSearch.isExhibited.label"-->
+                              <!--v-model="$store.state.stampStore.modelForSearch.isExhibited.value"-->
+                            <!--&gt;</v-checkbox>-->
+                          <!--</v-flex>-->
+                          <v-flex xs12 sm6 md3 >
+                            <v-text-field
+                              type="number"
+                              :label="$store.state.stampStore.modelForSearch.specimenCount.label"
+                              v-model="$store.state.stampStore.modelForSearch.specimenCount.value"
+                            ></v-text-field>
+                          </v-flex>
+                          <!--<v-flex xs12 sm6 md3>-->
+                            <!--<v-select-->
+                              <!--:items="getIsCancelledNamesAndLabelsForSelectForSearch"-->
+                              <!--item-value="value"-->
+                              <!--item-text="label"-->
+                              <!--v-model="$store.state.stampStore.modelForSearch.isCancelled.value"-->
+                              <!--:label="$store.state.stampStore.modelForSearch.isCancelled.label"-->
+                              <!--autocomplete-->
+                            <!--&gt;-->
+                            <!--</v-select>-->
+                          <!--</v-flex>-->
+                          <!--<v-flex xs12 sm6 md3 >-->
+                            <!--<v-checkbox-->
+                              <!--:label="$store.state.stampStore.modelForSearch.isOnSale.label"-->
+                              <!--v-model="$store.state.stampStore.modelForSearch.isOnSale.value"-->
+                            <!--&gt;</v-checkbox>-->
+                          <!--</v-flex>-->
+                          <v-flex xs12 sm6 md3 >
+                            <v-text-field
+                              suffix="$"
+                              type="number"
+                              :label="$store.state.stampStore.modelForSearch.marketValue.label"
+                              v-model="$store.state.stampStore.modelForSearch.marketValue.value"
+                            ></v-text-field>
+                          </v-flex>
+                          <v-flex xs12 sm6 md3 >
+                            <v-text-field
+                              :label="$store.state.stampStore.modelForSearch.faceDescription.label"
+                              v-model="$store.state.stampStore.modelForSearch.faceDescription.value"
+                            ></v-text-field>
+                          </v-flex>
+                          <v-flex xs12 sm6 md3 >
+                            <v-text-field
+                              :label="$store.state.stampStore.modelForSearch.comment.label"
+                              v-model="$store.state.stampStore.modelForSearch.comment.value"
+                            ></v-text-field>
+                          </v-flex>
+                        </v-layout>
+                      </v-container>
+                      <v-divider></v-divider>
+                      <v-subheader>Custom attributes</v-subheader>
+                      <v-container fluid grid-list-md>
+                        <v-layout row wrap>
+                          <v-flex xs6>
+                            <v-text-field
+                              :label="$store.state.stampStore.modelForSearch.customAttributeLabel.label"
+                              v-model="$store.state.stampStore.modelForSearch.customAttributeLabel.value"
+                            ></v-text-field>
+                          </v-flex>
+                          <v-flex xs6>
+                            <v-text-field
+                              :label="$store.state.stampStore.modelForSearch.customAttributeValue.label"
+                              v-model="$store.state.stampStore.modelForSearch.customAttributeValue.value"
+                            ></v-text-field>
+                          </v-flex>
+                        </v-layout>
+                      </v-container>
+                      <v-divider></v-divider>
+                      <v-subheader style="font-size:150%">Sort by:</v-subheader>
+                      <v-container fluid grid-list-md>
+                        <v-layout row wrap>
+                          <v-flex xs10>
+                            <!--<v-select-->
+                              <!--:items="this.$store.getters.getArrayOfFieldsNamesAndLabelsFromSearchPanel"-->
+                              <!--item-value="name"-->
+                              <!--item-text="label"-->
+                              <!--v-model="sortFieldComputed"-->
+                              <!--label="Attribute"-->
+                              <!--ref="sortField"-->
+                              <!--autocomplete-->
+                            <!--&gt;</v-select>-->
+                            <v-select
+                              :items="getArrayOfAttributesNamesAndLabelsForSort"
+                              item-value="name"
+                              item-text="label"
+                              v-model="sortField"
+                              label="Attribute"
+                              hint="Default order - Date modified"
+                              ref="sortField"
+                              autocomplete
+                            ></v-select>
+                          </v-flex>
+                          <v-flex xs2 v-if="(sortField !== null)">
+                            <v-btn :color="$store.state.mainColorOfTheme" fab dark small @click="changeSortOrder">
+                              <v-icon v-if="(sortOrder === 'asc')">arrow_downward</v-icon>
+                              <v-icon v-if="(sortOrder === 'desc')">arrow_upward</v-icon>
+                            </v-btn>
+                          </v-flex>
+                        </v-layout>
+                      </v-container>
+                      <v-btn
+                        round
+                        :color="$store.state.mainColorOfTheme"
+                        dark
+                        block
+                        @click="searchAndSort()">
+                        Search
+                        <v-icon right>search</v-icon>
+                      </v-btn>
+                    </template>
+                  </v-form>
                 </v-list>
               </v-card-text>
             </v-card>
@@ -329,41 +348,41 @@
 //            }
 //          }
 //        }
-//      }
-      getIsCancelledNamesAndLabelsForSelectForSearch () {
-        const isCancelledNamesAndLabels = [
-          {
-            value: null,
-            label: ''
-          },
-          {
-            value: true,
-            label: 'Cancelled'
-          },
-          {
-            value: false,
-            label: 'Not cancelled'
-          }
-        ]
-        return isCancelledNamesAndLabels
-      },
-      getIsOnSaleNamesAndLabelsForSelectForSearch () {
-        const isOnSaleNamesAndLabels = [
-          {
-            value: null,
-            label: ''
-          },
-          {
-            value: true,
-            label: 'On sale'
-          },
-          {
-            value: false,
-            label: 'Not on sale'
-          }
-        ]
-        return isOnSaleNamesAndLabels
-      },
+//      },
+//      getIsCancelledNamesAndLabelsForSelectForSearch () {
+//        const isCancelledNamesAndLabels = [
+//          {
+//            value: null,
+//            label: ''
+//          },
+//          {
+//            value: true,
+//            label: 'Cancelled'
+//          },
+//          {
+//            value: false,
+//            label: 'Not cancelled'
+//          }
+//        ]
+//        return isCancelledNamesAndLabels
+//      },
+//      getIsOnSaleNamesAndLabelsForSelectForSearch () {
+//        const isOnSaleNamesAndLabels = [
+//          {
+//            value: null,
+//            label: ''
+//          },
+//          {
+//            value: true,
+//            label: 'On sale'
+//          },
+//          {
+//            value: false,
+//            label: 'Not on sale'
+//          }
+//        ]
+//        return isOnSaleNamesAndLabels
+//      },
       getArrayOfAttributesNamesAndLabelsForSort () {
         const ss = strings.stamps
 //        let arrayOfAttributesNamesAndLabelsForSort = JSON.parse(JSON.stringify(this.$store.getters.getArrayOfFieldsNamesAndLabelsForSort))
@@ -418,6 +437,9 @@
           }
         ]
         return arrayOfAttributesNamesAndLabelsForSort
+      },
+      getDoesSearchAndSortNeedToReset () {
+        return this.$store.state.doesSearchAndSortNeedToReset
       }
     },
     methods: {
@@ -467,6 +489,10 @@
             this.$store.dispatch('loadCountriesFromServer')
           }
         }
+      },
+      getDoesSearchAndSortNeedToReset (newValue, oldValue) {
+        this.$refs.searchAndSortForm.reset()
+        this.isExpansionPanelExpanded = false
       }
     }
   }

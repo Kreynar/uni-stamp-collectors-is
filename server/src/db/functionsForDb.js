@@ -334,27 +334,27 @@ db.getArrayOfTopicsIdsAndNames = async (userId) => {
   }
 }
 
-db.getStamps = async () => {
-  const textOfQuery = `
-  SELECT stamp_.id_ AS "id", stamp_.temporary_user_id_ AS "userId", user_.name_ AS "username",
-  stamp_.temporary_picture_url_ AS "temporaryPictureUrl"
-  , stamp_.year_ AS "year", country_.name_ AS "country", stamp_.nominal_value_ AS "nominalValue"
-  , grade_.name_ AS "grade", stamp_.is_cancelled_ AS "isCancelled", ARRAY_AGG(topic_.name_) AS "arrayOfTopics"
-  FROM stamp_
-  LEFT JOIN country_ ON (stamp_.country_id_ = country_.id_)
-  LEFT JOIN grade_ ON (stamp_.grade_id_ = grade_.id_)
-  LEFT JOIN stamp_topic_ ON (stamp_.id_ = stamp_topic_.stamp_id_)
-  LEFT JOIN topic_ ON (stamp_topic_.topic_id_ = topic_.id_)
-  INNER JOIN user_ ON (stamp_.temporary_user_id_ = user_.id_)
-  GROUP BY stamp_.id_, country_.name_, grade_.name_, user_.name_
-  ORDER BY stamp_.modified_at_ DESC
-  ;
-  `
-  let resultOfQuery = await knex.raw(textOfQuery)
-  return resultOfQuery.rows
-}
+// db.getStamps = async () => {
+//   const textOfQuery = `
+//   SELECT stamp_.id_ AS "id", stamp_.temporary_user_id_ AS "userId", user_.name_ AS "username",
+//   stamp_.temporary_picture_url_ AS "temporaryPictureUrl"
+//   , stamp_.year_ AS "year", country_.name_ AS "country", stamp_.nominal_value_ AS "nominalValue"
+//   , grade_.name_ AS "grade", stamp_.is_cancelled_ AS "isCancelled", ARRAY_AGG(topic_.name_) AS "arrayOfTopics"
+//   FROM stamp_
+//   LEFT JOIN country_ ON (stamp_.country_id_ = country_.id_)
+//   LEFT JOIN grade_ ON (stamp_.grade_id_ = grade_.id_)
+//   LEFT JOIN stamp_topic_ ON (stamp_.id_ = stamp_topic_.stamp_id_)
+//   LEFT JOIN topic_ ON (stamp_topic_.topic_id_ = topic_.id_)
+//   INNER JOIN user_ ON (stamp_.temporary_user_id_ = user_.id_)
+//   GROUP BY stamp_.id_, country_.name_, grade_.name_, user_.name_
+//   ORDER BY stamp_.modified_at_ DESC
+//   ;
+//   `
+//   let resultOfQuery = await knex.raw(textOfQuery)
+//   return resultOfQuery.rows
+// }
 
-db.getUsersUsernameStamps = async (username, query) => {
+db.getStampsOrUsersUsernameStamps = async (username, query) => {
   let textOfQuery = `
   SELECT stamp_.id_ AS "id", stamp_.temporary_user_id_ AS "userId", user_.name_ AS "username",
   stamp_.temporary_picture_url_ AS "temporaryPictureUrl", 
@@ -366,7 +366,7 @@ db.getUsersUsernameStamps = async (username, query) => {
   LEFT JOIN stamp_topic_ ON (stamp_.id_ = stamp_topic_.stamp_id_)
   LEFT JOIN topic_ ON (stamp_topic_.topic_id_ = topic_.id_)
   INNER JOIN user_ ON (stamp_.temporary_user_id_ = user_.id_)
-  WHERE (user_.name_ = :username ::TEXT)
+  WHERE ((user_.name_ = :username ::TEXT) OR (:username ::TEXT IS NULL))
     AND ((stamp_.year_ = :year ::SMALLINT) OR (:year ::SMALLINT IS NULL))
     AND ((stamp_.year_ >= :yearMin ::SMALLINT) OR (:yearMin ::SMALLINT IS NULL))
     AND ((stamp_.year_ <= :yearMax ::SMALLINT) OR (:yearMax ::SMALLINT IS NULL))
@@ -488,9 +488,6 @@ db.getUsersUsernameStamps = async (username, query) => {
      */
     sortField: sortField,
     sortOrder: sortOrder
-    // customAttributeLabel: knex.raw(':customAttributeLabel ::TEXT', {
-    //   customAttributeLabel: query.customAttributeLabel
-    // })
   })
   return resultOfQuery.rows
 }

@@ -8,7 +8,9 @@ const db = require('../../db/functionsForDb.js')
 
 async function getStamps (req, res) {
   try {
-    const stamps = await db.getStamps()
+    // const stamps = await db.getStamps()
+    const username = null
+    const stamps = await db.getStampsOrUsersUsernameStamps(username, req.query)
     tracer.log(stamps)
     res.send(stamps)
   }
@@ -25,7 +27,8 @@ async function getStamps (req, res) {
 async function getUsersUsernameStamps (req, res) {
   try {
     tracer.log(req.query)
-    const stamps = await db.getUsersUsernameStamps(req.params.username, req.query)
+    // const stamps = await db.getUsersUsernameStamps(req.params.username, req.query)
+    const stamps = await db.getStampsOrUsersUsernameStamps(req.params.username, req.query)
     tracer.log(stamps)
     res.send(stamps)
   }
