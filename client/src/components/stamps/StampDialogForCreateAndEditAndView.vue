@@ -526,6 +526,9 @@
           if (this.$store.state.stampStore.arrayOfGradesIdsAndNames.length === 0) {
             this.$store.dispatch('loadGradesFromServer')
           }
+          if (this.$store.state.stampStore.arrayOfAlbumsIdsAndNames.length === 0) {
+            this.$store.dispatch('loadAlbumsFromServer')
+          }
           if (this.$store.state.stampStore.arrayOfCountriesIdsAndNames.length === 0) {
             this.$store.dispatch('loadCountriesFromServer')
           }

@@ -24,6 +24,16 @@ function getStampModel () {
     //     vf.validateRequired()
     //   ]
     // },
+    album: {
+      isShownInStampsList: true,
+      label: ss.album,
+      validation: {
+        functions: [
+          vf.validateRequired
+        ]
+      },
+      value: null
+    },
     temporaryPictureUrl: {
       isShownInStampsList: true,
       label: ss.temporaryPictureUrl,
@@ -216,6 +226,10 @@ function getStampModel () {
 export default {
   getStampModelForDialog: () => {
     const stampModelForDialog = getStampModel()
+    /*
+     * Here we set default values.
+     */
+    stampModelForDialog.album.value = 1
     stampModelForDialog.isCancelled.value = false
     stampModelForDialog.isOnSale.value = false
     stampModelForDialog.isExhibited.value = true

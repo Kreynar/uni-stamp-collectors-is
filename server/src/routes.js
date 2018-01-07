@@ -8,6 +8,7 @@ const StampsControllers = require('./resources/stamps/StampsControllers.js')
 const CountriesControllers = require('./resources/countries/CountriesControllers.js')
 const GradesControllers = require('./resources/grades/GradesControllers.js')
 const TopicsControllers = require('./resources/topics/TopicsControllers.js')
+const AlbumsControllers = require('./resources/albums/AlbumsControllers.js')
 const ss = require('./variables.js')
 
 module.exports = (app) => {
@@ -30,6 +31,8 @@ module.exports = (app) => {
     CountriesControllers.get)
   app.get(ss.path.grades,
     GradesControllers.get)
+  app.get(ss.path.albums,
+    AlbumsControllers.get)
   app.get(ss.path.topics,
     TopicsControllers.get)
   app.get(ss.path.stamps,

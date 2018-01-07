@@ -8,7 +8,7 @@ const db = require('../../db/functionsForDb.js')
 
 async function get (req, res) {
   try {
-    const arrayOfCountries = await db.getArrayOfCountriesIdsAndNames(req.body)
+    const arrayOfCountries = await db.getArrayOfCountriesIdsAndNames()
     tracer.log(arrayOfCountries)
     res.send(arrayOfCountries)
   }

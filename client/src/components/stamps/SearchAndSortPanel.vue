@@ -1,6 +1,6 @@
 <template>
   <v-content>
-    <v-container fluid grid-list-xs class="grey lighten-1">
+    <v-container fluid grid-list-xs class="grey lighten-4">
       <v-layout row wrap>
         <v-expansion-panel>
           <v-expansion-panel-content :class="$store.state.secondaryColorOfTheme" v-model="isExpansionPanelExpanded">
@@ -23,6 +23,16 @@
                       <v-container fluid grid-list-md text-xs-center>
                         <v-layout row wrap text-xs-center>
                           <v-flex xs12 sm6 md3>
+                            <v-select
+                              :items="$store.state.stampStore.arrayOfAlbumsIdsAndNames"
+                              item-value="name_"
+                              item-text="name_"
+                              v-model="$store.state.stampStore.modelForSearch.album.value"
+                              :label="$store.state.stampStore.modelForSearch.album.label"
+                              combobox
+                            ></v-select>
+                          </v-flex>
+                          <v-flex xs12 sm6 md3>
                             <v-text-field
                               type="number"
                               :label="$store.state.stampStore.modelForSearch.year.label"
@@ -43,23 +53,6 @@
                               v-model="$store.state.stampStore.modelForSearch.yearMax.value"
                             ></v-text-field>
                           </v-flex>
-
-
-                          <v-flex xs12 sm6 md3>
-                            <v-select
-                              :items="getArrayOfAttributesNamesAndLabelsForSort"
-                              item-value="name"
-                              item-text="label"
-                              v-model="sortField"
-                              label="Attribute"
-                              hint="Default order - Date modified"
-                              ref="sortField"
-                              combobox
-                            ></v-select>
-                          </v-flex>
-                          <!--autocomplete-->
-
-
                           <v-flex xs12 sm6 md3>
                             <v-select
                               :items="$store.state.stampStore.arrayOfCountriesIdsAndNames"
@@ -438,6 +431,19 @@
         ]
         return arrayOfAttributesNamesAndLabelsForSort
       },
+//      getArrayOfAlbumsIdsAndNames () {
+//        let arrayOfAlbumsIdsAndNames = [
+//          {
+//            id_: null,
+//            name_: ''
+//          }
+//        ]
+//        arrayOfAlbumsIdsAndNames = arrayOfAlbumsIdsAndNames.concat(this.$store.state.stampStore.arrayOfAlbumsIdsAndNames)
+//        return arrayOfAlbumsIdsAndNames
+//      },
+      /*
+       * This computed: getDoesSearchAndSortNeedToReset() is only used for watch: getDoesSearchAndSortNeedToReset().
+       */
       getDoesSearchAndSortNeedToReset () {
         return this.$store.state.doesSearchAndSortNeedToReset
       }
@@ -484,6 +490,9 @@
           this.$store.dispatch('loadTopicsFromServer')
           if (this.$store.state.stampStore.arrayOfGradesIdsAndNames.length === 0) {
             this.$store.dispatch('loadGradesFromServer')
+          }
+          if (this.$store.state.stampStore.arrayOfAlbumsIdsAndNames.length === 0) {
+            this.$store.dispatch('loadAlbumsFromServer')
           }
           if (this.$store.state.stampStore.arrayOfCountriesIdsAndNames.length === 0) {
             this.$store.dispatch('loadCountriesFromServer')

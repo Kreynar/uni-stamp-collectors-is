@@ -59,6 +59,8 @@ db.postUsers = async (credentials) => {
 async function insertStamp (stampFieldsAndValues) {
   const resultOfQuery = await knex('public.stamp_')
     .insert({
+      temporary_user_id_: vv.testTemporaryUserId,
+      album_id_: stampFieldsAndValues.album,
       temporary_picture_url_: stampFieldsAndValues.temporaryPictureUrl,
       scott_: stampFieldsAndValues.numberScott,
       michel_: stampFieldsAndValues.numberMichel,
@@ -69,7 +71,6 @@ async function insertStamp (stampFieldsAndValues) {
       nominal_value_: stampFieldsAndValues.nominalValue,
       grade_id_: stampFieldsAndValues.grade,
       is_cancelled_: stampFieldsAndValues.isCancelled,
-      temporary_user_id_: vv.testTemporaryUserId,
       category_: stampFieldsAndValues.category,
       structure_type_: stampFieldsAndValues.structureType,
       structure_number_: stampFieldsAndValues.structureNumber,
@@ -91,6 +92,8 @@ async function insertStamp (stampFieldsAndValues) {
 async function updateStamp (stampId, stampFieldsAndValues) {
   const resultOfQuery = await knex('public.stamp_')
     .update({
+      temporary_user_id_: vv.testTemporaryUserId,
+      album_id_: stampFieldsAndValues.album,
       temporary_picture_url_: stampFieldsAndValues.temporaryPictureUrl,
       scott_: stampFieldsAndValues.numberScott,
       michel_: stampFieldsAndValues.numberMichel,
@@ -101,7 +104,6 @@ async function updateStamp (stampId, stampFieldsAndValues) {
       nominal_value_: stampFieldsAndValues.nominalValue,
       grade_id_: stampFieldsAndValues.grade,
       is_cancelled_: stampFieldsAndValues.isCancelled,
-      temporary_user_id_: vv.testTemporaryUserId,
       category_: stampFieldsAndValues.category,
       structure_type_: stampFieldsAndValues.structureType,
       structure_number_: stampFieldsAndValues.structureNumber,
@@ -288,6 +290,25 @@ db.getArrayOfGradesIdsAndNames = async () => {
   }
 }
 
+db.getArrayOfAlbumsIdsAndNames = async () => {
+  const textOfQuery = `
+    SELECT id_, name_ 
+    FROM public.album_ 
+    ORDER BY id_ ASC
+    ;
+    `
+  try {
+    let resultOfQuery = await knex.raw(textOfQuery)
+    return resultOfQuery.rows
+  }
+  catch (error) {
+
+  }
+  finally {
+
+  }
+}
+
 // db.getAlbumsIdsAndNames = async (userId) => {
 //   const textOfQuery = '\
 //     SELECT id_, name_ \
@@ -356,17 +377,21 @@ db.getArrayOfTopicsIdsAndNames = async (userId) => {
 
 db.getStampsOrUsersUsernameStamps = async (username, query) => {
   let textOfQuery = `
-  SELECT stamp_.id_ AS "id", stamp_.temporary_user_id_ AS "userId", user_.name_ AS "username",
+  SELECT stamp_.id_ AS "id", 
+  stamp_.temporary_user_id_ AS "userId", user_.name_ AS "username",
+  album_.name_ AS "album",
   stamp_.temporary_picture_url_ AS "temporaryPictureUrl", 
-  stamp_.year_ AS "year", country_.name_ AS country, stamp_.nominal_value_ AS "nominalValue", 
-  grade_.name_ AS grade, stamp_.is_cancelled_ AS "isCancelled", ARRAY_AGG(topic_.name_) AS "arrayOfTopics"
+  stamp_.year_ AS "year", country_.name_ AS "country", stamp_.nominal_value_ AS "nominalValue", 
+  grade_.name_ AS "grade", stamp_.is_cancelled_ AS "isCancelled", ARRAY_AGG(topic_.name_) AS "arrayOfTopics"
   FROM stamp_
   LEFT JOIN country_ ON (stamp_.country_id_ = country_.id_)
   LEFT JOIN grade_ ON (stamp_.grade_id_ = grade_.id_)
   LEFT JOIN stamp_topic_ ON (stamp_.id_ = stamp_topic_.stamp_id_)
   LEFT JOIN topic_ ON (stamp_topic_.topic_id_ = topic_.id_)
   INNER JOIN user_ ON (stamp_.temporary_user_id_ = user_.id_)
+  INNER JOIN album_ ON (stamp_.album_id_ = album_.id_)
   WHERE ((user_.name_ = :username ::TEXT) OR (:username ::TEXT IS NULL))
+    AND ((album_.name_ = :album ::TEXT) OR (:album ::TEXT IS NULL))
     AND ((stamp_.year_ = :year ::SMALLINT) OR (:year ::SMALLINT IS NULL))
     AND ((stamp_.year_ >= :yearMin ::SMALLINT) OR (:yearMin ::SMALLINT IS NULL))
     AND ((stamp_.year_ <= :yearMax ::SMALLINT) OR (:yearMax ::SMALLINT IS NULL))
@@ -399,7 +424,7 @@ db.getStampsOrUsersUsernameStamps = async (username, query) => {
                                             '"value": "' || :customAttributeValue ::TEXT || '"' ||
                                          '}]')::JSONB)
         )
-  GROUP BY stamp_.id_, user_.name_, country_.name_, grade_.name_, grade_.mark_
+  GROUP BY stamp_.id_, album_.name_, user_.name_, country_.name_, grade_.name_, grade_.mark_
   ORDER BY :sortField: :sortOrder
   ;
   `
@@ -440,6 +465,9 @@ db.getStampsOrUsersUsernameStamps = async (username, query) => {
       case 'marketValue':
         sortField = 'stamp_.market_value_in_usd_'
         break
+      case 'album':
+        sortField = 'stamp_.album_id_'
+        break
       default:
         sortField = 'stamp_.modified_at_'
         break
@@ -455,6 +483,7 @@ db.getStampsOrUsersUsernameStamps = async (username, query) => {
      * By default, all SELECT query properties (except username) are null
      * (because knex would throw error, if would leave these properties undefined)...
      */
+    album: null,
     year: null,
     yearMin: null,
     yearMax: null,
@@ -493,27 +522,30 @@ db.getStampsOrUsersUsernameStamps = async (username, query) => {
 }
 
 db.getStampsStampId = async (stampId) => {
-  const textOfQuery = '\
-  SELECT stamp_.id_ AS "id", stamp_.temporary_picture_url_ AS "temporaryPictureUrl"\
-    , stamp_.scott_ AS "numberScott", stamp_.michel_ AS "numberMichel"\
-    , stamp_.stanley_gibbons_ AS "numberStanleyGibbons", stamp_.yvert_et_tellier_ AS "numberYvertEtTellier"\
-    , stamp_.year_ AS "year", stamp_.country_id_ AS country, stamp_.nominal_value_ AS "nominalValue"\
-    , stamp_.grade_id_ AS "grade", stamp_.is_cancelled_ AS "isCancelled"\
-    , stamp_.temporary_user_id_ AS "temporaryUserId", stamp_.category_ AS "category"\
-    , stamp_.structure_type_ AS "structureType", stamp_.structure_number_ AS "structureNumber"\
-    , stamp_.structure_stamp_count_ AS "structureStampCount", stamp_.is_exhibited_ AS "isExhibited"\
-    , stamp_.specimen_count_ AS "specimenCount", stamp_.is_on_sale_ AS "isOnSale"\
-    , stamp_.market_value_in_usd_ AS "marketValue", stamp_.face_description_ AS "faceDescription"\
-    , stamp_.comment_ AS "comment", stamp_.custom_attributes_ AS "arrayOfCustomAttributes"\
-    , ARRAY_AGG(topic_.name_) AS "arrayOfTopics"\
-  FROM stamp_\
-  LEFT JOIN stamp_topic_ ON (stamp_.id_ = stamp_topic_.stamp_id_)\
-  LEFT JOIN topic_ ON (stamp_topic_.topic_id_ = topic_.id_)\
-  WHERE (stamp_.id_ = :stampId ::BIGINT)\
-  GROUP BY stamp_.id_\
-  ORDER BY stamp_.id_ ASC\
-  ;\
-  '
+  const textOfQuery = `
+  SELECT stamp_.id_ AS "id"
+    , stamp_.temporary_user_id_ AS "userId", user_.name_ AS "username", album_.name_ AS "album"
+    , stamp_.temporary_picture_url_ AS "temporaryPictureUrl"
+    , stamp_.scott_ AS "numberScott", stamp_.michel_ AS "numberMichel"
+    , stamp_.stanley_gibbons_ AS "numberStanleyGibbons", stamp_.yvert_et_tellier_ AS "numberYvertEtTellier"
+    , stamp_.year_ AS "year", stamp_.country_id_ AS country, stamp_.nominal_value_ AS "nominalValue"
+    , stamp_.grade_id_ AS "grade", stamp_.is_cancelled_ AS "isCancelled"
+    , stamp_.category_ AS "category"
+    , stamp_.structure_type_ AS "structureType", stamp_.structure_number_ AS "structureNumber"
+    , stamp_.structure_stamp_count_ AS "structureStampCount", stamp_.is_exhibited_ AS "isExhibited"
+    , stamp_.specimen_count_ AS "specimenCount", stamp_.is_on_sale_ AS "isOnSale"
+    , stamp_.market_value_in_usd_ AS "marketValue", stamp_.face_description_ AS "faceDescription"
+    , stamp_.comment_ AS "comment", stamp_.custom_attributes_ AS "arrayOfCustomAttributes"
+    , ARRAY_AGG(topic_.name_) AS "arrayOfTopics"
+  FROM stamp_
+  LEFT JOIN stamp_topic_ ON (stamp_.id_ = stamp_topic_.stamp_id_)
+  LEFT JOIN topic_ ON (stamp_topic_.topic_id_ = topic_.id_)
+  INNER JOIN user_ ON (stamp_.temporary_user_id_ = user_.id_)
+  INNER JOIN album_ ON (stamp_.album_id_ = album_.id_)
+  WHERE (stamp_.id_ = :stampId ::BIGINT)
+  GROUP BY stamp_.id_, user_.name_, album_.name_
+  ;
+  `
   let resultOfQuery = await knex.raw(textOfQuery, {
     stampId: stampId
   })

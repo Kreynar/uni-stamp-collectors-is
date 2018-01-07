@@ -33,7 +33,80 @@
             <v-icon>view_module</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>My stamps</v-list-tile-title>
+            <v-list-tile-title>All stamps</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile
+          :to="{
+                  name: 'usersUsernameStamps',
+                  params: {
+                    username: $store.state.userStore.usernameOfLoggedInUser
+                  },
+                  query: {
+                    album: 'Main album'
+                  }
+                }"
+          @click="resetSearchAndSort()"
+          style="padding-left:5% !important"
+        >
+          <v-list-tile-action>
+            <!--<v-icon>view_module</v-icon>-->
+            <!--<v-btn icon small style="font-size:100%">-->
+              <!--<v-icon style="font-size:120%">M</v-icon>-->
+            <!--</v-btn>-->
+            <!--<v-icon style="font-size:120%">&nbsp;&nbsp;&nbsp;&nbsp;M</v-icon>-->
+            <v-btn fab icon small style="font-size:100%">
+              M
+            </v-btn>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Main album</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile
+          :to="{
+                  name: 'usersUsernameStamps',
+                  params: {
+                    username: $store.state.userStore.usernameOfLoggedInUser
+                  },
+                  query: {
+                    album: 'Wish album'
+                  }
+                }"
+          @click="resetSearchAndSort()"
+          style="padding-left:5% !important"
+        >
+          <v-list-tile-action>
+            <!--<v-icon style="font-size:120%">&nbsp;&nbsp;&nbsp;&nbsp;W</v-icon>-->
+            <v-btn fab icon small style="font-size:100%">
+              W
+            </v-btn>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Wish album</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile
+          :to="{
+                  name: 'usersUsernameStamps',
+                  params: {
+                    username: $store.state.userStore.usernameOfLoggedInUser
+                  },
+                  query: {
+                    album: 'Trade album'
+                  }
+                }"
+          @click="resetSearchAndSort()"
+          style="padding-left:5% !important"
+        >
+          <v-list-tile-action>
+            <!--<v-icon style="font-size:120%">&nbsp;&nbsp;&nbsp;&nbsp;T</v-icon>-->
+            <v-btn fab icon small style="font-size:100%">
+              T
+            </v-btn>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Trade album</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
         <v-divider></v-divider>
@@ -45,7 +118,7 @@
           @click="resetSearchAndSort()"
         >
           <v-list-tile-action>
-            <v-icon>list</v-icon>
+            <v-icon>account_circle</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title>
@@ -66,6 +139,70 @@
             <v-list-tile-title>
               All stamps
             </v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile
+          :to="{
+                  name: 'stamps',
+                  query: {
+                    album: 'Main album'
+                  }
+                }"
+          @click="resetSearchAndSort()"
+          style="padding-left:5% !important"
+        >
+          <v-list-tile-action>
+            <!--<v-icon>view_module</v-icon>-->
+            <!--<v-btn icon small style="font-size:100%">-->
+            <!--<v-icon style="font-size:120%">M</v-icon>-->
+            <!--</v-btn>-->
+            <!--<v-icon style="font-size:120%">&nbsp;&nbsp;&nbsp;&nbsp;M</v-icon>-->
+            <v-btn fab icon small style="font-size:100%">
+              M
+            </v-btn>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Main album</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile
+          :to="{
+                  name: 'stamps',
+                  query: {
+                    album: 'Wish album'
+                  }
+                }"
+          @click="resetSearchAndSort()"
+          style="padding-left:5% !important"
+        >
+          <v-list-tile-action>
+            <!--<v-icon style="font-size:120%">&nbsp;&nbsp;&nbsp;&nbsp;W</v-icon>-->
+            <v-btn fab icon small style="font-size:100%">
+              W
+            </v-btn>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Wish album</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile
+          :to="{
+                  name: 'stamps',
+                  query: {
+                    album: 'Trade album'
+                  }
+                }"
+          @click="resetSearchAndSort()"
+          style="padding-left:5% !important"
+        >
+          <v-list-tile-action>
+            <!--<v-icon style="font-size:120%">&nbsp;&nbsp;&nbsp;&nbsp;T</v-icon>-->
+            <v-btn fab icon small style="font-size:100%">
+              T
+            </v-btn>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Trade album</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
         <v-divider></v-divider>

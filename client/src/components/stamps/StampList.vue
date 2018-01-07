@@ -1,6 +1,6 @@
 <template>
   <v-content style="padding-top: 1px;">
-    <v-container fluid grid-list-xl class="grey lighten-4">
+    <v-container fluid grid-list-xl class="grey lighten-4" >
       <v-layout row wrap>
         <v-btn
           v-if="$route.params.username === $store.state.userStore.usernameOfLoggedInUser"
@@ -20,7 +20,7 @@
     </div>
     <!--<Loading v-if="$store.state.isSomethingLoading"></Loading>-->
 
-    <v-container fluid grid-list-xl class="grey lighten-4">
+    <v-container fluid grid-list-xl class="grey lighten-4" style="padding-top:10px !important">
       <v-layout row wrap>
 
         <template v-for="(stamp, index) in $store.state.stampStore.arrayOfStamps">
@@ -48,7 +48,7 @@
                 justify-center
 
               >
-                <v-card-title class="text-xs-center" >
+                <v-card-title class="text-xs-center" style="padding:0 !important">
                   <!--<div class="text-xs-center" style="font-size:130%" @click="showStampDialogForView(stamp.id)">-->
                   <div class="text-xs-center" style="font-size:100%">
                     <div class="text-xs-center" style="font-size:130%; padding-bottom:0" @click="showStampDialogForView(stamp.id)">
@@ -62,26 +62,91 @@
                         <v-chip><strong>{{ topic }}</strong></v-chip>
                       </span>
                     </div>
-
                     <div class="text-xs-center">
-                      <v-btn
-                        round
-                        outline
-                        replace
-                        :to="{
-                                name: 'usersUsernameStamps',
-                                params: {
-                                  username: stamp.username
-                                }
-                              }"
-                      >
-                        {{ stamp.username }}
-                      </v-btn>
+
+
+
+                      <!--<v-btn-->
+                        <!--round-->
+                        <!--outline-->
+                        <!--replace-->
+                        <!--:to="{-->
+                                <!--name: 'usersUsernameStamps',-->
+                                <!--params: {-->
+                                  <!--username: stamp.username-->
+                                <!--}-->
+                              <!--}"-->
+                      <!--&gt;-->
+                        <!--{{ stamp.username }}-->
+                      <!--</v-btn>-->
+
+
+
+                      <!--<v-btn fab outline small style="font-size:100%">-->
+                        <!--T-->
+                      <!--</v-btn>-->
+
+                      <v-chip bottom outline text-color="black" class="black">
+
+                        <div
+                          @click="$router.push({
+                                                  name: 'usersUsernameStamps',
+                                                  params: {
+                                                    username: stamp.username
+                                                  },
+                                                  query: {
+                                                    album: stamp.album
+                                                  }
+                          })"
+                        >
+                          <v-avatar v-if="(stamp.album === 'Main album')" class="light-green lighten-4" style="font-weight: bold;">M</v-avatar>
+                          <v-avatar v-else-if="(stamp.album === 'Wish album')" class="deep-orange lighten-4" style="font-weight: bold;">W</v-avatar>
+                          <v-avatar v-else-if="(stamp.album === 'Trade album')" class="orange lighten-4" style="font-weight: bold;">T</v-avatar>
+                        </div>
+
+                        <!--<router-link-->
+                          <!--:to="{-->
+                                <!--name: 'usersUsernameStamps',-->
+                                <!--params: {-->
+                                  <!--username: stamp.username-->
+                                <!--}-->
+                              <!--}"-->
+                        <!--&gt;-->
+                          <!--<span>-->
+                            <!--Trevor Hansen-->
+                          <!--</span>-->
+                        <!--</router-link>-->
+
+                        <span
+                          @click="$router.push({
+                                                  name: 'usersUsernameStamps',
+                                                  params: {
+                                                    username: stamp.username
+                                                  }
+                          })"
+                        >
+                          {{ stamp.username }}
+                        </span>
+
+                        <!--<v-icon >account_circle</v-icon>-->
+                        <!--<v-avatar right class="light-green lighten-4">W</v-avatar>-->
+                        <!--<v-btn fab outline small style="font-size:100%">-->
+                          <!--T-->
+                        <!--</v-btn>-->
+                        <!--<v-icon right class="light-green lighten-4">W</v-icon>-->
+                        <!--<v-icon right class="light-green lighten-4">account_circle</v-icon>-->
+
+
+
+                      </v-chip>
+
+
+
                     </div>
                   </div>
                 </v-card-title>
               </v-layout>
-              <v-card-actions v-if="stamp.username === $store.state.userStore.usernameOfLoggedInUser">
+              <v-card-actions v-if="stamp.username === $store.state.userStore.usernameOfLoggedInUser" style="padding:0 !important">
                 <v-menu bottom offset-y>
                   <v-btn flat icon color="black" slot="activator"><v-icon>clear</v-icon></v-btn>
                   <v-list>
@@ -198,6 +263,9 @@
 //        this.$store.dispatch('loadTopicsFromServer')
         if (this.$store.state.stampStore.arrayOfGradesIdsAndNames.length === 0) {
           this.$store.dispatch('loadGradesFromServer')
+        }
+        if (this.$store.state.stampStore.arrayOfAlbumsIdsAndNames.length === 0) {
+          this.$store.dispatch('loadAlbumsFromServer')
         }
         if (this.$store.state.stampStore.arrayOfCountriesIdsAndNames.length === 0) {
           this.$store.dispatch('loadCountriesFromServer')

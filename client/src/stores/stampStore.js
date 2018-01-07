@@ -30,13 +30,30 @@ async function getArrayOfGradesIdsAndNamesFromServer () {
     const serverResponse = await axios.create({
       baseURL: strings.baseURL
     }).get(strings.path.grades)
-    const arrayOfGradesNamesAndIds = serverResponse.data
-    console.log('@@@ arrayOfGradesNamesAndIds', arrayOfGradesNamesAndIds)
-    return arrayOfGradesNamesAndIds
+    const arrayOfGradesIdsAndNames = serverResponse.data
+    console.log('@@@ arrayOfGradesIdsAndNames', arrayOfGradesIdsAndNames)
+    return arrayOfGradesIdsAndNames
   }
   catch (error) {
     const errorMessage = error.response.data.errorMessage
     console.log('@@@ error in getArrayOfGradesIdsAndNamesFromServer:  ', errorMessage)
+  }
+  finally {
+  }
+}
+
+async function getArrayOfAlbumsIdsAndNamesFromServer () {
+  try {
+    const serverResponse = await axios.create({
+      baseURL: strings.baseURL
+    }).get(strings.path.albums)
+    const arrayOfAlbumsIdsAndNames = serverResponse.data
+    console.log('@@@ arrayOfAlbumsIdsAndNames', arrayOfAlbumsIdsAndNames)
+    return arrayOfAlbumsIdsAndNames
+  }
+  catch (error) {
+    const errorMessage = error.response.data.errorMessage
+    console.log('@@@ error in getArrayOfAlbumsIdsAndNamesFromServer:  ', errorMessage)
   }
   finally {
   }
@@ -197,6 +214,7 @@ const stampStore = {
     arrayOfStamps: [],
     arrayOfCountriesIdsAndNames: [],
     arrayOfGradesIdsAndNames: [],
+    arrayOfAlbumsIdsAndNames: [],
     arrayOfTopicsIdsAndNames: [],
     arrayOfCategoriesNames: ss.arrayOfCategoriesNames,
     arrayOfStructureTypesNames: ss.arrayOfStructureTypesNames,
@@ -271,6 +289,9 @@ const stampStore = {
     setArrayOfGradesIdsAndNames (state, arrayOfGradesIdsAndNames) {
       state.arrayOfGradesIdsAndNames = arrayOfGradesIdsAndNames
     },
+    setArrayOfAlbumsIdsAndNames (state, arrayOfAlbumsIdsAndNames) {
+      state.arrayOfAlbumsIdsAndNames = arrayOfAlbumsIdsAndNames
+    },
     setArrayOfTopicsIdsAndNames (state, arrayOfTopicsIdsAndNames) {
       state.arrayOfTopicsIdsAndNames = arrayOfTopicsIdsAndNames
     },
@@ -314,6 +335,10 @@ const stampStore = {
     async loadGradesFromServer (context) {
       const arrayOfGradesIdsAndNames = await getArrayOfGradesIdsAndNamesFromServer()
       context.commit('setArrayOfGradesIdsAndNames', arrayOfGradesIdsAndNames)
+    },
+    async loadAlbumsFromServer (context) {
+      const arrayOfAlbumsIdsAndNames = await getArrayOfAlbumsIdsAndNamesFromServer()
+      context.commit('setArrayOfAlbumsIdsAndNames', arrayOfAlbumsIdsAndNames)
     },
     async loadTopicsFromServer (context) {
       const arrayOfTopicsIdsAndNames = await getArrayOfTopicsIdsAndNamesFromServer()
