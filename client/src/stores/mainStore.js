@@ -22,6 +22,7 @@ const mainStore = new Vuex.Store({
   state: () => ({
     mainColorOfTheme: strings.mainColorOfTheme,
     secondaryColorOfTheme: strings.secondaryColorOfTheme,
+    tertiaryColorOfTheme: strings.tertiaryColorOfTheme,
     isStampDialogVisible: false,
     /*
      * Later, when we open stamp dialog, we change stampDialogMode to according value in strings.stampDialog.mode.<mode>
@@ -35,6 +36,7 @@ const mainStore = new Vuex.Store({
      * watch:, where doesStampListNeedToReload value change is being listened. When value changes, stamp list reloads.
      */
     doesStampListNeedToReload: 1,
+    doStatisticsNeedToReload: 1,
     isSomethingLoading: false,
     /*
      * doesSearchAndSortNeedToReset specific value doesn't matter. It is only used to inform SearchAndSortPanel, that
@@ -73,6 +75,9 @@ const mainStore = new Vuex.Store({
     triggerDoesStampListNeedToReload (state) {
       // state.doesStampListNeedToReload = state.doesStampListNeedToReload + 1
       ++(state.doesStampListNeedToReload)
+    },
+    triggerDoStatisticsNeedToReload (state) {
+      ++(state.doStatisticsNeedToReload)
     },
     triggerDoesSearchAndSortNeedToReset (state) {
       ++(state.doesSearchAndSortNeedToReset)

@@ -1,9 +1,9 @@
 <template>
   <v-content>
-    <v-container fluid grid-list-xs class="grey lighten-4">
+    <v-container fluid grid-list-xs >
       <v-layout row wrap>
-        <v-expansion-panel>
-          <v-expansion-panel-content :class="$store.state.secondaryColorOfTheme" v-model="isExpansionPanelExpanded">
+        <v-expansion-panel >
+          <v-expansion-panel-content  v-model="isExpansionPanelExpanded">
             <div slot="header" class="text-xs-center" style="font-size:150%">
               <v-flex xs12>
                 <!--<span>Search  </span><v-icon>search</v-icon>-->

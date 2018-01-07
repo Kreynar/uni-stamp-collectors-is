@@ -303,6 +303,7 @@
           })
           await axiosInstance.delete(strings.path.stamps + '/' + stampId)
           this.$store.commit('triggerDoesStampListNeedToReload')
+          this.$store.commit('triggerDoStatisticsNeedToReload')
           this.$store.state.snackbarColor = 'success'
           this.$store.state.snackbarMessage = 'Stamp successfully inserted/updated'
           this.$store.state.isSnackbarDisplayed = true
@@ -337,7 +338,7 @@
       },
       '$route' (to, from) {
         try {
-          console.log('@@@ watch: $route (to, from)', to.fullPath, from.fullPath)
+          console.log('@@@ StampList.vue: watch: $route (to, from)', to.fullPath, from.fullPath)
           this.loadStampList(this.$route)
         }
         catch (error) {

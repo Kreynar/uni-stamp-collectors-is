@@ -7,6 +7,7 @@ const vv = {}
 
 vv.mainColorOfTheme = 'orange'
 vv.secondaryColorOfTheme = 'grey lighten-3'
+vv.tertiaryColorOfTheme = 'black'
 
 vv.stamps = {
   arrayOfCategoriesNames: [
@@ -110,6 +111,7 @@ vv.testTemporaryUserUsername = 'testUsername'
 // vv.baseURL = `http://localhost:8081/`
 vv.baseURL = `http://886a0bbd.ngrok.io`
 vv.path = {}
+vv.path.statistics = '/statistics'
 vv.path.register = '/register'
 vv.path.stamps = '/stamps'
 vv.path.users = '/users'

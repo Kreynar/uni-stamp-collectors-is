@@ -10,6 +10,7 @@ vv.tracerOutputCustomization = {
 }
 
 vv.path = {}
+vv.path.statistics = '/statistics'
 vv.path.register = '/register'
 vv.path.stamps = '/stamps'
 vv.path.users = '/users'

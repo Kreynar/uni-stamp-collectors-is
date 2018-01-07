@@ -9,6 +9,7 @@ const CountriesControllers = require('./resources/countries/CountriesControllers
 const GradesControllers = require('./resources/grades/GradesControllers.js')
 const TopicsControllers = require('./resources/topics/TopicsControllers.js')
 const AlbumsControllers = require('./resources/albums/AlbumsControllers.js')
+const StatisticsControllers = require('./resources/statistics/StatisticsControllers.js')
 const ss = require('./variables.js')
 
 module.exports = (app) => {
@@ -27,6 +28,8 @@ module.exports = (app) => {
   //     message: 'Hello world -Martynas'
   //   })
   // })
+  app.get(ss.path.statistics,
+    StatisticsControllers.get)
   app.get(ss.path.countries,
     CountriesControllers.get)
   app.get(ss.path.grades,

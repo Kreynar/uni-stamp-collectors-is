@@ -487,6 +487,7 @@
               serverResponse = await axiosInstance.put(strings.path.stamps + '/' + this.$store.getters.getStampId, formFieldsAndValues)
             }
             this.$store.commit('triggerDoesStampListNeedToReload')
+            this.$store.commit('triggerDoStatisticsNeedToReload')
             this.$store.state.snackbarColor = 'success'
             this.$store.state.snackbarMessage = 'Stamp successfully inserted/updated'
             this.$store.state.isSnackbarDisplayed = true

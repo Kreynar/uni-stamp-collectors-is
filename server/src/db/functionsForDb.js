@@ -375,22 +375,129 @@ db.getArrayOfTopicsIdsAndNames = async (userId) => {
 //   return resultOfQuery.rows
 // }
 
+db.getStatistics = async (username, query) => {
+  let textOfQuery = `
+  SELECT 
+    COUNT(DISTINCT stamp_.id_) AS "numberOfStamps",
+    COUNT(DISTINCT stamp_.temporary_user_id_) AS "numberOfUsers",
+    MIN(user_.name_) AS "firstUser",
+    MAX(user_.name_) AS "lastUser",
+    COUNT(DISTINCT stamp_.year_) AS "numberOfYears",
+    MIN(stamp_.year_) AS "firstYear",
+    MAX(stamp_.year_) AS "lastYear",
+    COUNT(DISTINCT stamp_.country_id_) AS "numberOfCountries",
+    MIN(country_.name_) AS "firstCountry",
+    MAX(country_.name_) AS "lastCountry",
+    COUNT(DISTINCT stamp_.grade_id_) AS "numberOfGrades",
+    MIN(grade_.mark_) AS "firstGrade",
+    MAX(grade_.mark_) AS "lastGrade",
+    to_char(
+             AVG (grade_.mark_),
+             '99999999999999999D99'
+           ) AS "averageGrade"
+  FROM 
+    stamp_
+    INNER JOIN country_ ON (stamp_.country_id_ = country_.id_)
+    INNER JOIN grade_ ON (stamp_.grade_id_ = grade_.id_)
+    INNER JOIN stamp_topic_ ON (stamp_.id_ = stamp_topic_.stamp_id_)
+    INNER JOIN topic_ ON (stamp_topic_.topic_id_ = topic_.id_)
+    INNER JOIN user_ ON (stamp_.temporary_user_id_ = user_.id_)
+    INNER JOIN album_ ON (stamp_.album_id_ = album_.id_)
+  WHERE 
+    ((user_.name_ = :username ::TEXT) OR (:username ::TEXT IS NULL))
+    AND ((album_.name_ = :album ::TEXT) OR (:album ::TEXT IS NULL))
+    AND ((stamp_.year_ = :year ::SMALLINT) OR (:year ::SMALLINT IS NULL))
+    AND ((stamp_.year_ >= :yearMin ::SMALLINT) OR (:yearMin ::SMALLINT IS NULL))
+    AND ((stamp_.year_ <= :yearMax ::SMALLINT) OR (:yearMax ::SMALLINT IS NULL))
+    AND ((country_.name_ = :country ::TEXT) OR (:country ::TEXT IS NULL))
+    AND ((stamp_.nominal_value_ = :nominalValue ::TEXT) OR (:nominalValue ::TEXT IS NULL))
+    AND ((grade_.name_ = :grade ::TEXT) OR (:grade ::TEXT IS NULL))
+    AND ((stamp_.is_cancelled_ = :isCancelled ::BOOLEAN) OR (:isCancelled ::BOOLEAN IS NULL))
+    AND ((topic_.name_ = :arrayOfTopics ::TEXT) OR (:arrayOfTopics ::TEXT IS NULL))
+    AND ((stamp_.scott_ = :numberScott ::TEXT) OR (:numberScott ::TEXT IS NULL))
+    AND ((stamp_.michel_ = :numberMichel ::TEXT) OR (:numberMichel ::TEXT IS NULL))
+    AND ((stamp_.stanley_gibbons_ = :numberStanleyGibbons ::TEXT) OR (:numberStanleyGibbons ::TEXT IS NULL))
+    AND ((stamp_.yvert_et_tellier_ = :numberYvertEtTellier ::TEXT) OR (:numberYvertEtTellier ::TEXT IS NULL))
+    AND ((stamp_.category_ = :category ::TEXT) OR (:category ::TEXT IS NULL))
+    AND ((stamp_.structure_type_ = :structureType ::TEXT) OR (:structureType ::TEXT IS NULL))
+    AND ((stamp_.structure_number_ = :structureNumber ::TEXT) OR (:structureNumber ::TEXT IS NULL))
+    AND ((stamp_.structure_stamp_count_ = :structureStampCount ::SMALLINT) OR (:structureStampCount ::SMALLINT IS NULL))
+    AND ((stamp_.specimen_count_ = :specimenCount ::INTEGER) OR (:specimenCount ::INTEGER IS NULL))
+    AND ((stamp_.market_value_in_usd_ = :marketValue ::INTEGER) OR (:marketValue ::INTEGER IS NULL))
+    AND ((stamp_.face_description_ = :faceDescription ::TEXT) OR (:faceDescription ::TEXT IS NULL))
+    AND ((stamp_.comment_ = :comment ::TEXT) OR (:comment ::TEXT IS NULL))
+    AND (
+          ( (:customAttributeLabel ::TEXT IS NULL) AND (:customAttributeValue ::TEXT IS NULL) )
+          OR
+          ( (stamp_.custom_attributes_ @> ('[{"label": "' || :customAttributeLabel ::TEXT || '" }]')::JSONB) AND (:customAttributeValue ::TEXT IS NULL) )
+          OR
+          ( (stamp_.custom_attributes_ @> ('[{"value": "' || :customAttributeValue ::TEXT || '" }]')::JSONB) AND (:customAttributeLabel ::TEXT IS NULL) )
+          OR
+          (stamp_.custom_attributes_ @> ('[{' ||
+                                            '"label": "' || :customAttributeLabel ::TEXT || '",' ||
+                                            '"value": "' || :customAttributeValue ::TEXT || '"' ||
+                                         '}]')::JSONB)
+        )
+  ;
+  `
+  const bindings = {
+    username: username,
+    /*
+     * By default, all SELECT query properties (except username) are null
+     * (because knex would throw error, if we leave these properties undefined)...
+     */
+    album: null,
+    year: null,
+    yearMin: null,
+    yearMax: null,
+    country: null,
+    nominalValue: null,
+    grade: null,
+    isCancelled: null,
+    arrayOfTopics: null,
+    numberScott: null,
+    numberMichel: null,
+    numberStanleyGibbons: null,
+    numberYvertEtTellier: null,
+    category: null,
+    structureType: null,
+    structureNumber: null,
+    structureStampCount: null,
+    specimenCount: null,
+    marketValue: null,
+    faceDescription: null,
+    comment: null,
+    customAttributeLabel: null,
+    customAttributeValue: null,
+    /*
+     * ... but if query object from client contains any properties,
+     * then these properties will overwrite default properties with same names.
+     */
+    ...query
+  }
+  let resultOfQuery = await knex.raw(textOfQuery, bindings)
+  return resultOfQuery.rows
+}
+
 db.getStampsOrUsersUsernameStamps = async (username, query) => {
   let textOfQuery = `
-  SELECT stamp_.id_ AS "id", 
-  stamp_.temporary_user_id_ AS "userId", user_.name_ AS "username",
-  album_.name_ AS "album",
-  stamp_.temporary_picture_url_ AS "temporaryPictureUrl", 
-  stamp_.year_ AS "year", country_.name_ AS "country", stamp_.nominal_value_ AS "nominalValue", 
-  grade_.name_ AS "grade", stamp_.is_cancelled_ AS "isCancelled", ARRAY_AGG(topic_.name_) AS "arrayOfTopics"
-  FROM stamp_
-  LEFT JOIN country_ ON (stamp_.country_id_ = country_.id_)
-  LEFT JOIN grade_ ON (stamp_.grade_id_ = grade_.id_)
-  LEFT JOIN stamp_topic_ ON (stamp_.id_ = stamp_topic_.stamp_id_)
-  LEFT JOIN topic_ ON (stamp_topic_.topic_id_ = topic_.id_)
-  INNER JOIN user_ ON (stamp_.temporary_user_id_ = user_.id_)
-  INNER JOIN album_ ON (stamp_.album_id_ = album_.id_)
-  WHERE ((user_.name_ = :username ::TEXT) OR (:username ::TEXT IS NULL))
+  SELECT 
+    stamp_.id_ AS "id", 
+    stamp_.temporary_user_id_ AS "userId", user_.name_ AS "username",
+    album_.name_ AS "album",
+    stamp_.temporary_picture_url_ AS "temporaryPictureUrl", 
+    stamp_.year_ AS "year", country_.name_ AS "country", stamp_.nominal_value_ AS "nominalValue", 
+    grade_.name_ AS "grade", stamp_.is_cancelled_ AS "isCancelled", ARRAY_AGG(topic_.name_) AS "arrayOfTopics"
+  FROM 
+    stamp_
+    INNER JOIN country_ ON (stamp_.country_id_ = country_.id_)
+    INNER JOIN grade_ ON (stamp_.grade_id_ = grade_.id_)
+    INNER JOIN stamp_topic_ ON (stamp_.id_ = stamp_topic_.stamp_id_)
+    INNER JOIN topic_ ON (stamp_topic_.topic_id_ = topic_.id_)
+    INNER JOIN user_ ON (stamp_.temporary_user_id_ = user_.id_)
+    INNER JOIN album_ ON (stamp_.album_id_ = album_.id_)
+  WHERE 
+    ((user_.name_ = :username ::TEXT) OR (:username ::TEXT IS NULL))
     AND ((album_.name_ = :album ::TEXT) OR (:album ::TEXT IS NULL))
     AND ((stamp_.year_ = :year ::SMALLINT) OR (:year ::SMALLINT IS NULL))
     AND ((stamp_.year_ >= :yearMin ::SMALLINT) OR (:yearMin ::SMALLINT IS NULL))
@@ -477,11 +584,11 @@ db.getStampsOrUsersUsernameStamps = async (username, query) => {
   if (query.sortOrder === 'asc') {
     sortOrder = knex.raw('ASC')
   }
-  let resultOfQuery = await knex.raw(textOfQuery, {
+  const bindings = {
     username: username,
     /*
      * By default, all SELECT query properties (except username) are null
-     * (because knex would throw error, if would leave these properties undefined)...
+     * (because knex would throw error, if we leave these properties undefined)...
      */
     album: null,
     year: null,
@@ -517,7 +624,8 @@ db.getStampsOrUsersUsernameStamps = async (username, query) => {
      */
     sortField: sortField,
     sortOrder: sortOrder
-  })
+  }
+  let resultOfQuery = await knex.raw(textOfQuery, bindings)
   return resultOfQuery.rows
 }
 

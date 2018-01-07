@@ -133,6 +133,23 @@ async function getArrayOfStampsFromServer (fullPath) {
   }
 }
 
+async function getStatisticsFromServer (fullPath) {
+  try {
+    const serverResponse = await axios.create({
+      baseURL: strings.baseURL
+    }).get(fullPath)
+    const statistics = serverResponse.data
+    console.log('@@@ getStatisticsFromServer serverResponse.data', statistics)
+    return statistics
+  }
+  catch (error) {
+    const errorMessage = error.response.data.errorMessage
+    console.log('@@@ error in getStatisticsFromServer:  ', errorMessage)
+  }
+  finally {
+  }
+}
+
 function getFieldsAndValuesFrom (modelForDialogOrSearchPanel) {
   let fieldsAndValues = {}
   for (const propertyName in modelForDialogOrSearchPanel) {
@@ -216,6 +233,7 @@ const stampStore = {
     arrayOfGradesIdsAndNames: [],
     arrayOfAlbumsIdsAndNames: [],
     arrayOfTopicsIdsAndNames: [],
+    statistics: null,
     arrayOfCategoriesNames: ss.arrayOfCategoriesNames,
     arrayOfStructureTypesNames: ss.arrayOfStructureTypesNames,
     stampId: null,
@@ -270,6 +288,9 @@ const stampStore = {
     },
     setArrayOfStamps (state, arrayOfStamps) {
       state.arrayOfStamps = arrayOfStamps
+    },
+    setStatistics (state, statistics) {
+      state.statistics = statistics
     },
     setStampAttributes (state, stampAttributes) {
       setStampAttributesIn(state.modelForDialog, stampAttributes)
@@ -351,6 +372,10 @@ const stampStore = {
     async loadArrayOfStampsFromServer (context, fullPath) {
       const arrayOfStamps = await getArrayOfStampsFromServer(fullPath)
       context.commit('setArrayOfStamps', arrayOfStamps)
+    },
+    async loadStatisticsFromServer (context, fullPath) {
+      const statistics = await getStatisticsFromServer(fullPath)
+      context.commit('setStatistics', statistics[0])
     }
     // setArrayOfCountriesNamesAndIds (state, arrayOfCountriesNamesAndIds) {
     //   state.mutations.setArrayOfCountriesNamesAndIds(arrayOfCountriesNamesAndIds)
