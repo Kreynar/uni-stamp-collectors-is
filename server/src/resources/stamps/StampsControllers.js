@@ -6,13 +6,21 @@ const vv = require('../../variables.js')
 const tracer = require('tracer').console(vv.tracerOutputCustomization)
 const db = require('../../db/functionsForDb.js')
 
-async function getStamps (req, res) {
+async function getStampsOrUsersUsernameStamps (req, res) {
   try {
     // const stamps = await db.getStamps()
-    const username = null
-    const stamps = await db.getStampsOrUsersUsernameStamps(username, req.query)
-    tracer.log(stamps)
-    res.send(stamps)
+    let username = null
+    if (req.params.username) {
+      username = req.params.username
+    }
+    const arrayOfStamps = await db.getStampsOrUsersUsernameStamps(username, req.query)
+    const statistics = (await db.getStatistics(username, req.query))[0]
+    const response = {
+      arrayOfStamps,
+      statistics
+    }
+    tracer.log(response)
+    res.send(response)
   }
   catch (error) {
     tracer.log(error)
@@ -24,23 +32,23 @@ async function getStamps (req, res) {
   }
 }
 
-async function getUsersUsernameStamps (req, res) {
-  try {
-    tracer.log(req.query)
-    // const stamps = await db.getUsersUsernameStamps(req.params.username, req.query)
-    const stamps = await db.getStampsOrUsersUsernameStamps(req.params.username, req.query)
-    tracer.log(stamps)
-    res.send(stamps)
-  }
-  catch (error) {
-    tracer.log(error)
-    res.status(400).send({
-      errorMessage: 'Some error in retrieving stamps.'
-    })
-  }
-  finally {
-  }
-}
+// async function getUsersUsernameStamps (req, res) {
+//   try {
+//     tracer.log(req.query)
+//     // const stamps = await db.getUsersUsernameStamps(req.params.username, req.query)
+//     const stamps = await db.getStampsOrUsersUsernameStamps(req.params.username, req.query)
+//     tracer.log(stamps)
+//     res.send(stamps)
+//   }
+//   catch (error) {
+//     tracer.log(error)
+//     res.status(400).send({
+//       errorMessage: 'Some error in retrieving stamps.'
+//     })
+//   }
+//   finally {
+//   }
+// }
 
 async function getStampsStampId (req, res) {
   try {
@@ -129,9 +137,10 @@ async function deleteStampsStampId (req, res) {
 // }
 
 module.exports = {
-  getStamps,
+  // getStamps,
+  getStampsOrUsersUsernameStamps,
   getStampsStampId,
-  getUsersUsernameStamps,
+  // getUsersUsernameStamps,
   post,
   put,
   deleteStampsStampId

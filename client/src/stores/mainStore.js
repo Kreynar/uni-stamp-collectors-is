@@ -35,8 +35,8 @@ const mainStore = new Vuex.Store({
      * doesStampListNeedToReload specific value doesn't matter. It is only used in StampList.vue, where is computed: and
      * watch:, where doesStampListNeedToReload value change is being listened. When value changes, stamp list reloads.
      */
-    doesStampListNeedToReload: 1,
-    doStatisticsNeedToReload: 1,
+    doStampListAndStatisticsNeedToReload: 1,
+    // doStatisticsNeedToReload: 1,
     isSomethingLoading: false,
     /*
      * doesSearchAndSortNeedToReset specific value doesn't matter. It is only used to inform SearchAndSortPanel, that
@@ -72,13 +72,13 @@ const mainStore = new Vuex.Store({
     setStampDialogMode (state, mode) {
       state.stampDialogMode = mode
     },
-    triggerDoesStampListNeedToReload (state) {
+    triggerDoStampListAndStatisticsNeedToReload (state) {
       // state.doesStampListNeedToReload = state.doesStampListNeedToReload + 1
-      ++(state.doesStampListNeedToReload)
+      ++(state.doStampListAndStatisticsNeedToReload)
     },
-    triggerDoStatisticsNeedToReload (state) {
-      ++(state.doStatisticsNeedToReload)
-    },
+    // triggerDoStatisticsNeedToReload (state) {
+    //   ++(state.doStatisticsNeedToReload)
+    // },
     triggerDoesSearchAndSortNeedToReset (state) {
       ++(state.doesSearchAndSortNeedToReset)
     }

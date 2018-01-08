@@ -391,10 +391,12 @@ db.getStatistics = async (username, query) => {
     COUNT(DISTINCT stamp_.grade_id_) AS "numberOfGrades",
     MIN(grade_.mark_) AS "firstGrade",
     MAX(grade_.mark_) AS "lastGrade",
-    to_char(
+    TRIM(
+        TO_CHAR(
              AVG (grade_.mark_),
              '99999999999999999D99'
-           ) AS "averageGrade"
+           )
+         ) AS "averageGrade"
   FROM 
     stamp_
     INNER JOIN country_ ON (stamp_.country_id_ = country_.id_)

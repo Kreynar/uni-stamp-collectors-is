@@ -162,7 +162,7 @@
             </v-btn>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>Main album</v-list-tile-title>
+            <v-list-tile-title>Main albums</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
         <v-list-tile
@@ -182,7 +182,7 @@
             </v-btn>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>Wish album</v-list-tile-title>
+            <v-list-tile-title>Wish albums</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
         <v-list-tile
@@ -202,7 +202,7 @@
             </v-btn>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>Trade album</v-list-tile-title>
+            <v-list-tile-title>Trade albums</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
         <v-divider></v-divider>
@@ -261,8 +261,9 @@
 
 
     <!--<Loading v-if="$store.state.isSomethingLoading"></Loading>-->
-    <router-view></router-view>
-
+    <v-content>
+      <router-view></router-view>
+    </v-content>
 
 
     <v-btn

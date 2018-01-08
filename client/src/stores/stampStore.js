@@ -113,7 +113,7 @@ async function getStampAttributesFromServer (stampId) {
   }
 }
 
-async function getArrayOfStampsFromServer (fullPath) {
+async function getStampsAndStatisticsFromServer (fullPath) {
   try {
     // const serverResponse = await axios.create({
     //   baseURL: strings.baseURL
@@ -121,34 +121,34 @@ async function getArrayOfStampsFromServer (fullPath) {
     const serverResponse = await axios.create({
       baseURL: strings.baseURL
     }).get(fullPath)
-    const arrayOfStamps = serverResponse.data
-    console.log('@@@ getArrayOfStampsFromServer serverResponse.data', arrayOfStamps)
-    return arrayOfStamps
+    const stampsAndStatistics = serverResponse.data
+    console.log('@@@ getStampsAndStatisticsFromServer serverResponse.data', stampsAndStatistics)
+    return stampsAndStatistics
   }
   catch (error) {
     const errorMessage = error.response.data.errorMessage
-    console.log('@@@ error in getArrayOfStampsFromServer:  ', errorMessage)
+    console.log('@@@ error in getStampsAndStatisticsFromServer:  ', errorMessage)
   }
   finally {
   }
 }
 
-async function getStatisticsFromServer (fullPath) {
-  try {
-    const serverResponse = await axios.create({
-      baseURL: strings.baseURL
-    }).get(fullPath)
-    const statistics = serverResponse.data
-    console.log('@@@ getStatisticsFromServer serverResponse.data', statistics)
-    return statistics
-  }
-  catch (error) {
-    const errorMessage = error.response.data.errorMessage
-    console.log('@@@ error in getStatisticsFromServer:  ', errorMessage)
-  }
-  finally {
-  }
-}
+// async function getStatisticsFromServer (fullPath) {
+//   try {
+//     const serverResponse = await axios.create({
+//       baseURL: strings.baseURL
+//     }).get(fullPath)
+//     const statistics = serverResponse.data
+//     console.log('@@@ getStatisticsFromServer serverResponse.data', statistics)
+//     return statistics
+//   }
+//   catch (error) {
+//     const errorMessage = error.response.data.errorMessage
+//     console.log('@@@ error in getStatisticsFromServer:  ', errorMessage)
+//   }
+//   finally {
+//   }
+// }
 
 function getFieldsAndValuesFrom (modelForDialogOrSearchPanel) {
   let fieldsAndValues = {}
@@ -369,14 +369,17 @@ const stampStore = {
       const stampAttributes = await getStampAttributesFromServer(stampId)
       context.commit('setStampAttributes', stampAttributes)
     },
-    async loadArrayOfStampsFromServer (context, fullPath) {
-      const arrayOfStamps = await getArrayOfStampsFromServer(fullPath)
+    async loadStampsAndStatisticsFromServer (context, fullPath) {
+      const stampsAndStatistics = await getStampsAndStatisticsFromServer(fullPath)
+      const arrayOfStamps = stampsAndStatistics.arrayOfStamps
+      const statistics = stampsAndStatistics.statistics
       context.commit('setArrayOfStamps', arrayOfStamps)
-    },
-    async loadStatisticsFromServer (context, fullPath) {
-      const statistics = await getStatisticsFromServer(fullPath)
-      context.commit('setStatistics', statistics[0])
+      context.commit('setStatistics', statistics)
     }
+    // async loadStatisticsFromServer (context, fullPath) {
+    //   const statistics = await getStatisticsFromServer(fullPath)
+    //   context.commit('setStatistics', statistics[0])
+    // }
     // setArrayOfCountriesNamesAndIds (state, arrayOfCountriesNamesAndIds) {
     //   state.mutations.setArrayOfCountriesNamesAndIds(arrayOfCountriesNamesAndIds)
     // }

@@ -9,7 +9,7 @@ const db = require('../../db/functionsForDb.js')
 async function get (req, res) {
   try {
     let username = null
-    if (req.params.username !== null) {
+    if (req.params.username) {
       username = req.params.username
     }
     const statistics = await db.getStatistics(username, req.query)

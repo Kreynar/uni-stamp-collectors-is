@@ -9,7 +9,7 @@ const CountriesControllers = require('./resources/countries/CountriesControllers
 const GradesControllers = require('./resources/grades/GradesControllers.js')
 const TopicsControllers = require('./resources/topics/TopicsControllers.js')
 const AlbumsControllers = require('./resources/albums/AlbumsControllers.js')
-const StatisticsControllers = require('./resources/statistics/StatisticsControllers.js')
+// const StatisticsControllers = require('./resources/statistics/StatisticsControllers_OLD.js')
 const ss = require('./variables.js')
 
 module.exports = (app) => {
@@ -28,8 +28,8 @@ module.exports = (app) => {
   //     message: 'Hello world -Martynas'
   //   })
   // })
-  app.get(ss.path.statistics,
-    StatisticsControllers.get)
+  // app.get(ss.path.statistics,
+  //   StatisticsControllers.get)
   app.get(ss.path.countries,
     CountriesControllers.get)
   app.get(ss.path.grades,
@@ -39,11 +39,11 @@ module.exports = (app) => {
   app.get(ss.path.topics,
     TopicsControllers.get)
   app.get(ss.path.stamps,
-    StampsControllers.getStamps)
+    StampsControllers.getStampsOrUsersUsernameStamps)
   app.get(ss.path.stamps + ss.path.stampId,
     StampsControllers.getStampsStampId)
   app.get(ss.path.users + ss.path.username + ss.path.stamps,
-    StampsControllers.getUsersUsernameStamps)
+    StampsControllers.getStampsOrUsersUsernameStamps)
   app.get(ss.path.users,
     UsersControllers.getUsers)
   app.post(ss.path.register,

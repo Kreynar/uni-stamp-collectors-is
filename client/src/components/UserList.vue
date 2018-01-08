@@ -1,5 +1,5 @@
 <template>
-  <v-content style="padding-top: 1px;">
+  <!--<v-content style="padding-top: 1px;">-->
 
     <v-container fluid grid-list-xl class="grey lighten-4">
       <v-layout row wrap>
@@ -70,7 +70,7 @@
       </v-layout>
     </v-container>
 
-  </v-content>
+  <!--</v-content>-->
 
 </template>
 

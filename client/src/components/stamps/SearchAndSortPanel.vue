@@ -1,16 +1,15 @@
 <template>
-  <v-content>
+  <!--<v-content>-->
     <v-container fluid grid-list-xs >
       <v-layout row wrap>
         <v-expansion-panel >
           <v-expansion-panel-content  v-model="isExpansionPanelExpanded">
             <div slot="header" class="text-xs-center" style="font-size:150%">
               <v-flex xs12>
-                <!--<span>Search  </span><v-icon>search</v-icon>-->
                 Search and Sort
               </v-flex>
               <v-flex xs12>
-                <v-icon>expand_more</v-icon>
+                <v-icon>search</v-icon>
               </v-flex>
             </div>
             <v-card>
@@ -291,7 +290,7 @@
         </v-expansion-panel>
       </v-layout>
     </v-container>
-  </v-content>
+  <!--</v-content>-->
 </template>
 
 <script>
@@ -471,7 +470,7 @@
             fullPathObject.query.sortOrder = this.sortOrder
           }
           this.$router.push(fullPathObject)
-          await this.$store.dispatch('loadArrayOfStampsFromServer', this.$route.fullPath)
+          await this.$store.dispatch('loadStampsAndStatisticsFromServer', this.$route.fullPath)
         }
         catch (error) {
           const errorMessage = error.response.data.errorMessage

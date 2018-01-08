@@ -1,5 +1,8 @@
 <template>
-  <v-content style="padding-top: 1px;">
+  <!--<v-content style="padding-top: 1px;">-->
+
+  <div>
+
     <v-container fluid grid-list-xl class="grey lighten-4" >
       <v-layout row wrap>
         <v-btn
@@ -166,7 +169,10 @@
       </v-layout>
     </v-container>
 
-  </v-content>
+
+  </div>
+
+  <!--</v-content>-->
 
 </template>
 
@@ -189,13 +195,13 @@
     },
     computed: {
       /*
-       * This computed: doesStampListNeedToReload () itself does nothing. It is only important, because it
-       * is being listened in watch: doesStampListNeedToReload (), where we detect that that
-       * this.$store.state.triggerDoesStampListNeedToReload has been changed - which means we need to
+       * This computed: doStampListAndStatisticsNeedToReload () itself does nothing. It is only important, because it
+       * is being listened in watch: doStampListAndStatisticsNeedToReload (), where we detect that that
+       * this.$store.state.triggerDoStampListAndStatisticsNeedToReload has been changed - which means we need to
        * reload stamp list.
        */
-      doesStampListNeedToReload () {
-        return this.$store.state.doesStampListNeedToReload
+      doStampListAndStatisticsNeedToReload () {
+        return this.$store.state.doStampListAndStatisticsNeedToReload
       }
     },
     filters: {
@@ -236,20 +242,10 @@
         }
         return color
       },
-      async loadStampList (route) {
+      async loadStampsAndStatistics (route) {
         console.log('@@@ async loadStampList (route) route', route)
-//        console.log('@@@ async loadStampList (route) route.params', route.params)
-//        console.log('@@@ async loadStampList (route) route.query', route.query)
-//        console.log('@@@ async loadStampList (route) route.path', route.path)
-//        console.log('@@@ async loadStampList (route) route.fullPath', route.fullPath)
-//    const arrayOfStamps = await getArrayOfStampsFromServer()
-//        const serverResponse = await axios.create({
-//          baseURL: strings.baseURL
-//        }).get(strings.path.stamps)
-//        const arrayOfStamps = serverResponse.data
-//        this.$store.commit('setArrayOfStamps', arrayOfStamps)
         this.$store.state.isSomethingLoading = true
-        await this.$store.dispatch('loadArrayOfStampsFromServer', route.fullPath)
+        await this.$store.dispatch('loadStampsAndStatisticsFromServer', route.fullPath)
         setTimeout(() => {
           this.$store.state.isSomethingLoading = false
         }, 1000)
@@ -302,8 +298,8 @@
             baseURL: strings.baseURL
           })
           await axiosInstance.delete(strings.path.stamps + '/' + stampId)
-          this.$store.commit('triggerDoesStampListNeedToReload')
-          this.$store.commit('triggerDoStatisticsNeedToReload')
+          this.$store.commit('triggerDoStampListAndStatisticsNeedToReload')
+//          this.$store.commit('triggerDoStatisticsNeedToReload')
           this.$store.state.snackbarColor = 'success'
           this.$store.state.snackbarMessage = 'Stamp successfully inserted/updated'
           this.$store.state.isSnackbarDisplayed = true
@@ -319,7 +315,7 @@
     },
     async created () {
       try {
-        this.loadStampList(this.$route)
+        this.loadStampsAndStatistics(this.$route)
       }
       catch (error) {
       }
@@ -327,9 +323,9 @@
       }
     },
     watch: {
-      async doesStampListNeedToReload () {
+      async doStampListAndStatisticsNeedToReload () {
         try {
-          this.loadStampList(this.$route)
+          this.loadStampsAndStatistics(this.$route)
         }
         catch (error) {
         }
@@ -339,7 +335,7 @@
       '$route' (to, from) {
         try {
           console.log('@@@ StampList.vue: watch: $route (to, from)', to.fullPath, from.fullPath)
-          this.loadStampList(this.$route)
+          this.loadStampsAndStatistics(this.$route)
         }
         catch (error) {
         }
