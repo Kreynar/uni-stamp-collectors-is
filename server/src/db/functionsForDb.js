@@ -634,7 +634,7 @@ db.getStampsOrUsersUsernameStamps = async (username, query) => {
 db.getStampsStampId = async (stampId) => {
   const textOfQuery = `
   SELECT stamp_.id_ AS "id"
-    , stamp_.temporary_user_id_ AS "userId", user_.name_ AS "username", album_.name_ AS "album"
+    , stamp_.temporary_user_id_ AS "userId", user_.name_ AS "username", stamp_.album_id_ AS "album"
     , stamp_.temporary_picture_url_ AS "temporaryPictureUrl"
     , stamp_.scott_ AS "numberScott", stamp_.michel_ AS "numberMichel"
     , stamp_.stanley_gibbons_ AS "numberStanleyGibbons", stamp_.yvert_et_tellier_ AS "numberYvertEtTellier"
@@ -651,9 +651,8 @@ db.getStampsStampId = async (stampId) => {
   LEFT JOIN stamp_topic_ ON (stamp_.id_ = stamp_topic_.stamp_id_)
   LEFT JOIN topic_ ON (stamp_topic_.topic_id_ = topic_.id_)
   INNER JOIN user_ ON (stamp_.temporary_user_id_ = user_.id_)
-  INNER JOIN album_ ON (stamp_.album_id_ = album_.id_)
   WHERE (stamp_.id_ = :stampId ::BIGINT)
-  GROUP BY stamp_.id_, user_.name_, album_.name_
+  GROUP BY stamp_.id_, user_.name_
   ;
   `
   let resultOfQuery = await knex.raw(textOfQuery, {

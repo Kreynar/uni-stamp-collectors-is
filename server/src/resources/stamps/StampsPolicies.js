@@ -9,6 +9,7 @@ const Joi = require('joi')
 const stampSchema = {
   // id: Joi.number().integer().allow(null),
   temporaryPictureUrl: Joi.string(),
+  album: Joi.number().integer(),
   numberScott: Joi.string().allow('', null),
   numberMichel: Joi.string().allow('', null),
   numberStanleyGibbons: Joi.string().allow('', null),

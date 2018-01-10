@@ -38,6 +38,20 @@
                     <!--required-->
                   <!--&gt;</v-text-field>-->
                 <!--</v-flex>-->
+
+                <v-flex xs12 align-center justify-space-between>
+                  <v-select
+                    prepend-icon="short_text"
+                    :items="$store.state.stampStore.arrayOfAlbumsIdsAndNames"
+                    item-value="id_"
+                    item-text="name_"
+                    v-model="$store.state.stampStore.modelForDialog.album.value"
+                    :label="$store.state.stampStore.modelForDialog.album.label"
+                    :rules="$store.state.stampStore.modelForDialog.album.validation.functions"
+
+                    required
+                  ></v-select>
+                </v-flex>
                 <v-flex xs12 align-center justify-space-between>
                   <v-text-field
                     prepend-icon="short_text"

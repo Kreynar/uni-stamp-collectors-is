@@ -109,7 +109,7 @@ vv.stampDialog = {
 vv.testTemporaryUserUsername = 'testUsername'
 
 // vv.baseURL = `http://localhost:8081/`
-vv.baseURL = `http://7428f21e.ngrok.io`
+vv.baseURL = `http://stampsserver.eu.ngrok.io`
 vv.path = {}
 vv.path.statistics = '/statistics'
 vv.path.register = '/register'
